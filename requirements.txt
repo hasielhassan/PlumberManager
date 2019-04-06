@@ -1,0 +1,10 @@
+# Library dependencies for the python code.  You need to install these with
+# `pip install -r requirements.txt` before you can run this.
+
+#### ESSENTIAL LIBRARIES FOR MAIN FUNCTIONALITY ####
+
+PySide
+Qt.py
+pygraphviz
+git+git://github.com/hasielhassan/Nodz.git#egg=Nodz
+
