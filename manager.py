@@ -2,6 +2,8 @@ from Qt import QtCore, QtGui, QtWidgets
 import pygraphviz
 from Nodz import nodz_main
 import os
+import json
+import random
 
 from modules.manager_form import Ui_MainWindow as manager_form
 from modules.node_details_form import Ui_Form as node_details_form
@@ -16,11 +18,17 @@ class PlumberManager(QtWidgets.QMainWindow):
         self.ui = manager_form()
         self.ui.setupUi(self)
 
-        current = os.path.dirname(__file__)
-        self.setWindowTitle('PlumberManager')
-        self.setWindowIcon(QtGui.QIcon(os.path.join(current, 'resources','icon_32.png')))
+        self.current_dir = os.path.dirname(__file__)
+        os.chdir(self.current_dir)
 
-        config = os.path.join(current, 'custom_config.json')
+        self.setWindowTitle('PlumberManager')
+        self.setWindowIcon(QtGui.QIcon(os.path.join(self.current_dir, 'resources','icon_32.png')))
+
+        # Load data icons definition
+        icons = os.path.join(self.current_dir, 'data_icons.json')
+        self.loadDataTypes(icons)
+
+        config = os.path.join(self.current_dir, 'custom_config.json')
 
         self.nodz = nodz_main.Nodz(None)
         self.nodz.loadConfig(filePath=config)
@@ -96,7 +104,7 @@ class PlumberManager(QtWidgets.QMainWindow):
         for name in nodeNames:
             node = self.nodz.scene().nodes[name]
 
-            details = ProcessDetails(node, self.nodz)
+            details = ProcessDetails(node, self.nodz, self.data_types)
             index = layout.count() -1
             layout.insertWidget(index, details)
 
@@ -153,6 +161,24 @@ class PlumberManager(QtWidgets.QMainWindow):
     def on_keyPressed(self, key):
         print 'key pressed : ', key
 
+    def loadDataTypes(self, configPath):
+        """
+        """
+        contents = open(configPath, "r").read()
+        config = json.loads(contents)
+
+        self.data_types = {}
+
+        for data_type in config:
+
+            path = data_type["path"]
+            name = data_type['code']
+            dtype = type(str(data_type['type']), (object,), {})
+
+            if path.startswith('./'):
+                path = os.path.abspath(path)
+                self.data_types[name] = (dtype, path)
+
     def createProcess(self):
         processName, ok = QtWidgets.QInputDialog.getText(self, 'New Process', 'Process Name:')
         if ok and processName:
@@ -202,7 +228,7 @@ class PlumberManager(QtWidgets.QMainWindow):
 
 class ProcessDetails(QtWidgets.QWidget):
 
-    def __init__(self, node, nodz):
+    def __init__(self, node, nodz, data_types):
 
         super(ProcessDetails, self).__init__()
 
@@ -211,6 +237,7 @@ class ProcessDetails(QtWidgets.QWidget):
 
         self.node = node
         self.nodz = nodz
+        self.data_types = data_types
 
         self.ui.group_box.setTitle(self.node.name)
         self.ui.name_edit.setText(self.node.name)
@@ -236,17 +263,27 @@ class ProcessDetails(QtWidgets.QWidget):
             area_layout.addWidget(slot)
 
     def createInput(self):
-        inputName, ok = QtWidgets.QInputDialog.getText(self, 'New Input', 'Input Name:')
-        if ok and inputName:
-            self.nodz.createAttribute(node=self.node, name=inputName, index=0, preset='attr_preset_1',
-                                      plug=False, socket=True, dataType=str)
+        message = "Type a name for the input an select its data type."
+        dialog = UserInputsDialog("New Input", message, self.data_types.keys(), parent=self)
+        if dialog.exec_() == QtWidgets.QDialog.Accepted:
+
+            input_name, data_name = dialog.getInputs()
+            type_class, type_icon = self.data_types[data_name]
+
+            self.nodz.createAttribute(node=self.node, name=input_name, index=0, preset='attr_preset_1',
+                                      plug=False, socket=True, dataType=type_class, connectionIcon=type_icon)
             self.nodz.scene().updateScene()
 
     def createOutput(self):
-        outputName, ok = QtWidgets.QInputDialog.getText(self, 'New Output', 'Output Name:')
-        if ok and outputName:
-            self.nodz.createAttribute(node=self.node, name=outputName, index=-1, preset='attr_preset_2',
-                                      plug=True, socket=False, dataType=str)
+        message = "Type a name for the output an select its data type."
+        dialog = UserInputsDialog("New output", message, self.data_types.keys(), parent=self)
+        if dialog.exec_() == QtWidgets.QDialog.Accepted:
+
+            output_name, data_name = dialog.getInputs()
+            type_class, type_icon = self.data_types[data_name]
+
+            self.nodz.createAttribute(node=self.node, name=output_name, index=-1, preset='attr_preset_2',
+                                      plug=True, socket=False, dataType=type_class, connectionIcon=type_icon)
             self.nodz.scene().updateScene()
 
     def updateName(self):
@@ -291,6 +328,41 @@ class SlotDetails(QtWidgets.QWidget):
 
     def moveDown(self):
         self.reorder(1)
+
+
+class UserInputsDialog(QtWidgets.QDialog):
+
+    def __init__(self, title, message, data_types, parent=None):
+        super(UserInputsDialog, self).__init__(parent=parent)
+
+        self.setWindowTitle(title)
+
+        form = QtWidgets.QFormLayout(self)
+        form.addRow(QtWidgets.QLabel(message))
+
+        self.input_name = QtWidgets.QLineEdit(self)
+        form.addRow("Name:", self.input_name)
+
+        self.data_type = QtWidgets.QComboBox(self)
+
+        for type_name in data_types:
+            self.data_type.addItem(type_name)
+
+        form.addRow("Data Type:", self.data_type)
+
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok |QtWidgets.QDialogButtonBox.Cancel,
+                                               QtCore.Qt.Horizontal, self)
+        form.addRow(buttonBox)
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
+
+    def getInputs(self):
+
+        return self.input_name.text(), self.data_type.currentText()
+
+
+
+
 
 
 if __name__ == '__main__':

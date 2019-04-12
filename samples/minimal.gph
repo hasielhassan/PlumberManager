@@ -1,0 +1,154 @@
+{
+    "CONNECTIONS": [
+        [
+            "LookDev.shaders", 
+            "Light.shaders"
+        ], 
+        [
+            "Anim.cache", 
+            "Light.cache"
+        ]
+    ], 
+    "NODES": {
+        "Anim": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "environ", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "rigging", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "curves", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "constrains", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "cache", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                9674.700000000008, 
+                30346.249999999996
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Light": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "shaders", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "cache", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "pases", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                10019.999999999998, 
+                30127.85
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "LookDev": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "geometry", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "shaders", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                9687.65, 
+                29980.649999999998
+            ], 
+            "preset": "node_preset_1"
+        }
+    }
+}

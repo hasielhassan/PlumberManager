@@ -1,0 +1,50 @@
+[
+    {
+        "code": "alembic", 
+        "description": "", 
+        "path": "./resources/data_type_icons/alembic.png", 
+        "type": "Alembic"
+    }, 
+    {
+        "code": "exr", 
+        "description": "", 
+        "path": "./resources/data_type_icons/exr.png", 
+        "type": "EXR"
+    }, 
+    {
+        "code": "fbx", 
+        "description": "", 
+        "path": "./resources/data_type_icons/fbx.png", 
+        "type": "FBX"
+    }, 
+    {
+        "code": "json", 
+        "description": "", 
+        "path": "./resources/data_type_icons/json.png", 
+        "type": "JSON"
+    }, 
+    {
+        "code": "materialx", 
+        "description": "", 
+        "path": "./resources/data_type_icons/materialx.png", 
+        "type": "MaterialX"
+    }, 
+    {
+        "code": "openvdb", 
+        "description": "", 
+        "path": "./resources/data_type_icons/openvdb.png", 
+        "type": "OpenVDB"
+    }, 
+    {
+        "code": "usd", 
+        "description": "", 
+        "path": "./resources/data_type_icons/usd.png", 
+        "type": "USD"
+    }, 
+    {
+        "code": "xml", 
+        "description": "", 
+        "path": "./resources/data_type_icons/xml.png", 
+        "type": "XML"
+    }
+]

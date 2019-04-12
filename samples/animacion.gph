@@ -1,0 +1,1130 @@
+{
+    "CONNECTIONS": [
+        [
+            "Scratch.audio", 
+            "Animatic.audio"
+        ], 
+        [
+            "Guion.texto", 
+            "Scratch.guion"
+        ], 
+        [
+            "Animatic.Video", 
+            "Voces.animatic"
+        ], 
+        [
+            "Voces.dialog", 
+            "Animacion.dialog"
+        ], 
+        [
+            "SetDress.setdress", 
+            "Matte.setdress"
+        ], 
+        [
+            "Matte.layer", 
+            "Compo.layer"
+        ], 
+        [
+            "Layout.Camara", 
+            "Matte.camara"
+        ], 
+        [
+            "SetDress.setdress", 
+            "FX.setdress"
+        ], 
+        [
+            "Layout.Camara", 
+            "FX.camara"
+        ], 
+        [
+            "FX.imagenes", 
+            "Compo.imagenes"
+        ], 
+        [
+            "Lighting.pases", 
+            "Compo.pases"
+        ], 
+        [
+            "Animacion.curvas", 
+            "CharacterFX.curvas"
+        ], 
+        [
+            "CharacterFX.cache", 
+            "Lighting.fxcache"
+        ], 
+        [
+            "Rig.rig", 
+            "CharacterFX.rig"
+        ], 
+        [
+            "SetDress.setdress", 
+            "Lighting.setdress"
+        ], 
+        [
+            "Modelado.geometria", 
+            "Lighting.geometria"
+        ], 
+        [
+            "Animacion.cache", 
+            "Lighting.cache"
+        ], 
+        [
+            "Modelado.geometria", 
+            "Animacion.geometria"
+        ], 
+        [
+            "Rig.rig", 
+            "Animacion.rig"
+        ], 
+        [
+            "Modelado.geometria", 
+            "SetDress.Geometria"
+        ], 
+        [
+            "Layout.Camara", 
+            "SetDress.camara"
+        ], 
+        [
+            "Shading.Asignaciones", 
+            "Lighting.Asignaciones"
+        ], 
+        [
+            "Shading.Propiedades", 
+            "Lighting.Propiedades"
+        ], 
+        [
+            "Modelado.geometria", 
+            "Layout.Geometria"
+        ], 
+        [
+            "Texturas.imagenes", 
+            "Shading.imagenes"
+        ], 
+        [
+            "Modelado.geometria", 
+            "Shading.geometria"
+        ], 
+        [
+            "Modelado.uvs", 
+            "Texturas.uvs"
+        ], 
+        [
+            "Guion.texto", 
+            "Concepto.texto"
+        ], 
+        [
+            "Concepto.concepto", 
+            "Diseno.Concepto"
+        ], 
+        [
+            "Diseno.Imagenes", 
+            "Modelado.Imagenes"
+        ], 
+        [
+            "Modelado.geometria", 
+            "Rig.geometria"
+        ], 
+        [
+            "Rig.rig", 
+            "Layout.Rig"
+        ], 
+        [
+            "Editorial.Workprint", 
+            "Layout.Workprint"
+        ], 
+        [
+            "Editorial.Metadata", 
+            "Layout.Metadata"
+        ], 
+        [
+            "Animatic.Video", 
+            "Editorial.Video"
+        ], 
+        [
+            "Animatic.Video", 
+            "BreakDown.Video"
+        ], 
+        [
+            "StoryBoard.Imagenes", 
+            "Animatic.Imagenes"
+        ], 
+        [
+            "Guion.texto", 
+            "BreakDown.texto"
+        ], 
+        [
+            "Guion.texto", 
+            "StoryBoard.Texto"
+        ]
+    ], 
+    "NODES": {
+        "Animacion": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "dialog", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "geometria", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "rig", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "curvas", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "cache", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                13163.371057655098, 
+                30195.307598827672
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Animatic": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "audio", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Imagenes", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Video", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                10923.917587713502, 
+                30303.491194203918
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "BreakDown": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Video", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "texto", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                11222.29178192465, 
+                30046.041300126326
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "CharacterFX": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "curvas", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "rig", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "cache", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                13440.636660596436, 
+                30551.09323840318
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Compo": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "layer", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "imagenes", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "pases", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "render", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                14314.39293106716, 
+                30479.925902954685
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Concepto": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "texto", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "concepto", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                10671.035935162221, 
+                29875.14333476564
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Crowds": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "render", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "cache", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "procedural", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                13681.687498862531, 
+                30276.604520243425
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Diseno": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Concepto", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Imagenes", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                11306.8546077419, 
+                29870.26992521947
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Editorial": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Video", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Metadata", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Workprint", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                11476.140630140631, 
+                30536.762228310938
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "FX": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "setdress", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "camara", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "imagenes", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "cache", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                12958.502360531766, 
+                30740.425203399274
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Guion": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "texto", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                10238.81745944554, 
+                30066.905386149218
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Layout": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Geometria", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Rig", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Workprint", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Metadata", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Camara", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Inventario", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                12244.565946699708, 
+                30766.847411536746
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Lighting": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "fxcache", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "setdress", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "geometria", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "cache", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Asignaciones", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Propiedades", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "pases", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                13705.089086832655, 
+                29701.1398777666
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Matte": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "setdress", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "camara", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "layer", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                13545.067095080489, 
+                30938.09114461689
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Modelado": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Imagenes", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "geometria", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "uvs", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                11586.673804406228, 
+                30148.539560230463
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Rig": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "geometria", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "rig", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                11819.989938320043, 
+                30390.236706849195
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Scratch": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "guion", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "audio", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                10615.295688389224, 
+                30158.256364398916
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "SetDress": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "camara", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Geometria", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "setdress", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                12603.531674727725, 
+                30115.022848500463
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Shading": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "imagenes", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "geometria", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Propiedades", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Asignaciones", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                12372.31773052232, 
+                29818.518223707626
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "StoryBoard": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Texto", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Imagenes", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                10616.090545048377, 
+                30388.750046487858
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Texturas": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "uvs", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "imagenes", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                11879.017752625043, 
+                29781.730733639535
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Voces": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "animatic", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "dialog", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                12014.466581699455, 
+                29545.359768235907
+            ], 
+            "preset": "node_preset_1"
+        }
+    }
+}
