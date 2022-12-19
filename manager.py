@@ -1,3 +1,9 @@
+import sys
+sys.path.insert(0, 'D:\\Development\\HasielHassan\\Nodz')
+
+import Nodz
+print(Nodz)
+
 from Qt import QtCore, QtGui, QtWidgets
 import pygraphviz
 from Nodz import nodz_main
@@ -19,20 +25,27 @@ class PlumberManager(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
 
         self.current_dir = os.path.dirname(__file__)
-        os.chdir(self.current_dir)
+        #os.chdir(self.current_dir)
 
         self.setWindowTitle('PlumberManager')
-        self.setWindowIcon(QtGui.QIcon(os.path.join(self.current_dir, 'resources','icon_32.png')))
-
-        # Load data icons definition
-        icons = os.path.join(self.current_dir, 'data_icons.json')
-        self.loadDataTypes(icons)
+        self.setWindowIcon(
+            QtGui.QIcon(
+                os.path.join(
+                    self.current_dir, 
+                    'resources','icon_32.png')
+            )
+        )
 
         config = os.path.join(self.current_dir, 'custom_config.json')
 
         self.nodz = nodz_main.Nodz(None)
         self.nodz.loadConfig(filePath=config)
         self.nodz.initialize()
+
+        # Load data icons definition
+        # this updates nodz config so it needs to happen after nodz
+        icons = os.path.join(self.current_dir, 'data_icons.json')
+        self.loadDataTypes(icons)
 
         self.ui.scene_frame.layout().addWidget(self.nodz)
         self.ui.actionOpen.triggered.connect(self.openGraph)
@@ -41,6 +54,9 @@ class PlumberManager(QtWidgets.QMainWindow):
         self.ui.create_process_btn.clicked.connect(self.createProcess)
         self.ui.layout_graph_btn.clicked.connect(self.layoutGraph)
 
+
+        self.nodz.signal_NodeSelected.connect(self.on_nodeSelected)
+        """
         self.nodz.signal_NodeCreated.connect(self.on_nodeCreated)
         self.nodz.signal_NodeDeleted.connect(self.on_nodeDeleted)
         self.nodz.signal_NodeEdited.connect(self.on_nodeEdited)
@@ -63,6 +79,7 @@ class PlumberManager(QtWidgets.QMainWindow):
         self.nodz.signal_GraphEvaluated.connect(self.on_graphEvaluated)
 
         self.nodz.signal_KeyPressed.connect(self.on_keyPressed)
+        """
 
         self.lastSelectedNode = None
 
@@ -73,19 +90,19 @@ class PlumberManager(QtWidgets.QMainWindow):
     # Nodes
     @QtCore.Slot(str)
     def on_nodeCreated(self, nodeName):
-        print 'node created : ', nodeName
+        print('node created: {}'.format(nodeName))
 
     @QtCore.Slot(str)
     def on_nodeDeleted(self, nodeName):
-        print 'node deleted : ', nodeName
+        print('node deleted: {} '.format(nodeName))
 
     @QtCore.Slot(str, str)
     def on_nodeEdited(self, nodeName, newName):
-        print 'node edited : {0}, new name : {1}'.format(nodeName, newName)
+        print('node edited: {0}, new name : {1}'.format(nodeName, newName))
 
-    @QtCore.Slot(str)
+    #@QtCore.Slot(str)
     def on_nodeSelected(self, nodeNames):
-        print 'node selected : ', nodeNames
+        print('node selected: {}'.format(nodeNames))
 
         layout = self.ui.details_panel.layout()
         current_items = layout.count()
@@ -111,55 +128,55 @@ class PlumberManager(QtWidgets.QMainWindow):
 
     @QtCore.Slot(str, object)
     def on_nodeMoved(self, nodeName, nodePos):
-        print 'node {0} moved to {1}'.format(nodeName, nodePos)
+        print('node {0} moved to {1}'.format(nodeName, nodePos))
 
     @QtCore.Slot(str)
     def on_nodeDoubleClick(self, nodeName):
-        print 'double click on node : {0}'.format(nodeName)
+        print('double click on node : {0}'.format(nodeName))
 
     # Attrs
     @QtCore.Slot(str, int)
     def on_attrCreated(self, nodeName, attrId):
-        print 'attr created : {0} at index : {1}'.format(nodeName, attrId)
+        print('attr created : {0} at index : {1}'.format(nodeName, attrId))
 
     @QtCore.Slot(str, int)
     def on_attrDeleted(self, nodeName, attrId):
-        print 'attr Deleted : {0} at old index : {1}'.format(nodeName, attrId)
+        print('attr Deleted : {0} at old index : {1}'.format(nodeName, attrId))
 
     @QtCore.Slot(str, int, int)
     def on_attrEdited(self, nodeName, oldId, newId):
-        print 'attr Edited : {0} at old index : {1}, new index : {2}'.format(nodeName, oldId, newId)
+        print('attr Edited : {0} at old index : {1}, new index : {2}'.format(nodeName, oldId, newId))
 
     # Connections
     @QtCore.Slot(str, str, str, str)
     def on_connected(self, srcNodeName, srcPlugName, destNodeName, dstSocketName):
-        print 'connected src: "{0}" at "{1}" to dst: "{2}" at "{3}"'.format(srcNodeName, srcPlugName, destNodeName, dstSocketName)
+        print('connected src: "{0}" at "{1}" to dst: "{2}" at "{3}"'.format(srcNodeName, srcPlugName, destNodeName, dstSocketName))
 
     @QtCore.Slot(str, str, str, str)
     def on_disconnected(self, srcNodeName, srcPlugName, destNodeName, dstSocketName):
-        print 'disconnected src: "{0}" at "{1}" from dst: "{2}" at "{3}"'.format(srcNodeName, srcPlugName, destNodeName, dstSocketName)
+        print('disconnected src: "{0}" at "{1}" from dst: "{2}" at "{3}"'.format(srcNodeName, srcPlugName, destNodeName, dstSocketName))
 
     # Graph
     @QtCore.Slot()
     def on_graphSaved(self):
-        print 'graph saved !'
+        print('graph saved !')
 
-    @QtCore.Slot()
-    def on_graphLoaded(self):
-        print 'graph loaded !'
+    #@QtCore.Slot()
+    #def on_graphLoaded(self):
+    #    print('graph loaded !')
 
     @QtCore.Slot()
     def on_graphCleared(self):
-        print 'graph cleared !'
+        print('graph cleared !')
 
-    @QtCore.Slot()
-    def on_graphEvaluated(self):
-        print 'graph evaluated !'
+    #@QtCore.Slot()
+    #def on_graphEvaluated(self):
+    #    print('graph evaluated !')
 
     # Other
     @QtCore.Slot(object)
     def on_keyPressed(self, key):
-        print 'key pressed : ', key
+        print('key pressed : {}'.format(key))
 
     def loadDataTypes(self, configPath):
         """
@@ -173,23 +190,31 @@ class PlumberManager(QtWidgets.QMainWindow):
 
             path = data_type["path"]
             name = data_type['code']
-            dtype = type(str(data_type['type']), (object,), {})
+
+            if data_type['type'] in self.nodz.dataTypes:
+                dtype = self.nodz.dataTypes[data_type['type']]
+            else:
+                dtype = type(str(data_type['type']), (object,), {})
+                self.nodz.dataTypes[data_type['type']] = dtype
 
             if path.startswith('./'):
                 path = os.path.abspath(path)
                 self.data_types[name] = (dtype, path)
 
     def createProcess(self):
-        processName, ok = QtWidgets.QInputDialog.getText(self, 'New Process', 'Process Name:')
+        processName, ok = QtWidgets.QInputDialog.getText(
+            self, 'New Process', 'Process Name:'
+        )
         if ok and processName:
-            self.nodz.createNode(name=processName, preset='node_preset_1', position=None)
+            self.nodz.createNode(
+                name=processName, preset='node_preset_1', position=None
+            )
 
     def openGraph(self):
 
-        path, filter = QtWidgets.QFileDialog.getOpenFileName(self,
-                                                             'Open Graph file',
-                                                             os.path.expanduser('~'),
-                                                             ("Graph (*.gph)"))
+        path, filter = QtWidgets.QFileDialog.getOpenFileName(
+            self, 'Open Graph file', os.path.expanduser('~'), ("Graph (*.gph)")
+        )
 
         self.nodz.clearGraph()
         self.nodz.loadGraph(filePath=path)
@@ -197,7 +222,9 @@ class PlumberManager(QtWidgets.QMainWindow):
 
     def saveGraph(self):
 
-        path, filter = QtWidgets.QFileDialog.getSaveFileName(self, 'Open Graph file', os.path.expanduser('~'), ("Graph (*.gph)"))
+        path, filter = QtWidgets.QFileDialog.getSaveFileName(
+            self, 'Open Graph file', os.path.expanduser('~'), ("Graph (*.gph)")
+        )
 
         self.nodz.saveGraph(filePath=path)
 
@@ -264,26 +291,39 @@ class ProcessDetails(QtWidgets.QWidget):
 
     def createInput(self):
         message = "Type a name for the input an select its data type."
-        dialog = UserInputsDialog("New Input", message, self.data_types.keys(), parent=self)
+        dialog = UserInputsDialog(
+            "New Input", message, self.data_types.keys(), parent=self
+        )
         if dialog.exec_() == QtWidgets.QDialog.Accepted:
 
             input_name, data_name = dialog.getInputs()
             type_class, type_icon = self.data_types[data_name]
 
-            self.nodz.createAttribute(node=self.node, name=input_name, index=0, preset='attr_preset_1',
-                                      plug=False, socket=True, dataType=type_class, connectionIcon=type_icon)
+            self.nodz.createAttribute(
+                node=self.node, name=input_name, 
+                index=0, preset='attr_preset_1',
+                plug=False, socket=True, 
+                dataType=type_class, connectionIcon=type_icon
+            )
             self.nodz.scene().updateScene()
 
     def createOutput(self):
         message = "Type a name for the output an select its data type."
-        dialog = UserInputsDialog("New output", message, self.data_types.keys(), parent=self)
+        dialog = UserInputsDialog(
+            "New output", message, self.data_types.keys(), parent=self
+        )
         if dialog.exec_() == QtWidgets.QDialog.Accepted:
 
             output_name, data_name = dialog.getInputs()
             type_class, type_icon = self.data_types[data_name]
 
-            self.nodz.createAttribute(node=self.node, name=output_name, index=-1, preset='attr_preset_2',
-                                      plug=True, socket=False, dataType=type_class, connectionIcon=type_icon)
+            self.nodz.createAttribute(
+                node=self.node, name=output_name, 
+                index=-1, preset='attr_preset_2',
+                plug=True, socket=False, 
+                dataType=type_class, connectionIcon=type_icon
+            )
+            
             self.nodz.scene().updateScene()
 
     def updateName(self):
@@ -309,6 +349,10 @@ class SlotDetails(QtWidgets.QWidget):
         self.node_details = node_details
         self.layout = layout
         self.nodz = self.node_details.nodz
+
+        self.ui.data_type.addItems(
+            list(node_details.data_types.keys())
+        )
 
         self.ui.up_btn.clicked.connect(self.moveUp)
         self.ui.down_btn.clicked.connect(self.moveDown)
@@ -350,8 +394,10 @@ class UserInputsDialog(QtWidgets.QDialog):
 
         form.addRow("Data Type:", self.data_type)
 
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok |QtWidgets.QDialogButtonBox.Cancel,
-                                               QtCore.Qt.Horizontal, self)
+        buttonBox = QtWidgets.QDialogButtonBox(
+            QtWidgets.QDialogButtonBox.Ok |QtWidgets.QDialogButtonBox.Cancel,
+            QtCore.Qt.Horizontal, self
+        )
         form.addRow(buttonBox)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
@@ -359,11 +405,6 @@ class UserInputsDialog(QtWidgets.QDialog):
     def getInputs(self):
 
         return self.input_name.text(), self.data_type.currentText()
-
-
-
-
-
 
 if __name__ == '__main__':
     try:

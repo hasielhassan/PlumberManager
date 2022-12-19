@@ -1,0 +1,215 @@
+{
+    "CONNECTIONS": [
+        [
+            "Script.script", 
+            "Scratch Voices.Script"
+        ], 
+        [
+            "Scratch Voices.Scratch Voices", 
+            "Animatic.Scratch Voices"
+        ], 
+        [
+            "StoryBoard.Panels", 
+            "Animatic.Panels"
+        ], 
+        [
+            "Producion.Breakdown", 
+            "Concept.Breakdown"
+        ], 
+        [
+            "Script.script", 
+            "Producion.Script"
+        ], 
+        [
+            "Script.script", 
+            "Concept.Script"
+        ], 
+        [
+            "Script.script", 
+            "StoryBoard.Script"
+        ]
+    ], 
+    "NODES": {
+        "Animatic": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\jpg.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.JPG'>", 
+                    "name": "Panels", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\review.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.REVIEW'>", 
+                    "name": "Scratch Voices", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                4358.990997525809, 
+                1851.6014742251286
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Concept": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.XML'>", 
+                    "name": "Breakdown", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.XML'>", 
+                    "name": "Script", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                4360.635001568458, 
+                1398.1873118029303
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Producion": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.XML'>", 
+                    "name": "Script", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.XML'>", 
+                    "name": "Breakdown", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                3858.9447007938584, 
+                1038.0078205461107
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Scratch Voices": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.XML'>", 
+                    "name": "Script", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\review.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.REVIEW'>", 
+                    "name": "Scratch Voices", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                3807.9402153068336, 
+                1944.16078530097
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Script": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.XML'>", 
+                    "name": "script", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                3339.641224138369, 
+                1433.201100030544
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "StoryBoard": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.XML'>", 
+                    "name": "Script", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\jpg.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.JPG'>", 
+                    "name": "Panels", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                3897.534399615073, 
+                1633.4709280156032
+            ], 
+            "preset": "node_preset_1"
+        }
+    }
+}

@@ -46,5 +46,35 @@
         "description": "", 
         "path": "./resources/data_type_icons/xml.png", 
         "type": "XML"
+    },
+    {
+        "code": "mayabin", 
+        "description": "", 
+        "path": "./resources/data_type_icons/mayabin.png", 
+        "type": "MAYABIN"
+    },
+    {
+        "code": "mayaascii", 
+        "description": "", 
+        "path": "./resources/data_type_icons/mayaascii.png", 
+        "type": "MAYAASCII"
+    },
+    {
+        "code": "otio", 
+        "description": "", 
+        "path": "./resources/data_type_icons/otio.png", 
+        "type": "OTIO"
+    },
+    {
+        "code": "jpg", 
+        "description": "", 
+        "path": "./resources/data_type_icons/jpg.png", 
+        "type": "JPG"
+    },
+    {
+        "code": "review", 
+        "description": "", 
+        "path": "./resources/data_type_icons/review.png", 
+        "type": "REVIEW"
     }
 ]

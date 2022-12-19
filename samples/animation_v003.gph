@@ -1,0 +1,1273 @@
+{
+    "CONNECTIONS": [
+        [
+            "Grooming.preset", 
+            "Light.groom preset"
+        ], 
+        [
+            "FurSim.curves cache ", 
+            "Light.caches"
+        ], 
+        [
+            "Anim.cache", 
+            "FurSim.cache"
+        ], 
+        [
+            "Grooming.preset", 
+            "FurSim.preset"
+        ], 
+        [
+            "Modeling.geometry", 
+            "Grooming.geometry"
+        ], 
+        [
+            "VFX.volumes", 
+            "Light.volumes"
+        ], 
+        [
+            "VFX.image sequence", 
+            "compo.image sequence"
+        ], 
+        [
+            "EDIT.timing", 
+            "VFX.timing"
+        ], 
+        [
+            "LYT.cameras", 
+            "VFX.cameras"
+        ], 
+        [
+            "Modeling.geometry", 
+            "VFX.geometry"
+        ], 
+        [
+            "Story.script", 
+            "StoryBoard.sript"
+        ], 
+        [
+            "Story.script", 
+            "ProductionManagement.script"
+        ], 
+        [
+            "Story.script", 
+            "Concept.script"
+        ], 
+        [
+            "StoryBoard.panels", 
+            "Editorial.panels"
+        ], 
+        [
+            "Editorial.timeline", 
+            "ProductionManagement.timeline"
+        ], 
+        [
+            "Concept.concepts", 
+            "MattePainting.concepts"
+        ], 
+        [
+            "Concept.concepts", 
+            "StoryBoard.concepts"
+        ], 
+        [
+            "Concept.concepts", 
+            "ProductionDesign.concepts"
+        ], 
+        [
+            "ProductionDesign.design sheets", 
+            "Modelado.design sheets"
+        ], 
+        [
+            "Concept.concepts", 
+            "Modelado.concepts"
+        ], 
+        [
+            "Modelado.geometry", 
+            "Rigging.geometry"
+        ], 
+        [
+            "Modelado.geometry", 
+            "Textures.geometry"
+        ], 
+        [
+            "ProductionDesign.design sheets", 
+            "Textures.design sheets"
+        ], 
+        [
+            "Concept.concepts", 
+            "Textures.concept"
+        ], 
+        [
+            "Textures.textures", 
+            "Shading.textures"
+        ], 
+        [
+            "Modelado.geometry", 
+            "Shading.geometry"
+        ], 
+        [
+            "Rigging.rig", 
+            "Layout.rig"
+        ], 
+        [
+            "Editorial.timeline", 
+            "Layout.timeline"
+        ], 
+        [
+            "Modelado.geometry", 
+            "Layout.geometry"
+        ], 
+        [
+            "Layout.cameras", 
+            "Animation.camera"
+        ], 
+        [
+            "Rigging.rig", 
+            "Animation.rig"
+        ], 
+        [
+            "Layout.main positions", 
+            "Animation.main positions"
+        ], 
+        [
+            "Modelado.geometry", 
+            "Lighting.geometry"
+        ], 
+        [
+            "Shading.shaders", 
+            "Lighting.shaders"
+        ], 
+        [
+            "Animation.caches", 
+            "Lighting.caches"
+        ], 
+        [
+            "Shading.assignments", 
+            "Lighting.assignments"
+        ], 
+        [
+            "Lighting.lighting setup", 
+            "Render.lighting setup"
+        ], 
+        [
+            "Render.image sequences", 
+            "Compositing.image sequences"
+        ], 
+        [
+            "Animation.review", 
+            "Editorial 2.review"
+        ], 
+        [
+            "Editorial.timeline", 
+            "Editorial 2.timeline"
+        ], 
+        [
+            "Compositing.image sequence", 
+            "Editorial 3.image sequences"
+        ], 
+        [
+            "Editorial.timeline", 
+            "Editorial 3.timeline"
+        ], 
+        [
+            "MattePainting.matte", 
+            "Compositing.matte"
+        ]
+    ], 
+    "NODES": {
+        "Anim": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.Alembic'>", 
+                    "name": "cache", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                4051.9658431964117, 
+                1926.1278637070654
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Animation": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\mayaascii.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.MAYAASCII'>", 
+                    "name": "camera", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.Alembic'>", 
+                    "name": "caches", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\mayaascii.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.MAYAASCII'>", 
+                    "name": "rig", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.XML'>", 
+                    "name": "curves", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.XML'>", 
+                    "name": "main positions", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\review.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.REVIEW'>", 
+                    "name": "review", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                4050.5995679377183, 
+                2008.2518077867658
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Compositing": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\exr.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.EXR'>", 
+                    "name": "image sequences", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\exr.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.EXR'>", 
+                    "name": "image sequence", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\exr.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.EXR'>", 
+                    "name": "matte", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                5912.8480961784535, 
+                1017.8762325471323
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Concept": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.XML'>", 
+                    "name": "script", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\jpg.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.JPG'>", 
+                    "name": "concepts", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                1057.3600000000001, 
+                1280.0
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "EDIT": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\otio.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.OTIO'>", 
+                    "name": "timing", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                2941.966171218938, 
+                2142.8535062163887
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Editorial": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\otio.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.OTIO'>", 
+                    "name": "timeline", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\review.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.REVIEW'>", 
+                    "name": "review", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\jpg.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.JPG'>", 
+                    "name": "panels", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                2946.0408817516845, 
+                1973.29531060522
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Editorial 2": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\otio.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.OTIO'>", 
+                    "name": "timeline", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\review.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.REVIEW'>", 
+                    "name": "review", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                4866.8, 
+                1585.0
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Editorial 3": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\exr.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.EXR'>", 
+                    "name": "image sequences", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\otio.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.OTIO'>", 
+                    "name": "timeline", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\review.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.REVIEW'>", 
+                    "name": "delivery", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                6442.8, 
+                1660.0
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "FurSim": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\mayaascii.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.MAYAASCII'>", 
+                    "name": "preset", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.Alembic'>", 
+                    "name": "cache", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.Alembic'>", 
+                    "name": "curves cache ", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                4393.574277329811, 
+                1484.8836362847535
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Grooming": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.Alembic'>", 
+                    "name": "geometry", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\mayaascii.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.MAYAASCII'>", 
+                    "name": "preset", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                3921.015943445274, 
+                1464.9564776269726
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "LYT": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\mayaascii.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.MAYAASCII'>", 
+                    "name": "cameras", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                3444.5682552012736, 
+                1604.3932119136107
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Layout": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\otio.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.OTIO'>", 
+                    "name": "timeline", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\mayaascii.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.MAYAASCII'>", 
+                    "name": "rig", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.Alembic'>", 
+                    "name": "geometry", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\mayaascii.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.MAYAASCII'>", 
+                    "name": "cameras", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.XML'>", 
+                    "name": "main positions", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                3452.840561182033, 
+                1670.5578356674362
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Light": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\mayaascii.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.MAYAASCII'>", 
+                    "name": "groom preset", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.Alembic'>", 
+                    "name": "caches", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\openvdb.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.OpenVDB'>", 
+                    "name": "volumes", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                4855.102039291975, 
+                1150.8736768370438
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Lighting": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.Alembic'>", 
+                    "name": "geometry", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.XML'>", 
+                    "name": "assignments", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.Alembic'>", 
+                    "name": "caches", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.XML'>", 
+                    "name": "shaders", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\mayaascii.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.MAYAASCII'>", 
+                    "name": "lighting setup", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                4846.3390781638855, 
+                1308.748697369348
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "MattePainting": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\jpg.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.JPG'>", 
+                    "name": "concepts", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\exr.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.EXR'>", 
+                    "name": "matte", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                2361.88, 
+                590.0
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Modelado": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\jpg.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.JPG'>", 
+                    "name": "design sheets", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\jpg.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.JPG'>", 
+                    "name": "concepts", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.Alembic'>", 
+                    "name": "geometry", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                2361.88, 
+                1240.0
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Modeling": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.Alembic'>", 
+                    "name": "geometry", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                2365.5588733578406, 
+                1396.8482960716233
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "ProductionDesign": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\jpg.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.JPG'>", 
+                    "name": "concepts", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\jpg.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.JPG'>", 
+                    "name": "design sheets", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                1674.52, 
+                1050.0
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "ProductionManagement": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.XML'>", 
+                    "name": "script", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\otio.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.OTIO'>", 
+                    "name": "timeline", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                3614.4, 
+                2310.0
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Render": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\mayaascii.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.MAYAASCII'>", 
+                    "name": "lighting setup", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\exr.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.EXR'>", 
+                    "name": "image sequences", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                5351.6, 
+                1240.0
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Rigging": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.Alembic'>", 
+                    "name": "geometry", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.XML'>", 
+                    "name": "rig data", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\mayaascii.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.MAYAASCII'>", 
+                    "name": "rig", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                2914.04, 
+                1470.0
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Shading": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.Alembic'>", 
+                    "name": "geometry", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\exr.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.EXR'>", 
+                    "name": "textures", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.XML'>", 
+                    "name": "shaders", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.XML'>", 
+                    "name": "assignments", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\mayaascii.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.MAYAASCII'>", 
+                    "name": "shaded geometry", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                3614.4, 
+                1010.0
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Story": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.XML'>", 
+                    "name": "script", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                622.188, 
+                1615.0
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "StoryBoard": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\xml.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.XML'>", 
+                    "name": "sript", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\jpg.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.JPG'>", 
+                    "name": "panels", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\jpg.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.JPG'>", 
+                    "name": "concepts", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                1674.52, 
+                1615.0
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "Textures": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.Alembic'>", 
+                    "name": "geometry", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\jpg.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.JPG'>", 
+                    "name": "design sheets", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\jpg.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.JPG'>", 
+                    "name": "concept", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\exr.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class 'Nodz.nodz_main.EXR'>", 
+                    "name": "textures", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                2914.04, 
+                820.0
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "VFX": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\otio.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.OTIO'>", 
+                    "name": "timing", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\mayaascii.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.MAYAASCII'>", 
+                    "name": "cameras", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.Alembic'>", 
+                    "name": "geometry", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\exr.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.EXR'>", 
+                    "name": "image sequence", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.Alembic'>", 
+                    "name": "caches", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\openvdb.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.OpenVDB'>", 
+                    "name": "volumes", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                4356.025816944652, 
+                681.4526249936873
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "compo": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\exr.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.EXR'>", 
+                    "name": "image sequence", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }
+            ], 
+            "position": [
+                5913.718643065063, 
+                922.6787090727526
+            ], 
+            "preset": "node_preset_1"
+        }
+    }
+}

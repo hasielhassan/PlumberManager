@@ -1,86 +1,106 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'manager_form.ui'
-#
-# Created: Sat Sep 15 23:46:46 2018
-#      by: pyside-uic 0.2.15 running on PySide 1.2.4
-#
-# WARNING! All changes made in this file will be lost!
+################################################################################
+## Form generated from reading UI file 'manager_form.ui'
+##
+## Created by: Qt User Interface Compiler version 5.15.2
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
 
-from PySide import QtCore, QtGui
+from Qt.QtCore import *
+from Qt.QtGui import *
+from Qt.QtWidgets import *
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
+        if not MainWindow.objectName():
+            MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(1049, 753)
-        self.scene_frame = QtGui.QWidget(MainWindow)
-        self.scene_frame.setObjectName("scene_frame")
-        self.verticalLayout = QtGui.QVBoxLayout(self.scene_frame)
-        self.verticalLayout.setObjectName("verticalLayout")
+        self.actionOpen = QAction(MainWindow)
+        self.actionOpen.setObjectName(u"actionOpen")
+        self.actionSave = QAction(MainWindow)
+        self.actionSave.setObjectName(u"actionSave")
+        self.scene_frame = QWidget(MainWindow)
+        self.scene_frame.setObjectName(u"scene_frame")
+        self.verticalLayout = QVBoxLayout(self.scene_frame)
+        self.verticalLayout.setObjectName(u"verticalLayout")
         MainWindow.setCentralWidget(self.scene_frame)
-        self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1049, 21))
-        self.menubar.setObjectName("menubar")
-        self.menuFile = QtGui.QMenu(self.menubar)
-        self.menuFile.setObjectName("menuFile")
+        self.menubar = QMenuBar(MainWindow)
+        self.menubar.setObjectName(u"menubar")
+        self.menubar.setGeometry(QRect(0, 0, 1049, 21))
+        self.menuFile = QMenu(self.menubar)
+        self.menuFile.setObjectName(u"menuFile")
         MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtGui.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
+        self.statusbar = QStatusBar(MainWindow)
+        self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.dockWidget = QtGui.QDockWidget(MainWindow)
-        self.dockWidget.setMinimumSize(QtCore.QSize(300, 111))
-        self.dockWidget.setObjectName("dockWidget")
-        self.manager_panel = QtGui.QWidget()
-        self.manager_panel.setObjectName("manager_panel")
-        self.verticalLayout_2 = QtGui.QVBoxLayout(self.manager_panel)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.scrollArea = QtGui.QScrollArea(self.manager_panel)
+        self.dockWidget = QDockWidget(MainWindow)
+        self.dockWidget.setObjectName(u"dockWidget")
+        self.dockWidget.setMinimumSize(QSize(300, 111))
+        self.manager_panel = QWidget()
+        self.manager_panel.setObjectName(u"manager_panel")
+        self.verticalLayout_2 = QVBoxLayout(self.manager_panel)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.scrollArea = QScrollArea(self.manager_panel)
+        self.scrollArea.setObjectName(u"scrollArea")
         self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setObjectName("scrollArea")
-        self.manager_panel_scroll = QtGui.QWidget()
-        self.manager_panel_scroll.setGeometry(QtCore.QRect(0, 0, 280, 670))
-        self.manager_panel_scroll.setObjectName("manager_panel_scroll")
-        self.verticalLayout_3 = QtGui.QVBoxLayout(self.manager_panel_scroll)
-        self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.layout_graph_btn = QtGui.QPushButton(self.manager_panel_scroll)
-        self.layout_graph_btn.setObjectName("layout_graph_btn")
+        self.manager_panel_scroll = QWidget()
+        self.manager_panel_scroll.setObjectName(u"manager_panel_scroll")
+        self.manager_panel_scroll.setGeometry(QRect(0, 0, 280, 670))
+        self.verticalLayout_3 = QVBoxLayout(self.manager_panel_scroll)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.layout_graph_btn = QPushButton(self.manager_panel_scroll)
+        self.layout_graph_btn.setObjectName(u"layout_graph_btn")
+
         self.verticalLayout_3.addWidget(self.layout_graph_btn)
-        self.create_process_btn = QtGui.QPushButton(self.manager_panel_scroll)
-        self.create_process_btn.setObjectName("create_process_btn")
+
+        self.create_process_btn = QPushButton(self.manager_panel_scroll)
+        self.create_process_btn.setObjectName(u"create_process_btn")
+
         self.verticalLayout_3.addWidget(self.create_process_btn)
-        self.line = QtGui.QFrame(self.manager_panel_scroll)
-        self.line.setFrameShape(QtGui.QFrame.HLine)
-        self.line.setFrameShadow(QtGui.QFrame.Sunken)
-        self.line.setObjectName("line")
+
+        self.line = QFrame(self.manager_panel_scroll)
+        self.line.setObjectName(u"line")
+        self.line.setFrameShape(QFrame.HLine)
+        self.line.setFrameShadow(QFrame.Sunken)
+
         self.verticalLayout_3.addWidget(self.line)
-        self.details_panel = QtGui.QWidget(self.manager_panel_scroll)
-        self.details_panel.setObjectName("details_panel")
-        self.verticalLayout_5 = QtGui.QVBoxLayout(self.details_panel)
-        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_5.setObjectName("verticalLayout_5")
+
+        self.details_panel = QWidget(self.manager_panel_scroll)
+        self.details_panel.setObjectName(u"details_panel")
+        self.verticalLayout_5 = QVBoxLayout(self.details_panel)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+
         self.verticalLayout_3.addWidget(self.details_panel)
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.verticalLayout_3.addItem(spacerItem)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_3.addItem(self.verticalSpacer)
+
         self.scrollArea.setWidget(self.manager_panel_scroll)
+
         self.verticalLayout_2.addWidget(self.scrollArea)
+
         self.dockWidget.setWidget(self.manager_panel)
-        MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(2), self.dockWidget)
-        self.actionOpen = QtGui.QAction(MainWindow)
-        self.actionOpen.setObjectName("actionOpen")
-        self.actionSave = QtGui.QAction(MainWindow)
-        self.actionSave.setObjectName("actionSave")
+        MainWindow.addDockWidget(Qt.RightDockWidgetArea, self.dockWidget)
+
+        self.menubar.addAction(self.menuFile.menuAction())
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
-        self.menubar.addAction(self.menuFile.menuAction())
 
         self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+        QMetaObject.connectSlotsByName(MainWindow)
+    # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
-        self.layout_graph_btn.setText(QtGui.QApplication.translate("MainWindow", "Layout Graph", None, QtGui.QApplication.UnicodeUTF8))
-        self.create_process_btn.setText(QtGui.QApplication.translate("MainWindow", "Create Process", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionOpen.setText(QtGui.QApplication.translate("MainWindow", "Open", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSave.setText(QtGui.QApplication.translate("MainWindow", "Save", None, QtGui.QApplication.UnicodeUTF8))
+        MainWindow.setWindowTitle(u"MainWindow")
+        self.actionOpen.setText(u"Open")
+        self.actionSave.setText(u"Save")
+        self.menuFile.setTitle(u"File")
+        self.layout_graph_btn.setText(u"Layout Graph")
+        self.create_process_btn.setText(u"Create Process")
+    # retranslateUi
 

@@ -1,0 +1,155 @@
+{
+    "CONNECTIONS": [
+        [
+            "nodeB.Battr5", 
+            "nodeA.Aattr4"
+        ], 
+        [
+            "nodeB.Battr2", 
+            "nodeA.Aattr3"
+        ]
+    ], 
+    "NODES": {
+        "nodeA": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Aattr1", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'int'>", 
+                    "name": "Aattr2", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'int'>", 
+                    "name": "Aattr3", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Aattr4", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'int'>", 
+                    "name": "Aattr5", 
+                    "plug": true, 
+                    "plugMaxConnections": 1, 
+                    "preset": "attr_preset_3", 
+                    "socket": true, 
+                    "socketMaxConnections": -1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'int'>", 
+                    "name": "Aattr6", 
+                    "plug": true, 
+                    "plugMaxConnections": 1, 
+                    "preset": "attr_preset_3", 
+                    "socket": true, 
+                    "socketMaxConnections": -1
+                }
+            ], 
+            "position": [
+                899.0, 
+                986.5
+            ], 
+            "preset": "node_preset_1"
+        }, 
+        "nodeB": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'str'>", 
+                    "name": "Battr1", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'int'>", 
+                    "name": "Battr2", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'int'>", 
+                    "name": "Battr3", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_2", 
+                    "socket": false, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": null, 
+                    "connectionLabel": null, 
+                    "dataType": "<type 'int'>", 
+                    "name": "Battr4", 
+                    "plug": true, 
+                    "plugMaxConnections": 1, 
+                    "preset": "attr_preset_3", 
+                    "socket": false, 
+                    "socketMaxConnections": -1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\Nodz\\Nodz\\pixmap.png", 
+                    "connectionLabel": "Sample", 
+                    "dataType": "<type 'int'>", 
+                    "name": "Battr5", 
+                    "plug": true, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_3", 
+                    "socket": false, 
+                    "socketMaxConnections": -1
+                }
+            ], 
+            "position": [
+                899.0, 
+                986.5
+            ], 
+            "preset": "node_preset_1"
+        }
+    }
+}
