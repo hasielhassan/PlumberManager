@@ -308,6 +308,8 @@ class PlumberManager(QtWidgets.QMainWindow):
 
         self.nodz.scene().updateScene()
 
+        self.nodz._focus()
+
 class ProcessDetails(QtWidgets.QWidget):
 
     def __init__(self, node, nodz, data_types):
