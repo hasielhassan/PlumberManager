@@ -40,6 +40,9 @@ class PlumberManager(QtWidgets.QMainWindow):
 
         self.nodz = nodz_main.Nodz(None)
         self.nodz.loadConfig(filePath=config)
+        self.nodz.config["icons_folder"] = os.path.join(
+            self.current_dir, "resources", "data_type_icons"
+        )
         self.nodz.initialize()
 
         # Load data icons definition
@@ -423,7 +426,8 @@ class SlotDetails(QtWidgets.QWidget):
             if d[0] == self.slot.dataType
         ]
 
-        self.ui.data_type.setCurrentText(current_data_type[0])
+        if current_data_type:
+            self.ui.data_type.setCurrentText(current_data_type[0])
 
         self.ui.down_btn.setText("")
         self.ui.up_btn.setText("")

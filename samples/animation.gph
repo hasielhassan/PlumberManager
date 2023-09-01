@@ -1,0 +1,934 @@
+{
+    "CONNECTIONS": [
+        [
+            "Story.script",
+            "StoryBoard.sript"
+        ],
+        [
+            "Story.script",
+            "ProductionManagement.script"
+        ],
+        [
+            "Story.script",
+            "Concept.script"
+        ],
+        [
+            "StoryBoard.panels",
+            "Editorial.panels"
+        ],
+        [
+            "Editorial.timeline",
+            "ProductionManagement.timeline"
+        ],
+        [
+            "Concept.concepts",
+            "MattePainting.concepts"
+        ],
+        [
+            "Concept.concepts",
+            "StoryBoard.concepts"
+        ],
+        [
+            "Concept.concepts",
+            "ProductionDesign.concepts"
+        ],
+        [
+            "ProductionDesign.design sheets",
+            "Modelado.design sheets"
+        ],
+        [
+            "Concept.concepts",
+            "Modelado.concepts"
+        ],
+        [
+            "Modelado.geometry",
+            "Rigging.geometry"
+        ],
+        [
+            "Modelado.geometry",
+            "Textures.geometry"
+        ],
+        [
+            "ProductionDesign.design sheets",
+            "Textures.design sheets"
+        ],
+        [
+            "Concept.concepts",
+            "Textures.concept"
+        ],
+        [
+            "Textures.textures",
+            "Shading.textures"
+        ],
+        [
+            "Modelado.geometry",
+            "Shading.geometry"
+        ],
+        [
+            "Rigging.rig",
+            "Layout.rig"
+        ],
+        [
+            "Editorial.timeline",
+            "Layout.timeline"
+        ],
+        [
+            "Modelado.geometry",
+            "Layout.geometry"
+        ],
+        [
+            "Layout.cameras",
+            "Animation.camera"
+        ],
+        [
+            "Rigging.rig",
+            "Animation.rig"
+        ],
+        [
+            "Layout.main positions",
+            "Animation.main positions"
+        ],
+        [
+            "Modelado.geometry",
+            "Lighting.geometry"
+        ],
+        [
+            "Shading.shaders",
+            "Lighting.shaders"
+        ],
+        [
+            "Animation.caches",
+            "Lighting.caches"
+        ],
+        [
+            "Shading.assignments",
+            "Lighting.assignments"
+        ],
+        [
+            "Lighting.lighting setup",
+            "Render.lighting setup"
+        ],
+        [
+            "Render.image sequences",
+            "Compositing.image sequences"
+        ],
+        [
+            "Animation.review",
+            "Editorial 2.review"
+        ],
+        [
+            "Editorial.timeline",
+            "Editorial 2.timeline"
+        ],
+        [
+            "Compositing.image sequence",
+            "Editorial 3.image sequences"
+        ],
+        [
+            "Editorial.timeline",
+            "Editorial 3.timeline"
+        ],
+        [
+            "MattePainting.matte",
+            "Compositing.matte"
+        ]
+    ],
+    "NODES": {
+        "Animation": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.MAYAASCII'>",
+                    "name": "camera",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.Alembic'>",
+                    "name": "caches",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.MAYAASCII'>",
+                    "name": "rig",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.XML'>",
+                    "name": "curves",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.XML'>",
+                    "name": "main positions",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./review.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.REVIEW'>",
+                    "name": "review",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                4338.12,
+                1565.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "Compositing": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.EXR'>",
+                    "name": "image sequences",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.EXR'>",
+                    "name": "image sequence",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.EXR'>",
+                    "name": "matte",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                5875.2,
+                1240.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "Concept": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.XML'>",
+                    "name": "script",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.JPG'>",
+                    "name": "concepts",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                1057.3600000000001,
+                1280.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "Editorial": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./otio.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.OTIO'>",
+                    "name": "timeline",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./review.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.REVIEW'>",
+                    "name": "review",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.JPG'>",
+                    "name": "panels",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                2914.04,
+                1930.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "Editorial 2": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./otio.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.OTIO'>",
+                    "name": "timeline",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./review.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.REVIEW'>",
+                    "name": "review",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                4866.8,
+                1660.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "Editorial 3": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.EXR'>",
+                    "name": "image sequences",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./otio.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.OTIO'>",
+                    "name": "timeline",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./review.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.REVIEW'>",
+                    "name": "delivery",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                6442.8,
+                1660.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "Layout": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./otio.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.OTIO'>",
+                    "name": "timeline",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.MAYAASCII'>",
+                    "name": "rig",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.Alembic'>",
+                    "name": "geometry",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.MAYAASCII'>",
+                    "name": "cameras",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.XML'>",
+                    "name": "main positions",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                3614.4,
+                1660.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "Lighting": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.Alembic'>",
+                    "name": "geometry",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.XML'>",
+                    "name": "assignments",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.Alembic'>",
+                    "name": "caches",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.XML'>",
+                    "name": "shaders",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.MAYAASCII'>",
+                    "name": "lighting setup",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                4866.8,
+                1240.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "MattePainting": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.JPG'>",
+                    "name": "concepts",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.EXR'>",
+                    "name": "matte",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                2361.88,
+                590.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "Modelado": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.JPG'>",
+                    "name": "design sheets",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.JPG'>",
+                    "name": "concepts",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.Alembic'>",
+                    "name": "geometry",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                2361.88,
+                1240.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "ProductionDesign": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.JPG'>",
+                    "name": "concepts",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.JPG'>",
+                    "name": "design sheets",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                1674.52,
+                1050.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "ProductionManagement": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.XML'>",
+                    "name": "script",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./otio.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.OTIO'>",
+                    "name": "timeline",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                3614.4,
+                2310.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "Render": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.MAYAASCII'>",
+                    "name": "lighting setup",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.EXR'>",
+                    "name": "image sequences",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                5351.6,
+                1240.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "Rigging": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.Alembic'>",
+                    "name": "geometry",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.XML'>",
+                    "name": "rig data",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.MAYAASCII'>",
+                    "name": "rig",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                2864.9884308681467,
+                1534.8746559485799
+            ],
+            "preset": "node_preset_1"
+        },
+        "Shading": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.Alembic'>",
+                    "name": "geometry",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.EXR'>",
+                    "name": "textures",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.XML'>",
+                    "name": "shaders",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.XML'>",
+                    "name": "assignments",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.MAYAASCII'>",
+                    "name": "shaded geometry",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                3614.4,
+                1010.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "Story": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.XML'>",
+                    "name": "script",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                622.188,
+                1615.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "StoryBoard": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.XML'>",
+                    "name": "sript",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.JPG'>",
+                    "name": "panels",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.JPG'>",
+                    "name": "concepts",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                1674.52,
+                1615.0
+            ],
+            "preset": "node_preset_1"
+        },
+        "Textures": {
+            "alternate": true,
+            "attributes": [
+                {
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.Alembic'>",
+                    "name": "geometry",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.JPG'>",
+                    "name": "design sheets",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.JPG'>",
+                    "name": "concept",
+                    "plug": false,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_1",
+                    "socket": true,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "dataType": "<class '__main__.EXR'>",
+                    "name": "textures",
+                    "plug": true,
+                    "plugMaxConnections": -1,
+                    "preset": "attr_preset_2",
+                    "socket": false,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "position": [
+                2914.04,
+                820.0
+            ],
+            "preset": "node_preset_1"
+        }
+    }
+}
