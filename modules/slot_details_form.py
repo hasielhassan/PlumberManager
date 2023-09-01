@@ -52,8 +52,8 @@ class Ui_Form(object):
     # setupUi
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle("Form")
-        self.up_btn.setText("\u25b2")
-        self.down_btn.setText("\u25bc")
+        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
+        self.up_btn.setText(QCoreApplication.translate("Form", u"\u25b2", None))
+        self.down_btn.setText(QCoreApplication.translate("Form", u"\u25bc", None))
     # retranslateUi
 

@@ -15,6 +15,8 @@ from modules.slot_details_form import Ui_Form as slot_details_form
 
 class PlumberManager(QtWidgets.QMainWindow):
 
+    version = "0.0.1-0"
+
     def __init__(self, parent=None):
 
         super(PlumberManager, self).__init__(parent)
@@ -46,6 +48,7 @@ class PlumberManager(QtWidgets.QMainWindow):
         self.loadDataTypes(icons)
 
         self.ui.scene_frame.layout().addWidget(self.nodz)
+        self.ui.actionAbout.triggered.connect(self.about)
         self.ui.actionOpen.triggered.connect(self.openGraph)
         self.ui.actionSave.triggered.connect(self.saveGraph)
 
@@ -241,6 +244,21 @@ class PlumberManager(QtWidgets.QMainWindow):
             self.nodz.createNode(
                 name=processName, preset='node_preset_1', position=None
             )
+
+    def about(self):
+
+        QtWidgets.QMessageBox.information(
+            self, "About Plumber Manager",
+            (
+                "Plumber Manager v{}\n\n"
+                "A helper tool to design CG Pipeline "
+                "interactive diagrams and data flow documentation\n\n"
+                "Author: Hasiel Alvarez\n"
+                "Repo: https://github.com/hasielhassan/PlumberManager\n"
+                "License: GNU General Public License v3.0\n\n"
+                "Copyright (c) 2019-2023 Hasiel Alvarez\n"
+            ).format(self.version)
+        )
 
     def openGraph(self):
 

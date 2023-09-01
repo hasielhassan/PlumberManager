@@ -22,6 +22,8 @@ class Ui_MainWindow(object):
         self.actionOpen.setObjectName(u"actionOpen")
         self.actionSave = QAction(MainWindow)
         self.actionSave.setObjectName(u"actionSave")
+        self.actionAbout = QAction(MainWindow)
+        self.actionAbout.setObjectName(u"actionAbout")
         self.scene_frame = QWidget(MainWindow)
         self.scene_frame.setObjectName(u"scene_frame")
         self.verticalLayout = QVBoxLayout(self.scene_frame)
@@ -32,6 +34,8 @@ class Ui_MainWindow(object):
         self.menubar.setGeometry(QRect(0, 0, 1049, 21))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
+        self.menuHelp = QMenu(self.menubar)
+        self.menuHelp.setObjectName(u"menuHelp")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -87,8 +91,10 @@ class Ui_MainWindow(object):
         MainWindow.addDockWidget(Qt.RightDockWidgetArea, self.dockWidget)
 
         self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuHelp.menuAction())
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
+        self.menuHelp.addAction(self.actionAbout)
 
         self.retranslateUi(MainWindow)
 
@@ -96,11 +102,13 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(u"MainWindow")
-        self.actionOpen.setText(u"Open")
-        self.actionSave.setText(u"Save")
-        self.menuFile.setTitle(u"File")
-        self.layout_graph_btn.setText(u"Layout Graph")
-        self.create_process_btn.setText(u"Create Process")
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        self.actionOpen.setText(QCoreApplication.translate("MainWindow", u"Open", None))
+        self.actionSave.setText(QCoreApplication.translate("MainWindow", u"Save", None))
+        self.actionAbout.setText(QCoreApplication.translate("MainWindow", u"About", None))
+        self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
+        self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
+        self.layout_graph_btn.setText(QCoreApplication.translate("MainWindow", u"Layout Graph", None))
+        self.create_process_btn.setText(QCoreApplication.translate("MainWindow", u"Create Process", None))
     # retranslateUi
 

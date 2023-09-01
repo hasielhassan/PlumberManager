@@ -96,13 +96,13 @@ class Ui_Form(object):
     # setupUi
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(u"Form")
-        self.group_box.setTitle(u"GroupBox")
-        self.label.setText(u"Name")
-        self.label_2.setText(u"Coordinates")
-        self.create_input_btn.setText(u"Create Input")
-        self.create_output_btn.setText(u"Create Output")
-        self.inputs_area.setTitle(u"Inputs")
-        self.outputs_area.setTitle(u"Outputs")
+        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
+        self.group_box.setTitle(QCoreApplication.translate("Form", u"GroupBox", None))
+        self.label.setText(QCoreApplication.translate("Form", u"Name", None))
+        self.label_2.setText(QCoreApplication.translate("Form", u"Coordinates", None))
+        self.create_input_btn.setText(QCoreApplication.translate("Form", u"Create Input", None))
+        self.create_output_btn.setText(QCoreApplication.translate("Form", u"Create Output", None))
+        self.inputs_area.setTitle(QCoreApplication.translate("Form", u"Inputs", None))
+        self.outputs_area.setTitle(QCoreApplication.translate("Form", u"Outputs", None))
     # retranslateUi
 
