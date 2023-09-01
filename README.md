@@ -1,9 +1,12 @@
-![Screenshot](screenshot.png)
+![GitHub top language](https://img.shields.io/github/languages/top/hasielhassan/PlumberManager)
+![GitHub last commit](https://img.shields.io/github/last-commit/hasielhassan/PlumberManager)
+![License](https://img.shields.io/github/license/hasielhassan/PlumberManager)
 
 # PlumberManager
 A helper tool to design CG Pipeline interactive diagramas and data flow documentation
 
-###
+![Screenshot](screenshot.png)
+
 ## Requirements:
 - Python
 - PyQt5 or PySide2
