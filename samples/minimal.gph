@@ -1,33 +1,22 @@
 {
     "CONNECTIONS": [
         [
-            "LookDev.shaders", 
-            "Light.shaders"
+            "Animation.cache", 
+            "Lighting.cache"
         ], 
         [
-            "Anim.cache", 
-            "Light.cache"
+            "LookDev.surfacing", 
+            "Lighting.surfacing"
         ]
     ], 
     "NODES": {
-        "Anim": {
+        "Animation": {
             "alternate": true, 
             "attributes": [
                 {
-                    "connectionIcon": null, 
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\rumba.png", 
                     "connectionLabel": null, 
-                    "dataType": "<type 'str'>", 
-                    "name": "environ", 
-                    "plug": false, 
-                    "plugMaxConnections": -1, 
-                    "preset": "attr_preset_1", 
-                    "socket": true, 
-                    "socketMaxConnections": 1
-                }, 
-                {
-                    "connectionIcon": null, 
-                    "connectionLabel": null, 
-                    "dataType": "<type 'str'>", 
+                    "dataType": "<class '__main__.RUMBA'>", 
                     "name": "rigging", 
                     "plug": false, 
                     "plugMaxConnections": -1, 
@@ -36,9 +25,20 @@
                     "socketMaxConnections": 1
                 }, 
                 {
-                    "connectionIcon": null, 
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\usd.png", 
                     "connectionLabel": null, 
-                    "dataType": "<type 'str'>", 
+                    "dataType": "<class '__main__.USD'>", 
+                    "name": "environ", 
+                    "plug": false, 
+                    "plugMaxConnections": -1, 
+                    "preset": "attr_preset_1", 
+                    "socket": true, 
+                    "socketMaxConnections": 1
+                }, 
+                {
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\json.png", 
+                    "connectionLabel": null, 
+                    "dataType": "<class '__main__.JSON'>", 
                     "name": "curves", 
                     "plug": true, 
                     "plugMaxConnections": -1, 
@@ -47,9 +47,9 @@
                     "socketMaxConnections": 1
                 }, 
                 {
-                    "connectionIcon": null, 
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\json.png", 
                     "connectionLabel": null, 
-                    "dataType": "<type 'str'>", 
+                    "dataType": "<class '__main__.JSON'>", 
                     "name": "constrains", 
                     "plug": true, 
                     "plugMaxConnections": -1, 
@@ -58,9 +58,9 @@
                     "socketMaxConnections": 1
                 }, 
                 {
-                    "connectionIcon": null, 
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\usd.png", 
                     "connectionLabel": null, 
-                    "dataType": "<type 'str'>", 
+                    "dataType": "<class '__main__.USD'>", 
                     "name": "cache", 
                     "plug": true, 
                     "plugMaxConnections": -1, 
@@ -70,19 +70,19 @@
                 }
             ], 
             "position": [
-                9674.700000000008, 
-                30346.249999999996
+                9728.0, 
+                29973.5
             ], 
             "preset": "node_preset_1"
         }, 
-        "Light": {
+        "Lighting": {
             "alternate": true, 
             "attributes": [
                 {
-                    "connectionIcon": null, 
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\materialx.png", 
                     "connectionLabel": null, 
-                    "dataType": "<type 'str'>", 
-                    "name": "shaders", 
+                    "dataType": "<class '__main__.MaterialX'>", 
+                    "name": "surfacing", 
                     "plug": false, 
                     "plugMaxConnections": -1, 
                     "preset": "attr_preset_1", 
@@ -90,9 +90,9 @@
                     "socketMaxConnections": 1
                 }, 
                 {
-                    "connectionIcon": null, 
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\usd.png", 
                     "connectionLabel": null, 
-                    "dataType": "<type 'str'>", 
+                    "dataType": "<class '__main__.USD'>", 
                     "name": "cache", 
                     "plug": false, 
                     "plugMaxConnections": -1, 
@@ -101,10 +101,10 @@
                     "socketMaxConnections": 1
                 }, 
                 {
-                    "connectionIcon": null, 
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\exr.png", 
                     "connectionLabel": null, 
-                    "dataType": "<type 'str'>", 
-                    "name": "pases", 
+                    "dataType": "<class '__main__.EXR'>", 
+                    "name": "render passes", 
                     "plug": true, 
                     "plugMaxConnections": -1, 
                     "preset": "attr_preset_2", 
@@ -113,8 +113,8 @@
                 }
             ], 
             "position": [
-                10019.999999999998, 
-                30127.85
+                10225.0, 
+                29917.5
             ], 
             "preset": "node_preset_1"
         }, 
@@ -122,9 +122,9 @@
             "alternate": true, 
             "attributes": [
                 {
-                    "connectionIcon": null, 
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\alembic.png", 
                     "connectionLabel": null, 
-                    "dataType": "<type 'str'>", 
+                    "dataType": "<class '__main__.Alembic'>", 
                     "name": "geometry", 
                     "plug": false, 
                     "plugMaxConnections": -1, 
@@ -133,10 +133,10 @@
                     "socketMaxConnections": 1
                 }, 
                 {
-                    "connectionIcon": null, 
+                    "connectionIcon": "D:\\Development\\HasielHassan\\PlumberManager\\resources\\data_type_icons\\materialx.png", 
                     "connectionLabel": null, 
-                    "dataType": "<type 'str'>", 
-                    "name": "shaders", 
+                    "dataType": "<class '__main__.MaterialX'>", 
+                    "name": "surfacing", 
                     "plug": true, 
                     "plugMaxConnections": -1, 
                     "preset": "attr_preset_2", 
@@ -145,8 +145,8 @@
                 }
             ], 
             "position": [
-                9687.65, 
-                29980.649999999998
+                9737.0, 
+                29786.5
             ], 
             "preset": "node_preset_1"
         }
