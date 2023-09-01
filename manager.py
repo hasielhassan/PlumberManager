@@ -198,8 +198,15 @@ class PlumberManager(QtWidgets.QMainWindow):
                 self.nodz.dataTypes[data_type['type']] = dtype
 
             if path.startswith('./'):
-                path = os.path.abspath(path)
-                self.data_types[name] = (dtype, path)
+                print("Resolving relative path for: {}".format(path))
+                path = path.replace('./', '')
+                path = os.path.normpath(
+                    os.path.join(os.path.dirname(__file__), path)
+                )
+                print("Absolute path: {}".format(path))
+
+            self.data_types[name] = (dtype, path)
+
 
     def createProcess(self):
         processName, ok = QtWidgets.QInputDialog.getText(
@@ -212,8 +219,13 @@ class PlumberManager(QtWidgets.QMainWindow):
 
     def openGraph(self):
 
+        samples_dir = os.path.join(
+            os.path.dirname(__file__),
+            "samples"
+        )
+
         path, filter = QtWidgets.QFileDialog.getOpenFileName(
-            self, 'Open Graph file', os.path.expanduser('~'), ("Graph (*.gph)")
+            self, 'Open Graph file', samples_dir, ("Graph (*.gph)")
         )
 
         self.nodz.clearGraph()
@@ -292,12 +304,15 @@ class ProcessDetails(QtWidgets.QWidget):
     def createInput(self):
         message = "Type a name for the input an select its data type."
         dialog = UserInputsDialog(
-            "New Input", message, self.data_types.keys(), parent=self
+            "New Input", message, self.data_types, parent=self
         )
         if dialog.exec_() == QtWidgets.QDialog.Accepted:
 
             input_name, data_name = dialog.getInputs()
             type_class, type_icon = self.data_types[data_name]
+
+            print("type_class: {}".format(type_class))
+            print("type_icon: {}".format(type_icon))
 
             self.nodz.createAttribute(
                 node=self.node, name=input_name, 
@@ -310,12 +325,15 @@ class ProcessDetails(QtWidgets.QWidget):
     def createOutput(self):
         message = "Type a name for the output an select its data type."
         dialog = UserInputsDialog(
-            "New output", message, self.data_types.keys(), parent=self
+            "New output", message, self.data_types, parent=self
         )
         if dialog.exec_() == QtWidgets.QDialog.Accepted:
 
             output_name, data_name = dialog.getInputs()
             type_class, type_icon = self.data_types[data_name]
+
+            print("type_class: {}".format(type_class))
+            print("type_icon: {}".format(type_icon))
 
             self.nodz.createAttribute(
                 node=self.node, name=output_name, 
@@ -350,9 +368,32 @@ class SlotDetails(QtWidgets.QWidget):
         self.layout = layout
         self.nodz = self.node_details.nodz
 
-        self.ui.data_type.addItems(
-            list(node_details.data_types.keys())
+        for type_name, type_data in node_details.data_types.items():
+            type_icon_path = type_data[1]
+            icon = QtGui.QIcon(type_icon_path)
+            self.ui.data_type.addItem(icon, type_name)
+
+        current_data_type = [
+            n for n, d in node_details.data_types.items() 
+            if d[0] == self.slot.dataType
+        ]
+
+        self.ui.data_type.setCurrentText(current_data_type[0])
+
+        self.ui.down_btn.setText("")
+        self.ui.up_btn.setText("")
+
+        root = os.path.dirname(__file__)
+        upPixmap = QtGui.QPixmap(
+            os.path.join(root, 'resources', 'arrow-up.png')
         )
+
+        downPixmap = QtGui.QPixmap(
+            os.path.join(root, 'resources', 'arrow-down.png')
+        )
+
+        self.ui.up_btn.setIcon(upPixmap)
+        self.ui.down_btn.setIcon(downPixmap)
 
         self.ui.up_btn.clicked.connect(self.moveUp)
         self.ui.down_btn.clicked.connect(self.moveDown)
@@ -362,9 +403,12 @@ class SlotDetails(QtWidgets.QWidget):
         newIndex = currentIndex + direction
         self.layout.insertWidget(newIndex, self)
 
-        self.nodz.editAttribute(self.node_details.node,
-                                self.slot.index,
-                                newIndex=self.slot.index + direction)
+        self.nodz.editAttribute(
+            self.node_details.node,
+            self.slot.index,
+            newIndex=self.slot.index + direction
+        )
+
         self.nodz.scene().updateScene()
 
     def moveUp(self):
@@ -389,8 +433,10 @@ class UserInputsDialog(QtWidgets.QDialog):
 
         self.data_type = QtWidgets.QComboBox(self)
 
-        for type_name in data_types:
-            self.data_type.addItem(type_name)
+        for type_name, type_data in data_types.items():
+            type_icon_path = type_data[1]
+            icon = QtGui.QIcon(type_icon_path)
+            self.data_type.addItem(icon, type_name)
 
         form.addRow("Data Type:", self.data_type)
 
