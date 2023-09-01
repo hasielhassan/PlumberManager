@@ -7,6 +7,15 @@ A helper tool to design CG Pipeline interactive diagramas and data flow document
 
 ![Screenshot](screenshot.png)
 
+## Download it from Release!
+
+A packaged binary version is provided as a release thanks to PyInstaller!
+
+At the moment I'm only making it for Windows, mostly for testing.
+
+[Download it from Release here!](https://github.com/hasielhassan/PlumberManager/releases)
+
+# Development
 ## Requirements:
 - Python
 - PyQt5 or PySide2
