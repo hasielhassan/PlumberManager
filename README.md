@@ -7,6 +7,7 @@ A helper tool to design CG Pipeline interactive diagramas and data flow document
 ## Requirements:
 - Python
 - PyQt5 or PySide2
+- [qdarkstyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet)
 - [Qt.py](https://github.com/mottosso/Qt.py)
 - [Nodz (modified version)](https://github.com/hasielhassan/Nodz)
 - [pygraphviz](https://github.com/pygraphviz/pygraphviz)

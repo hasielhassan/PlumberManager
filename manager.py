@@ -4,11 +4,13 @@ sys.path.insert(0, 'D:\\Development\\HasielHassan\\Nodz')
 import Nodz
 print(Nodz)
 
+import Qt
 from Qt import QtCore, QtGui, QtWidgets
 import pygraphviz
 from Nodz import nodz_main
 import os
 import json
+import qdarkstyle
 import random
 
 from modules.manager_form import Ui_MainWindow as manager_form
@@ -455,6 +457,11 @@ class UserInputsDialog(QtWidgets.QDialog):
 if __name__ == '__main__':
     try:
         app = QtWidgets.QApplication([])
+        app.setStyleSheet(
+            qdarkstyle.load_stylesheet(
+                qt_api=Qt.__binding__.lower()
+            )
+        )
     except:
         # I guess we're running somewhere that already has a QApp created
         #app = QtWidgets.QApplication.instance()

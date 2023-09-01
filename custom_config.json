@@ -2,7 +2,7 @@
     // General > Edit values BUT do not delete.
     "scene_width": 20000,
     "scene_height": 60000,
-    "scene_bg_color": [200,200, 200,255],
+    "scene_bg_color": [75,85,95,255],
     "grid_size": 64,
     "antialiasing": true,
     "antialiasing_boost": true,
@@ -27,7 +27,7 @@
     "grid_color": [150, 150, 150, 150],
     "slot_border": [25, 80, 50, 255],
     "non_connectable_color": [100, 100, 100, 255],
-    "connection_color": [25, 80, 50, 255],
+    "connection_color": [200, 200, 200, 255],
 
     "node_default": {
         "bg": [130, 130, 130, 255],
@@ -49,9 +49,9 @@
 
     "node_preset_1": {
         "bg": [108, 193, 136, 255],
-        "border": [25, 80, 50, 255],
+        "border": [0, 0, 0, 255],
         "border_sel": [250, 250, 250, 255],
-        "text": [25, 80, 50, 255]
+        "text": [200, 200, 200, 255]
     },
 
     "attr_preset_1": {
