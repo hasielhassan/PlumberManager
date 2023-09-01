@@ -52,7 +52,34 @@ class PlumberManager(QtWidgets.QMainWindow):
         self.ui.create_process_btn.clicked.connect(self.createProcess)
         self.ui.layout_graph_btn.clicked.connect(self.layoutGraph)
 
+        # set some shortcuts
+        self.ui.create_process_btn.setText(
+            "Create New Process Node ( Ctrl + P )"
+        )
+        self.shortcut_new_process = QtWidgets.QShortcut(
+            QtGui.QKeySequence('Ctrl+P'), self
+        )
+        self.shortcut_new_process.activated.connect(self.createProcess)
 
+        self.ui.layout_graph_btn.setText("Auto Layout Graph ( Ctrl + L )")
+        self.shortcut_layout = QtWidgets.QShortcut(
+            QtGui.QKeySequence('Ctrl+L'), self
+        )       
+        self.shortcut_layout.activated.connect(self.layoutGraph)
+
+        self.ui.actionOpen.setText("Open - (Ctrl+O)")
+        self.shortcut_open = QtWidgets.QShortcut(
+            QtGui.QKeySequence('Ctrl+O'), self
+        )       
+        self.shortcut_open.activated.connect(self.openGraph)
+
+        self.ui.actionSave.setText("Save - (Ctrl+S)")
+        self.shortcut_save = QtWidgets.QShortcut(
+            QtGui.QKeySequence('Ctrl+S'), self
+        )       
+        self.shortcut_save.activated.connect(self.saveGraph)
+
+        # some nodez signal connections
         self.nodz.signal_NodeSelected.connect(self.on_nodeSelected)
         """
         self.nodz.signal_NodeCreated.connect(self.on_nodeCreated)
