@@ -3,7 +3,7 @@
 
 #### ESSENTIAL LIBRARIES FOR MAIN FUNCTIONALITY ####
 
-PySide
+PySide2
 Qt.py
 pygraphviz
 git+git://github.com/hasielhassan/Nodz.git#egg=Nodz
