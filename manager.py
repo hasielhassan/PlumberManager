@@ -1,17 +1,13 @@
-import sys
-sys.path.insert(0, 'D:\\Development\\HasielHassan\\Nodz')
-
-import Nodz
-print(Nodz)
-
-import Qt
-from Qt import QtCore, QtGui, QtWidgets
-import pygraphviz
-from Nodz import nodz_main
 import os
 import json
 import qdarkstyle
-import random
+import pygraphviz
+
+import Nodz
+from Nodz import nodz_main
+
+import Qt
+from Qt import QtCore, QtGui, QtWidgets
 
 from modules.manager_form import Ui_MainWindow as manager_form
 from modules.node_details_form import Ui_Form as node_details_form
