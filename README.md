@@ -17,7 +17,7 @@ A helper tool to design CG Pipeline interactive diagramas and data flow document
 
 ## Setup and run
 
-Install the dependencies on the `requirements.txt`` file
+Install the dependencies on the `requirements.txt` file
 ```
 python -m pip install requirements.txt
 ```
