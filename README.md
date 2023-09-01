@@ -34,8 +34,8 @@ python manager.py
 - [ ] Allow to update connection data types on existing nodes
 - [ ] Display the data type icons on the node slot names
 - [ ] Option to preview isolated view of a selected node and just its direct connections
-- [ ] Save relative icons paths on graph files
+- [x] Save relative icons paths on graph files
 - [ ] Fix properties panel to not display duplicated widgets after selection
-- [ ]  Improve connections ordering functionality
+- [ ] Improve connections ordering functionality
 - [ ] Allow for process and input/output descriptions, with support for markdown
 - [ ] Add export documentation functionality, that expots an html or makrdown document with all processes and its inoput and outputs
