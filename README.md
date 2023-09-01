@@ -2,7 +2,7 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/hasielhassan/PlumberManager)
 ![License](https://img.shields.io/github/license/hasielhassan/PlumberManager)
 
-<img src="resources/icon_256.png" width="64"/>
+<img src="resources/icon_256.png" width="128"/>
 
 # Plumber Manager
 A helper tool to design CG Pipeline interactive diagramas and data flow documentation
