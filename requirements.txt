@@ -7,5 +7,5 @@ PySide2
 Qt.py
 pygraphviz
 qdarkstyle
-git+git://github.com/hasielhassan/Nodz.git#egg=Nodz
+git+https://github.com/hasielhassan/Nodz.git#egg=Nodz
 
