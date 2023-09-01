@@ -76,5 +76,35 @@
         "description": "", 
         "path": "./resources/data_type_icons/review.png", 
         "type": "REVIEW"
+    },
+    {
+        "code": "obj", 
+        "description": "", 
+        "path": "./resources/data_type_icons/obj.png", 
+        "type": "OBJ"
+    },
+    {
+        "code": "xgen", 
+        "description": "", 
+        "path": "./resources/data_type_icons/xgen.png", 
+        "type": "XGEN"
+    },
+    {
+        "code": "rumba", 
+        "description": "", 
+        "path": "./resources/data_type_icons/rumba.png", 
+        "type": "RUMBA"
+    },
+    {
+        "code": "csv", 
+        "description": "", 
+        "path": "./resources/data_type_icons/csv.png", 
+        "type": "CSV"
+    },
+    {
+        "code": "psd", 
+        "description": "", 
+        "path": "./resources/data_type_icons/psd.png", 
+        "type": "PSD"
     }
 ]
