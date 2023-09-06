@@ -328,7 +328,7 @@ class PlumberManager(QtWidgets.QMainWindow):
 
         self.nodz._focus()
 
-    def get_background_rgba(self):
+    def __getBackgroundColor(self):
         style_sheet = self.nodz.styleSheet()
         print(style_sheet)
         pattern = r'background: *rgb\((\d+), *(\d+), *(\d+), *(\d+)\)'
@@ -355,7 +355,7 @@ class PlumberManager(QtWidgets.QMainWindow):
         visible_rect.setBottom(visible_rect.bottom() + 5)
 
         # set current bg color to transparent
-        current_bg_color = self.get_background_rgba()
+        current_bg_color = self.__getBackgroundColor()
         self.nodz.setStyleSheet("background: rgb(0,0,0,0)")
 
         self.nodz.gridVisToggle = False
