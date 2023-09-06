@@ -1,3 +1,12 @@
+#############################################################################
+# Copyright (c) 2023, Hasiel Alvarez.
+#
+# Your use of this software as distributed in this GitHub repository, is
+# governed by the GPL-3.0 license
+#
+# The full license is in the file LICENSE, distributed with this software.
+#############################################################################
+
 import os
 import re
 import json
