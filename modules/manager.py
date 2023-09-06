@@ -26,9 +26,11 @@ from .ui.slot_details_form import Ui_Form as slot_details_form
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(__file__))
 
+with open(os.path.join(PROJECT_DIR, 'VERSION'), 'r') as file:
+    VERSION = file.read()
 class PlumberManager(QtWidgets.QMainWindow):
 
-    version = "0.0.1-0"
+    version = VERSION
 
     custom_config_path = os.path.join(
         PROJECT_DIR, 'config', 'custom_config.json'
@@ -269,7 +271,7 @@ class PlumberManager(QtWidgets.QMainWindow):
 
             cls.data_types[name] = (dtype, path)
 
-        pprint.pprint(cls.data_types)
+        print(pprint.pformat(cls.data_types))
 
 
     def createProcess(self):
@@ -766,7 +768,7 @@ class IsolatedViewDialog(QtWidgets.QDialog):
 
     def setupNetwork(self, data):
 
-        pprint.pprint(data)
+        print(pprint.pformat(data))
         
         node = self.nodz.createNode(
             name=data["node"], preset="node_preset_1", position=None

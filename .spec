@@ -3,24 +3,50 @@
 block_cipher = None
 
 import os
+import inspect
+import pyinstaller_versionfile
+from PyInstaller.utils.hooks import collect_submodules
+
 import Nodz
+import PySide2
+import shiboken2
 
 # To collect all Nodz files we need to collect them manually
-nodz_location = os.path.dirname(Nodz.__file__)
+Nodz_location = os.path.dirname(Nodz.__file__)
+
+PROJECT_DIR = os.path.dirname(os.path.abspath(
+  inspect.getfile(inspect.currentframe()))
+)
+with open(os.path.join(PROJECT_DIR, 'VERSION'), 'r') as file:
+    VERSION = file.read()
+
+pyinstaller_versionfile.create_versionfile(
+    output_file="versionfile.txt",
+    version=VERSION,
+    company_name="HasielHassan",
+    file_description="Plumber Manager",
+    internal_name="Plumber Manager",
+    legal_copyright="© Hasiel Alvarez 2023",
+    original_filename="PlumberManager.exe",
+    product_name="Plumber Manager",
+)
+
+hiddenimports_QtSvg = collect_submodules('PySide2.QtSvg')
+all_hidden_imports = hiddenimports_QtSvg
 
 a = Analysis(
-    ['manager.py'],
+    ['run.py'],
     pathex=[],
     binaries=[],
     datas=[
-        ("custom_config.json", "."),
-        ("data_icons.json", "."),
+        ("config", "config"),
         ("modules", "modules"),
         ("resources", "resources"),
         ("samples", "samples"),
-        (nodz_location, "Nodz")
+        ("VERSION", "."),
+        (Nodz_location, "Nodz"),
     ],
-    hiddenimports=[],
+    hiddenimports=all_hidden_imports,
     hookspath=[],
     runtime_hooks=[],
     excludes=["PySide6", "shiboken6"],
@@ -49,7 +75,8 @@ exe = EXE(
     strip=False,
     upx=True,
     console=False,
-    icon='resources/icon_32.ico'
+    icon='resources/icon_32.ico',
+    version='versionfile.txt',
 )
 
 #coll = COLLECT(
