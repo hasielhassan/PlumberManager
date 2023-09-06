@@ -10,6 +10,7 @@
 import os
 import re
 import json
+import pprint
 import qdarkstyle
 import pygraphviz
 
@@ -28,6 +29,16 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(__file__))
 class PlumberManager(QtWidgets.QMainWindow):
 
     version = "0.0.1-0"
+
+    custom_config_path = os.path.join(
+        PROJECT_DIR, 'config', 'custom_config.json'
+    )
+
+    data_icons_path = os.path.join(
+        PROJECT_DIR, 'config', 'data_icons.json'
+    )
+
+    data_types = {}
 
     def __init__(self, parent=None):
 
@@ -51,12 +62,10 @@ class PlumberManager(QtWidgets.QMainWindow):
             )
         )
 
-        config = os.path.join(
-            PROJECT_DIR, 'config', 'custom_config.json'
-        )
+
 
         self.nodz = nodz_main.Nodz(None)
-        self.nodz.loadConfig(filePath=config)
+        self.nodz.loadConfig(filePath=self.custom_config_path)
         self.nodz.config["icons_folder"] = os.path.join(
             PROJECT_DIR, "resources", "data_type_icons"
         )
@@ -64,10 +73,7 @@ class PlumberManager(QtWidgets.QMainWindow):
 
         # Load data icons definition
         # this updates nodz config so it needs to happen after nodz
-        icons = os.path.join(
-            PROJECT_DIR, 'config', 'data_icons.json'
-        )
-        self.loadDataTypes(icons)
+        self.loadDataTypes(self.nodz)
 
         self.ui.scene_frame.layout().addWidget(self.nodz)
         self.ui.actionAbout.triggered.connect(self.about)
@@ -82,6 +88,7 @@ class PlumberManager(QtWidgets.QMainWindow):
 
         self.ui.create_process_btn.clicked.connect(self.createProcess)
         self.ui.layout_graph_btn.clicked.connect(self.layoutGraph)
+        self.ui.isolate_selected_btn.clicked.connect(self.isolateSelected)
 
         # set some shortcuts
         self.ui.create_process_btn.setText(
@@ -136,8 +143,6 @@ class PlumberManager(QtWidgets.QMainWindow):
 
         self.nodz.signal_KeyPressed.connect(self.on_keyPressed)
         """
-
-        self.lastSelectedNode = None
 
     ######################################################################
     # Test signals
@@ -234,24 +239,25 @@ class PlumberManager(QtWidgets.QMainWindow):
     def on_keyPressed(self, key):
         print('key pressed : {}'.format(key))
 
-    def loadDataTypes(self, configPath):
+    @classmethod
+    def loadDataTypes(cls, nodz):
         """
         """
-        contents = open(configPath, "r").read()
+        contents = open(cls.data_icons_path, "r").read()
         config = json.loads(contents)
 
-        self.data_types = {}
+        cls.data_types = {}
 
         for data_type in config:
 
             path = data_type["path"]
             name = data_type['code']
 
-            if data_type['type'] in self.nodz.dataTypes:
-                dtype = self.nodz.dataTypes[data_type['type']]
+            if data_type['type'] in nodz.dataTypes:
+                dtype = nodz.dataTypes[data_type['type']]
             else:
                 dtype = type(str(data_type['type']), (object,), {})
-                self.nodz.dataTypes[data_type['type']] = dtype
+                nodz.dataTypes[data_type['type']] = dtype
 
             if path.startswith('./'):
                 print("Resolving relative path for: {}".format(path))
@@ -261,7 +267,7 @@ class PlumberManager(QtWidgets.QMainWindow):
                 )
                 print("Absolute path: {}".format(path))
 
-            self.data_types[name] = (dtype, path)
+            cls.data_types[name] = (dtype, path)
 
 
     def createProcess(self):
@@ -310,11 +316,12 @@ class PlumberManager(QtWidgets.QMainWindow):
 
         self.nodz.saveGraph(filePath=path)
 
-    def layoutGraph(self):
-        
+    @staticmethod
+    def layoutGraphForNodz(nodz):
+
         graph = pygraphviz.AGraph(rankdir='LR')
 
-        for source, target in self.nodz.evaluateGraph():
+        for source, target in nodz.evaluateGraph():
             source = source.split('.')[0]
             target = target.split('.')[0]
             graph.add_edge(source, target)
@@ -330,12 +337,60 @@ class PlumberManager(QtWidgets.QMainWindow):
             newX = (x * 4) + 500
             newY = (y * 5) + 500
 
-            node = self.nodz.scene().nodes[nodeName]
+            node = nodz.scene().nodes[nodeName]
             node.setPos(QtCore.QPointF(newX, newY))
 
-        self.nodz.scene().updateScene()
+        nodz.scene().updateScene()
 
-        self.nodz._focus()
+        nodz._focus()
+
+    def layoutGraph(self):
+        self.layoutGraphForNodz(self.nodz)
+
+    def isolateSelected(self):
+
+        selected_nodes = self.nodz.scene().selectedItems()
+
+        if not selected_nodes or len(selected_nodes) > 1:
+            QtWidgets.QMessageBox.warning(
+                self, "No selected nodes!",
+                (
+                    "Isolate Selected needs one selected node!"
+                )
+            )
+            return
+        
+        node = selected_nodes[0]
+
+        data = {
+            "node": node.name,
+            "inputs": {
+                n: {
+                    "dataType": node.attrsData[n]["dataType"],
+                    "connectionIcon": node.attrsData[n]["connectionIcon"],
+                    "connections": [
+                        (c.plugNode, c.plugAttr) for c in s.connections
+                    ]
+                }
+                for n, s in node.sockets.items()
+            },
+            "outputs": {
+                n: {
+                    "dataType": node.attrsData[n]["dataType"],
+                    "connectionIcon": node.attrsData[n]["connectionIcon"],
+                    "connections": [
+                        (c.socketNode, c.socketAttr) for c in p.connections
+                    ]
+                }
+                for n, p in node.plugs.items()
+            },
+        }
+        
+        isolated_view = IsolatedViewDialog(
+            "Isolated View of {}".format(node.name), 
+            data, parent=self
+        )
+        isolated_view.show()
 
     def __getBackgroundColor(self):
         style_sheet = self.nodz.styleSheet()
@@ -618,3 +673,107 @@ class UserInputsDialog(QtWidgets.QDialog):
     def getInputs(self):
 
         return self.input_name.text(), self.data_type.currentText()
+    
+
+class IsolatedViewDialog(QtWidgets.QDialog):
+
+    def __init__(self, title, data, parent=None):
+        super(IsolatedViewDialog, self).__init__(parent=parent)
+
+        self.setWindowTitle(title)
+
+        # Calculate the size of the dialog as 25% smaller than the parent
+        parent_size = parent.size()
+        dialog_width = parent_size.width() * 0.75
+        dialog_height = parent_size.height() * 0.75
+        self.resize(dialog_width, dialog_height)
+
+        self.nodz = nodz_main.Nodz(None)
+        self.nodz.loadConfig(filePath=PlumberManager.custom_config_path)
+        self.nodz.config["icons_folder"] = os.path.join(
+            PROJECT_DIR, "resources", "data_type_icons"
+        )
+        self.nodz.initialize()
+
+        # Load data icons definition
+        # this updates nodz config so it needs to happen after nodz
+        PlumberManager.loadDataTypes(self.nodz)
+
+        # setup the network from the data
+        self.setupNetwork(data)
+
+        # Create layout and add widgets
+        layout = QtWidgets.QVBoxLayout()
+        layout.addWidget(self.nodz)
+        # Set dialog layout
+        self.setLayout(layout)
+
+    def setupAttr(self, node, attr, attr_type, attr_data):
+
+        socket = True if attr_type == 'input' else False
+        plug = True if attr_type == 'output' else False
+        attr_preset = 'attr_preset_1' if attr_type == 'input' else 'attr_preset_2'
+        conn_preset = 'attr_preset_2' if attr_type == 'input' else 'attr_preset_1'
+
+        print("Creating {}.{}".format(node.name, attr))
+        self.nodz.createAttribute(
+            node=node, name=attr, 
+            index=-1, preset=attr_preset,
+            plug=plug, socket=socket, 
+            dataType=attr_data["dataType"], 
+            connectionIcon=attr_data["connectionIcon"]
+        )
+
+        for attr_node_name, attr_attr_name in attr_data["connections"]:
+            if attr_node_name in self.nodz.scene().nodes.keys():
+                attr_node = self.nodz.scene().nodes[attr_node_name]
+            else:
+                print("Creating new {} node".format(attr_node_name))
+                attr_node = self.nodz.createNode(
+                    name=attr_node_name, 
+                    preset="node_preset_1", position=None
+                )
+
+            print("Creating {}.{}".format(attr_node_name, attr_attr_name))
+            self.nodz.createAttribute(
+                node=attr_node, name=attr_attr_name, 
+                index=-1, preset=conn_preset,
+                plug=not plug, socket=not socket, 
+                dataType=attr_data["dataType"], 
+                connectionIcon=attr_data["connectionIcon"]
+            )
+
+            if attr_type == 'input':
+                print("Connecting {}.{} to {}.{}".format(
+                    attr_node_name, attr_attr_name,
+                    node.name, attr
+                ))
+                self.nodz.createConnection(
+                    attr_node_name, attr_attr_name,
+                    node.name, attr
+                )
+            else:
+                print("Connecting {}.{} to {}.{}".format(
+                    node.name, attr,
+                    attr_node_name, attr_attr_name
+                ))
+                self.nodz.createConnection(
+                    node.name, attr,
+                    attr_node_name, attr_attr_name
+                )
+
+    def setupNetwork(self, data):
+
+        pprint.pprint(data)
+        
+        node = self.nodz.createNode(
+            name=data["node"], preset="node_preset_1", position=None
+        )
+
+        for input, input_data in data["inputs"].items():
+            self.setupAttr(node, input, "input", input_data)
+
+        for output, output_data in data["outputs"].items():
+            self.setupAttr(node, output, "output", output_data)
+
+        PlumberManager.layoutGraphForNodz(self.nodz)

@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.dockWidget = QDockWidget(MainWindow)
         self.dockWidget.setObjectName(u"dockWidget")
-        self.dockWidget.setMinimumSize(QSize(300, 111))
+        self.dockWidget.setMinimumSize(QSize(400, 111))
         self.manager_panel = QWidget()
         self.manager_panel.setObjectName(u"manager_panel")
         self.verticalLayout_2 = QVBoxLayout(self.manager_panel)
@@ -60,18 +60,23 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.manager_panel_scroll = QWidget()
         self.manager_panel_scroll.setObjectName(u"manager_panel_scroll")
-        self.manager_panel_scroll.setGeometry(QRect(0, 0, 280, 670))
+        self.manager_panel_scroll.setGeometry(QRect(0, 0, 380, 670))
         self.verticalLayout_3 = QVBoxLayout(self.manager_panel_scroll)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.create_process_btn = QPushButton(self.manager_panel_scroll)
+        self.create_process_btn.setObjectName(u"create_process_btn")
+
+        self.verticalLayout_3.addWidget(self.create_process_btn)
+
         self.layout_graph_btn = QPushButton(self.manager_panel_scroll)
         self.layout_graph_btn.setObjectName(u"layout_graph_btn")
 
         self.verticalLayout_3.addWidget(self.layout_graph_btn)
 
-        self.create_process_btn = QPushButton(self.manager_panel_scroll)
-        self.create_process_btn.setObjectName(u"create_process_btn")
+        self.isolate_selected_btn = QPushButton(self.manager_panel_scroll)
+        self.isolate_selected_btn.setObjectName(u"isolate_selected_btn")
 
-        self.verticalLayout_3.addWidget(self.create_process_btn)
+        self.verticalLayout_3.addWidget(self.isolate_selected_btn)
 
         self.line = QFrame(self.manager_panel_scroll)
         self.line.setObjectName(u"line")
@@ -124,7 +129,8 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuExport.setTitle(QCoreApplication.translate("MainWindow", u"Export", None))
         self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
-        self.layout_graph_btn.setText(QCoreApplication.translate("MainWindow", u"Layout Graph", None))
         self.create_process_btn.setText(QCoreApplication.translate("MainWindow", u"Create Process", None))
+        self.layout_graph_btn.setText(QCoreApplication.translate("MainWindow", u"Layout Graph", None))
+        self.isolate_selected_btn.setText(QCoreApplication.translate("MainWindow", u"Isolate Selected", None))
     # retranslateUi
 

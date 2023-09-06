@@ -54,7 +54,7 @@
   <widget class="QDockWidget" name="dockWidget">
    <property name="minimumSize">
     <size>
-     <width>300</width>
+     <width>400</width>
      <height>111</height>
     </size>
    </property>
@@ -73,11 +73,18 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>280</width>
+          <width>380</width>
           <height>670</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QPushButton" name="create_process_btn">
+           <property name="text">
+            <string>Create Process</string>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QPushButton" name="layout_graph_btn">
            <property name="text">
@@ -86,9 +93,9 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="create_process_btn">
+          <widget class="QPushButton" name="isolate_selected_btn">
            <property name="text">
-            <string>Create Process</string>
+            <string>Isolate Selected</string>
            </property>
           </widget>
          </item>
