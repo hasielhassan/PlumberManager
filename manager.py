@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import qdarkstyle
 import pygraphviz
@@ -7,7 +8,7 @@ import Nodz
 from Nodz import nodz_main
 
 import Qt
-from Qt import QtCore, QtGui, QtWidgets
+from Qt import QtCore, QtGui, QtWidgets, QtSvg
 
 from modules.manager_form import Ui_MainWindow as manager_form
 from modules.node_details_form import Ui_Form as node_details_form
@@ -54,6 +55,12 @@ class PlumberManager(QtWidgets.QMainWindow):
         self.ui.actionAbout.triggered.connect(self.about)
         self.ui.actionOpen.triggered.connect(self.openGraph)
         self.ui.actionSave.triggered.connect(self.saveGraph)
+        self.ui.actionExportPNG.triggered.connect(
+            lambda : self.renderGraph('png')
+        )
+        self.ui.actionExportSVG.triggered.connect(
+            lambda : self.renderGraph('svg')
+        )
 
         self.ui.create_process_btn.clicked.connect(self.createProcess)
         self.ui.layout_graph_btn.clicked.connect(self.layoutGraph)
@@ -281,7 +288,7 @@ class PlumberManager(QtWidgets.QMainWindow):
     def saveGraph(self):
 
         path, filter = QtWidgets.QFileDialog.getSaveFileName(
-            self, 'Open Graph file', os.path.expanduser('~'), ("Graph (*.gph)")
+            self, 'Save Graph file', os.path.expanduser('~'), ("Graph (*.gph)")
         )
 
         self.nodz.saveGraph(filePath=path)
@@ -312,6 +319,92 @@ class PlumberManager(QtWidgets.QMainWindow):
         self.nodz.scene().updateScene()
 
         self.nodz._focus()
+
+    def get_background_rgba(self):
+        style_sheet = self.nodz.styleSheet()
+        print(style_sheet)
+        pattern = r'background: *rgb\((\d+), *(\d+), *(\d+), *(\d+)\)'
+        match = re.search(pattern, style_sheet)
+
+        if match:
+            r, g, b, a = map(int, match.groups())
+            return (r, g, b, a)
+        else:
+            return None
+
+    def renderGraph(self, image_format):
+
+        path, filter = QtWidgets.QFileDialog.getSaveFileName(
+            self, 'Export Graph {}'.format(image_format.upper()), 
+            os.path.expanduser('~'), ("Image (*.{})".format(image_format))
+        )
+
+        # Calculate the bounding rectangle of all visible items
+        visible_rect = self.nodz.scene().itemsBoundingRect()
+
+        # Modify the top edge of the QRectF to include extra information
+        visible_rect.setTop(visible_rect.top() - 25)
+        visible_rect.setBottom(visible_rect.bottom() + 5)
+
+        # set current bg color to transparent
+        current_bg_color = self.get_background_rgba()
+        self.nodz.setStyleSheet("background: rgb(0,0,0,0)")
+
+        self.nodz.gridVisToggle = False
+
+        if image_format == 'png':
+            # Create a QImage with the desired size
+            width = visible_rect.width()
+            height = visible_rect.height()
+            image = QtGui.QImage(
+                width*2, height*2, 
+                QtGui.QImage.Format_ARGB32_Premultiplied
+            )
+
+            # Create a QPainter and set the QImage as its rendering target
+            painter = QtGui.QPainter(image)
+
+            # Render the QGraphicsScene onto the QImage
+            self.nodz.scene().render(
+                painter, image.rect(), visible_rect
+            )
+
+            # Finish painting
+            painter.end()
+
+            # Save the QImage to a file
+            image.save(path)
+
+        elif image_format == 'svg':
+
+            # Create a QSvgGenerator and configure it
+            svg_generator = QtSvg.QSvgGenerator()
+            svg_generator.setFileName(path)
+            svg_generator.setViewBox(visible_rect)
+            svg_generator.setSize(visible_rect.size().toSize())
+            # You can adjust other settings like resolution and title here
+
+            # Create a QPainter and set the QSvgGenerator as its output device
+            painter = QtGui.QPainter()
+            painter.begin(svg_generator)
+
+            # Render the QGraphicsScene using the QPainter
+            self.nodz.scene().render(
+                painter, svg_generator.viewBox(), visible_rect
+            )
+
+            # Finish painting and save the SVG file
+            painter.end()
+
+        else:
+            pass
+
+        # restore the original bg color
+        self.nodz.setStyleSheet(
+            "background: rgb({}, {}, {}, {})".format(*current_bg_color)
+        )
+
+        self.nodz.gridVisToggle = True
 
 class ProcessDetails(QtWidgets.QWidget):
 

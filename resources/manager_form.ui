@@ -29,8 +29,17 @@
     <property name="title">
      <string>File</string>
     </property>
+    <widget class="QMenu" name="menuExport">
+     <property name="title">
+      <string>Export</string>
+     </property>
+     <addaction name="actionExportPNG"/>
+     <addaction name="actionExportSVG"/>
+    </widget>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
+    <addaction name="separator"/>
+    <addaction name="menuExport"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -128,6 +137,21 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionExport_SVG">
+   <property name="text">
+    <string>Export SVG</string>
+   </property>
+  </action>
+  <action name="actionExportPNG">
+   <property name="text">
+    <string>PNG</string>
+   </property>
+  </action>
+  <action name="actionExportSVG">
+   <property name="text">
+    <string>SVG</string>
    </property>
   </action>
  </widget>
