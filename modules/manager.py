@@ -600,23 +600,3 @@ class UserInputsDialog(QtWidgets.QDialog):
     def getInputs(self):
 
         return self.input_name.text(), self.data_type.currentText()
-
-if __name__ == '__main__':
-    try:
-        app = QtWidgets.QApplication([])
-        app.setStyleSheet(
-            qdarkstyle.load_stylesheet(
-                qt_api=Qt.__binding__.lower()
-            )
-        )
-    except:
-        # I guess we're running somewhere that already has a QApp created
-        #app = QtWidgets.QApplication.instance()
-        pass
-
-    manager = PlumberManager()
-    manager.show()
-
-    if app:
-        # command line stand alone test... run our own event loop
-        app.exec_()
