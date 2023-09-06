@@ -10,9 +10,11 @@ from Nodz import nodz_main
 import Qt
 from Qt import QtCore, QtGui, QtWidgets, QtSvg
 
-from modules.manager_form import Ui_MainWindow as manager_form
-from modules.node_details_form import Ui_Form as node_details_form
-from modules.slot_details_form import Ui_Form as slot_details_form
+from .ui.manager_form import Ui_MainWindow as manager_form
+from .ui.node_details_form import Ui_Form as node_details_form
+from .ui.slot_details_form import Ui_Form as slot_details_form
+
+PROJECT_DIR = os.path.dirname(os.path.dirname(__file__))
 
 class PlumberManager(QtWidgets.QMainWindow):
 
@@ -25,30 +27,37 @@ class PlumberManager(QtWidgets.QMainWindow):
         self.ui = manager_form()
         self.ui.setupUi(self)
 
-        self.current_dir = os.path.dirname(__file__)
-        #os.chdir(self.current_dir)
+        self.setStyleSheet(
+            qdarkstyle.load_stylesheet(
+                qt_api=Qt.__binding__.lower()
+            )
+        )
 
         self.setWindowTitle('PlumberManager')
         self.setWindowIcon(
             QtGui.QIcon(
                 os.path.join(
-                    self.current_dir, 
+                    PROJECT_DIR, 
                     'resources','icon_32.png')
             )
         )
 
-        config = os.path.join(self.current_dir, 'custom_config.json')
+        config = os.path.join(
+            PROJECT_DIR, 'config', 'custom_config.json'
+        )
 
         self.nodz = nodz_main.Nodz(None)
         self.nodz.loadConfig(filePath=config)
         self.nodz.config["icons_folder"] = os.path.join(
-            self.current_dir, "resources", "data_type_icons"
+            PROJECT_DIR, "resources", "data_type_icons"
         )
         self.nodz.initialize()
 
         # Load data icons definition
         # this updates nodz config so it needs to happen after nodz
-        icons = os.path.join(self.current_dir, 'data_icons.json')
+        icons = os.path.join(
+            PROJECT_DIR, 'config', 'data_icons.json'
+        )
         self.loadDataTypes(icons)
 
         self.ui.scene_frame.layout().addWidget(self.nodz)
@@ -239,7 +248,7 @@ class PlumberManager(QtWidgets.QMainWindow):
                 print("Resolving relative path for: {}".format(path))
                 path = path.replace('./', '')
                 path = os.path.normpath(
-                    os.path.join(os.path.dirname(__file__), path)
+                    os.path.join(PROJECT_DIR, path)
                 )
                 print("Absolute path: {}".format(path))
 
@@ -273,8 +282,7 @@ class PlumberManager(QtWidgets.QMainWindow):
     def openGraph(self):
 
         samples_dir = os.path.join(
-            os.path.dirname(__file__),
-            "samples"
+            PROJECT_DIR, "samples"
         )
 
         path, filter = QtWidgets.QFileDialog.getOpenFileName(
@@ -525,13 +533,12 @@ class SlotDetails(QtWidgets.QWidget):
         self.ui.down_btn.setText("")
         self.ui.up_btn.setText("")
 
-        root = os.path.dirname(__file__)
         upPixmap = QtGui.QPixmap(
-            os.path.join(root, 'resources', 'arrow-up.png')
+            os.path.join(PROJECT_DIR, 'resources', 'arrow-up.png')
         )
 
         downPixmap = QtGui.QPixmap(
-            os.path.join(root, 'resources', 'arrow-down.png')
+            os.path.join(PROJECT_DIR, 'resources', 'arrow-down.png')
         )
 
         self.ui.up_btn.setIcon(upPixmap)
