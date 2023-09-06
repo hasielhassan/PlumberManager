@@ -33,7 +33,7 @@ All that is what Plumber Manager its aming to offer.
 
 ## Roadmap
 
-- [ ] Allow to update connection names on existing nodes
+- [X] Allow to update connection names on existing nodes
 - [ ] Allow to update connection data types on existing nodes
 - [ ] Display the data type icons on the node slot names
 - [ ] Option to preview isolated view of a selected node and just its direct connections

@@ -521,6 +521,7 @@ class SlotDetails(QtWidgets.QWidget):
         self.slot = slot
 
         self.ui.slot_name.setText(self.slot.attribute)
+        self.ui.slot_name.returnPressed.connect(self.updateName)
 
         self.node_details = node_details
         self.layout = layout
@@ -555,6 +556,14 @@ class SlotDetails(QtWidgets.QWidget):
 
         self.ui.up_btn.clicked.connect(self.moveUp)
         self.ui.down_btn.clicked.connect(self.moveDown)
+
+    def updateName(self):
+        newName = self.ui.slot_name.text()
+        self.nodz.editAttribute(
+            self.node_details.node, 
+            self.slot.index, newName=newName
+        )
+        self.nodz.scene().updateScene()
 
     def reorder(self, direction):
         currentIndex = self.layout.indexOf(self)
