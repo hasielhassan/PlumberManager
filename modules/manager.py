@@ -269,6 +269,8 @@ class PlumberManager(QtWidgets.QMainWindow):
 
             cls.data_types[name] = (dtype, path)
 
+        pprint.pprint(cls.data_types)
+
 
     def createProcess(self):
         processName, ok = QtWidgets.QInputDialog.getText(
