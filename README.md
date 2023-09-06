@@ -36,7 +36,7 @@ All that is what Plumber Manager its aming to offer.
 - [X] Allow to update connection names on existing nodes
 - [ ] Allow to update connection data types on existing nodes
 - [ ] Display the data type icons on the node slot names
-- [ ] Option to preview isolated view of a selected node and just its direct connections
+- [X] Option to preview isolated view of a selected node and just its direct connections
 - [x] Save relative icons paths on graph files
 - [ ] Fix properties panel to not display duplicated widgets after selection
 - [ ] Improve connections ordering functionality
