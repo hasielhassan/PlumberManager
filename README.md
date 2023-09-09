@@ -1,10 +1,18 @@
-![GitHub top language](https://img.shields.io/github/languages/top/hasielhassan/PlumberManager)
-![GitHub last commit](https://img.shields.io/github/last-commit/hasielhassan/PlumberManager)
-![License](https://img.shields.io/github/license/hasielhassan/PlumberManager)
 
-<img src="resources/icon_256.png" width="128"/>
+<p align="center">
+    <img src="resources/icon_256.png" width="128"/>
+</p>
 
-# Plumber Manager
+<h1 align="center">Plumber Manager</h1>
+
+<p align="center">
+    <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/hasielhassan/PlumberManager" />
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/hasielhassan/PlumberManager" />
+    <img alt="License" src="https://img.shields.io/github/license/hasielhassan/PlumberManager" />
+    <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/hasielhassan/PlumberManager" />
+    <img alt="GitHub release downloads" src="https://img.shields.io/github/downloads/hasielhassan/PlumberManager/total" />
+</p>
+
 A helper tool to design CG Pipeline interactive diagramas and data flow documentation
 
 ![Screenshot](screenshot.png)
@@ -24,7 +32,7 @@ While Pipeline diagrams can be made out from any diagraming software, there is n
 
 What if there is a tool that offers:
 - An editable Node network similar to those from all the DCC's that we use all  day.
-- Pre-configured with all the known standard formats used in teh industry as inputs and outputs.
+- Pre-configured with all the known standard formats used in the industry as inputs and outputs.
 - Automatic layout of the network, usefull when things get really big an complex.
 - Interactive navigation and preview of isolated parts of the network.
 - Store documentation of process and its inputs and outputs.
@@ -43,6 +51,7 @@ All that is what Plumber Manager its aming to offer.
 - [ ] Allow for process and input/output descriptions, with support for markdown
 - [ ] Add export documentation functionality, that expots an html or markdown document with all processes and its inputs and outputs
 
+And if you have an idea for something else, create a feature request in the form of an issue !
 # Development
 ## Requirements:
 - Python 2 or 3
