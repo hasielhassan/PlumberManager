@@ -7,5 +7,7 @@ PySide2
 Qt.py
 pygraphviz
 qdarkstyle
+webbrowser
+packaging
 git+https://github.com/hasielhassan/Nodz.git#egg=Nodz
 

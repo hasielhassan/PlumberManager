@@ -11,8 +11,12 @@ import os
 import re
 import json
 import pprint
+import requests
+import webbrowser
 import qdarkstyle
 import pygraphviz
+
+from packaging import version as packaging_version
 
 import Nodz
 from Nodz import nodz_main
@@ -40,6 +44,8 @@ class PlumberManager(QtWidgets.QMainWindow):
         PROJECT_DIR, 'config', 'data_icons.json'
     )
 
+    settings = QtCore.QSettings("PlumberManager")
+
     data_types = {}
 
     def __init__(self, parent=None):
@@ -63,8 +69,6 @@ class PlumberManager(QtWidgets.QMainWindow):
                     'resources','icon_32.png')
             )
         )
-
-
 
         self.nodz = nodz_main.Nodz(None)
         self.nodz.loadConfig(filePath=self.custom_config_path)
@@ -145,6 +149,12 @@ class PlumberManager(QtWidgets.QMainWindow):
 
         self.nodz.signal_KeyPressed.connect(self.on_keyPressed)
         """
+
+        # Create a QTimer to delay the updates check dialog
+        self.update_timer = QtCore.QTimer(self)
+        self.update_timer.timeout.connect(self._checkForUpdates)
+        # Delay for half a second
+        self.update_timer.start(500)
 
     ######################################################################
     # Test signals
@@ -241,6 +251,68 @@ class PlumberManager(QtWidgets.QMainWindow):
     def on_keyPressed(self, key):
         print('key pressed : {}'.format(key))
 
+    def _checkForUpdates(self):
+        """
+        """
+        self.update_timer.stop()
+
+        try:
+            response = requests.get(
+                (
+                    "https://api.github.com/repos/"
+                    "hasielhassan/PlumberManager/"
+                    "releases/latest"
+                )
+            ).json()
+        except Exception as e:
+            print("Failed to check for updates: {}".format(str(e)))
+            return
+
+        title = response["name"]
+        version = response["tag_name"]
+        description = response["body"]
+        url = response["html_url"]
+
+        current_version = packaging_version.parse(self.version)
+        latest_version = packaging_version.parse(version)
+
+        skipped = self.settings.value("skipped_updates", None)
+        if skipped:
+            skipped = skipped.split(",")
+        else:
+            skipped = []
+
+        if version not in skipped and latest_version > current_version:
+            
+            dialog = QtWidgets.QMessageBox(self)
+
+            # Set the title, message and icon
+            dialog.setWindowTitle(title)
+            dialog.setText(description)
+            dialog.setIcon(QtWidgets.QMessageBox.Information)
+
+            # Create custom buttons with your desired text
+            check_button = QtWidgets.QPushButton("Check Release")
+            remind_button = QtWidgets.QPushButton("Remind me later")
+            skip_button = QtWidgets.QPushButton("Skip Release")
+
+            # Add custom buttons to the message box
+            dialog.addButton(check_button, QtWidgets.QMessageBox.AcceptRole)
+            dialog.addButton(remind_button, QtWidgets.QMessageBox.AcceptRole)
+            dialog.addButton(skip_button, QtWidgets.QMessageBox.ActionRole)
+
+            # Display the message box and handle the result
+            result = dialog.exec_()
+
+            if result == 0:
+                webbrowser.open(url, new=2)
+            elif result == 2:
+                skipped.append(version)
+                as_string = ",".join(skipped)
+                self.settings.setValue("skipped_updates", as_string)
+            else:
+                pass
+
     @classmethod
     def loadDataTypes(cls, nodz):
         """
@@ -272,7 +344,6 @@ class PlumberManager(QtWidgets.QMainWindow):
             cls.data_types[name] = (dtype, path)
 
         print(pprint.pformat(cls.data_types))
-
 
     def createProcess(self):
         processName, ok = QtWidgets.QInputDialog.getText(
