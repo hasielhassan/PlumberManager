@@ -1,0 +1,5 @@
+title: Plumber manager
+description: A helper tool to design CG Pipeline interactive diagrams and data flow documentation.
+show_downloads: true
+google_analytics:
+theme: jekyll-theme-cayman
