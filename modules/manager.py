@@ -125,13 +125,12 @@ class PlumberManager(QtWidgets.QMainWindow):
 
         # some nodez signal connections
         self.nodz.signal_NodeSelected.connect(self.on_nodeSelected)
-        """
         self.nodz.signal_NodeCreated.connect(self.on_nodeCreated)
         self.nodz.signal_NodeDeleted.connect(self.on_nodeDeleted)
         self.nodz.signal_NodeEdited.connect(self.on_nodeEdited)
-        self.nodz.signal_NodeSelected.connect(self.on_nodeSelected)
         self.nodz.signal_NodeMoved.connect(self.on_nodeMoved)
-        self.nodz.signal_NodeDoubleClicked.connect(self.on_nodeDoubleClick)
+
+        #self.nodz.signal_NodeDoubleClicked.connect(self.on_nodeDoubleClick)
 
         self.nodz.signal_AttrCreated.connect(self.on_attrCreated)
         self.nodz.signal_AttrDeleted.connect(self.on_attrDeleted)
@@ -142,6 +141,7 @@ class PlumberManager(QtWidgets.QMainWindow):
         self.nodz.signal_PlugDisconnected.connect(self.on_disconnected)
         self.nodz.signal_SocketDisconnected.connect(self.on_disconnected)
 
+        """
         self.nodz.signal_GraphSaved.connect(self.on_graphSaved)
         self.nodz.signal_GraphLoaded.connect(self.on_graphLoaded)
         self.nodz.signal_GraphCleared.connect(self.on_graphCleared)
@@ -156,6 +156,10 @@ class PlumberManager(QtWidgets.QMainWindow):
         # Delay for half a second
         self.update_timer.start(500)
 
+
+        # a global to track unsaved changes
+        self.unsaved_changes = False
+
     ######################################################################
     # Test signals
     ######################################################################
@@ -164,14 +168,17 @@ class PlumberManager(QtWidgets.QMainWindow):
     @QtCore.Slot(str)
     def on_nodeCreated(self, nodeName):
         print('node created: {}'.format(nodeName))
+        self.unsaved_changes = True
 
     @QtCore.Slot(str)
     def on_nodeDeleted(self, nodeName):
         print('node deleted: {} '.format(nodeName))
+        self.unsaved_changes = True
 
     @QtCore.Slot(str, str)
     def on_nodeEdited(self, nodeName, newName):
         print('node edited: {0}, new name : {1}'.format(nodeName, newName))
+        self.unsaved_changes = True
 
     #@QtCore.Slot(str)
     def on_nodeSelected(self, nodeNames):
@@ -202,6 +209,7 @@ class PlumberManager(QtWidgets.QMainWindow):
     @QtCore.Slot(str, object)
     def on_nodeMoved(self, nodeName, nodePos):
         print('node {0} moved to {1}'.format(nodeName, nodePos))
+        self.unsaved_changes = True
 
     @QtCore.Slot(str)
     def on_nodeDoubleClick(self, nodeName):
@@ -211,23 +219,28 @@ class PlumberManager(QtWidgets.QMainWindow):
     @QtCore.Slot(str, int)
     def on_attrCreated(self, nodeName, attrId):
         print('attr created : {0} at index : {1}'.format(nodeName, attrId))
+        self.unsaved_changes = True
 
     @QtCore.Slot(str, int)
     def on_attrDeleted(self, nodeName, attrId):
         print('attr Deleted : {0} at old index : {1}'.format(nodeName, attrId))
+        self.unsaved_changes = True
 
     @QtCore.Slot(str, int, int)
     def on_attrEdited(self, nodeName, oldId, newId):
         print('attr Edited : {0} at old index : {1}, new index : {2}'.format(nodeName, oldId, newId))
+        self.unsaved_changes = True
 
     # Connections
     @QtCore.Slot(str, str, str, str)
     def on_connected(self, srcNodeName, srcPlugName, destNodeName, dstSocketName):
         print('connected src: "{0}" at "{1}" to dst: "{2}" at "{3}"'.format(srcNodeName, srcPlugName, destNodeName, dstSocketName))
+        self.unsaved_changes = True
 
     @QtCore.Slot(str, str, str, str)
     def on_disconnected(self, srcNodeName, srcPlugName, destNodeName, dstSocketName):
         print('disconnected src: "{0}" at "{1}" from dst: "{2}" at "{3}"'.format(srcNodeName, srcPlugName, destNodeName, dstSocketName))
+        self.unsaved_changes = True
 
     # Graph
     @QtCore.Slot()
@@ -250,6 +263,27 @@ class PlumberManager(QtWidgets.QMainWindow):
     @QtCore.Slot(object)
     def on_keyPressed(self, key):
         print('key pressed : {}'.format(key))
+
+    def closeEvent(self, event):
+
+        if not self.unsaved_changes:
+            event.accept()
+            return
+        
+        reply = QtWidgets.QMessageBox.question(
+            self,
+            "Unsaved Changes!",
+            (
+                "You have unsaved changes in the editor.\n"
+                "Do you want to close anyway and lose the changes?"
+            ),
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+        )
+
+        if reply == QtWidgets.QMessageBox.Yes:
+            event.accept()  # Allow the window to close
+        else:
+            event.ignore()  # Ignore the close event
 
     def _checkForUpdates(self):
         """
@@ -354,6 +388,8 @@ class PlumberManager(QtWidgets.QMainWindow):
                 name=processName, preset='node_preset_1', position=None
             )
 
+            self.unsaved_changes = True
+
     def about(self):
 
         QtWidgets.QMessageBox.information(
@@ -371,6 +407,21 @@ class PlumberManager(QtWidgets.QMainWindow):
 
     def openGraph(self):
 
+        if self.unsaved_changes:
+            reply = QtWidgets.QMessageBox.question(
+                self,
+                "Unsaved Changes!",
+                (
+                    "You have unsaved changes in the editor.\n"
+                    "Do you want to open a new file and lose the changes?"
+                ),
+                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+            )
+
+            if reply == QtWidgets.QMessageBox.No:
+                return
+
+
         samples_dir = os.path.join(
             PROJECT_DIR, "samples"
         )
@@ -379,9 +430,14 @@ class PlumberManager(QtWidgets.QMainWindow):
             self, 'Open Graph file', samples_dir, ("Graph (*.gph)")
         )
 
+        if not path:
+            return
+
         self.nodz.clearGraph()
         self.nodz.loadGraph(filePath=path)
         self.nodz._focus()
+
+        self.unsaved_changes = False
 
     def saveGraph(self):
 
@@ -390,6 +446,8 @@ class PlumberManager(QtWidgets.QMainWindow):
         )
 
         self.nodz.saveGraph(filePath=path)
+
+        self.unsaved_changes = False
 
     @staticmethod
     def layoutGraphForNodz(nodz):
