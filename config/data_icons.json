@@ -106,5 +106,53 @@
         "description": "", 
         "path": "./resources/data_type_icons/psd.png", 
         "type": "PSD"
+    },
+    {
+        "code": "blend", 
+        "description": "", 
+        "path": "./resources/data_type_icons/blend.png", 
+        "type": "BLEND"
+    },
+    {
+        "code": "bvh", 
+        "description": "", 
+        "path": "./resources/data_type_icons/bvh.png", 
+        "type": "BVH"
+    },
+    {
+        "code": "gltf", 
+        "description": "", 
+        "path": "./resources/data_type_icons/gltf.png", 
+        "type": "GLTF"
+    },
+    {
+        "code": "kiko", 
+        "description": "", 
+        "path": "./resources/data_type_icons/kiko.png", 
+        "type": "KIKO"
+    },
+    {
+        "code": "pdf", 
+        "description": "", 
+        "path": "./resources/data_type_icons/pdf.png", 
+        "type": "PDF"
+    },
+    {
+        "code": "ptex", 
+        "description": "", 
+        "path": "./resources/data_type_icons/ptex.png", 
+        "type": "PTEX"
+    },
+    {
+        "code": "wav", 
+        "description": "", 
+        "path": "./resources/data_type_icons/wav.png", 
+        "type": "WAV"
+    },
+    {
+        "code": "hda", 
+        "description": "", 
+        "path": "./resources/data_type_icons/hda.png", 
+        "type": "HDA"
     }
 ]
