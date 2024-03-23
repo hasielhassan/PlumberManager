@@ -18,8 +18,8 @@ import pygraphviz
 
 from packaging import version as packaging_version
 
-import Nodz
-from Nodz import nodz_main
+from .thirdparty.Nodz import Nodz
+from .thirdparty.Nodz.Nodz import nodz_main
 
 import Qt
 from Qt import QtCore, QtGui, QtWidgets, QtSvg
@@ -49,6 +49,11 @@ class PlumberManager(QtWidgets.QMainWindow):
     data_types = {}
 
     def __init__(self, parent=None):
+        """Initialize the manager window
+            
+            Args:
+                parent: parent widget
+        """
 
         super(PlumberManager, self).__init__(parent)
 
@@ -182,12 +187,13 @@ class PlumberManager(QtWidgets.QMainWindow):
 
     #@QtCore.Slot(str)
     def on_nodeSelected(self, nodeNames):
+
         print('node selected: {}'.format(nodeNames))
 
         layout = self.ui.details_panel.layout()
         current_items = layout.count()
 
-        if current_items > 1:
+        if current_items > 0:
 
             items = [layout.itemAt(i) for i in range(layout.count())]
 
@@ -630,6 +636,21 @@ class ProcessDetails(QtWidgets.QWidget):
         position = self.node.scenePos()
         self.ui.coords_display.setText("%s, %s" % (position.x(), position.y()))
 
+        self.ui.process_details = QtWidgets.QTextBrowser(self)
+        process_details_text = self.node.metadata.get("process_details", "")
+        self.ui.process_details.setText(process_details_text)
+
+        # set the text browser to be editable
+        self.ui.process_details.setReadOnly(False)
+        self.ui.process_details.setOpenExternalLinks(True)
+        self.ui.proocess_details_label = QtWidgets.QLabel(self)
+        self.ui.proocess_details_label.setText("Process Details: ")
+        self.ui.group_box.layout().addWidget(self.ui.proocess_details_label)
+        self.ui.group_box.layout().addWidget(self.ui.process_details)
+
+        # finally connect the objects
+        # starting from text browser updates to a function
+        self.ui.process_details.textChanged.connect(self.updateProcessDetails)
         self.ui.create_input_btn.clicked.connect(self.createInput)
         self.ui.create_output_btn.clicked.connect(self.createOutput)
         self.ui.name_edit.returnPressed.connect(self.updateName)
@@ -646,6 +667,15 @@ class ProcessDetails(QtWidgets.QWidget):
         for outputSlot in self.node.plugs:
             slot = SlotDetails(self.node.plugs[outputSlot], self, area_layout)
             area_layout.addWidget(slot)
+
+    def updateProcessDetails(self):
+        """
+        Updates the process details of the node
+        """
+
+        text = self.ui.process_details.toPlainText()
+
+        self.node.metadata["process_details"] = text
 
     def createInput(self):
         message = "Type a name for the input an select its data type."
@@ -696,10 +726,20 @@ class ProcessDetails(QtWidgets.QWidget):
         self.ui.group_box.setTitle(newName)
         self.nodz.scene().updateScene()
 
-
 class SlotDetails(QtWidgets.QWidget):
 
     def __init__(self, slot, node_details, layout):
+        """
+        Initializes the SlotDetails object
+
+        Args:
+            slot (Slot): The slot object representing the details of the slot.
+            node_details (NodeDetails): The node details object containing the data types.
+            layout (Layout): The layout object for the slot details form.
+
+        Returns:
+            None
+        """
 
         super(SlotDetails, self).__init__()
 
@@ -772,10 +812,21 @@ class SlotDetails(QtWidgets.QWidget):
     def moveDown(self):
         self.reorder(1)
 
-
 class UserInputsDialog(QtWidgets.QDialog):
 
     def __init__(self, title, message, data_types, parent=None):
+        """
+        Initializes a UserInputsDialog object.
+
+        Args:
+            title (str): The title of the dialog window.
+            message (str): The message to display in the dialog.
+            data_types (dict): A dictionary containing the data types and their corresponding icon paths.
+            parent (QWidget, optional): The parent widget of the dialog. Defaults to None.
+
+        Returns:
+            None
+        """
         super(UserInputsDialog, self).__init__(parent=parent)
 
         self.setWindowTitle(title)
@@ -807,10 +858,21 @@ class UserInputsDialog(QtWidgets.QDialog):
 
         return self.input_name.text(), self.data_type.currentText()
     
-
 class IsolatedViewDialog(QtWidgets.QDialog):
 
     def __init__(self, title, data, parent=None):
+        """
+        Initializes an IsolatedViewDialog object.
+
+        Args:
+            title (str): The title of the dialog.
+            data: The data to be loaded into the network.
+            parent (QWidget, optional): The parent widget of the dialog. 
+                                        Defaults to None.
+
+        Returns:
+            None
+        """
         super(IsolatedViewDialog, self).__init__(parent=parent)
 
         self.setWindowTitle(title)
@@ -842,7 +904,17 @@ class IsolatedViewDialog(QtWidgets.QDialog):
         self.setLayout(layout)
 
     def setupAttr(self, node, attr, attr_type, attr_data):
-
+        """
+        Creates and sets up attributes for a given node.
+        
+        :param node: The node for which the attributes are being set up
+        :param attr: The name of the attribute
+        :param attr_type: The type of the attribute, either 'input' or 'output'
+        :param attr_data: The data associated with the attribute, including 
+                          dataType and connectionIcon
+        
+        :return: None
+        """
         socket = True if attr_type == 'input' else False
         plug = True if attr_type == 'output' else False
         attr_preset = 'attr_preset_1' if attr_type == 'input' else 'attr_preset_2'

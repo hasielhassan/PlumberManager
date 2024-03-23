@@ -43,12 +43,13 @@ All that is what Plumber Manager its aming to offer.
 
 - [X] Allow to update connection names on existing nodes
 - [ ] Allow to update connection data types on existing nodes
-- [ ] Display the data type icons on the node slot names
+- [X] Display the data type icons on the node slot names
 - [X] Option to preview isolated view of a selected node and just its direct connections
-- [x] Save relative icons paths on graph files
-- [ ] Fix properties panel to not display duplicated widgets after selection
+- [X] Save relative icons paths on graph files
+- [X] Fix properties panel to not display duplicated widgets after selection
 - [ ] Improve connections ordering functionality
-- [ ] Allow for process and input/output descriptions, with support for markdown
+- [X] Allow for process text descriptions
+- [ ] Process description with support for markdown
 - [ ] Add export documentation functionality, that expots an html or markdown document with all processes and its inputs and outputs
 
 And if you have an idea for something else, create a feature request in the form of an issue !
