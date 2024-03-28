@@ -13,13 +13,16 @@ import json
 import pprint
 import tempfile
 import requests
+import threading
 import webbrowser
 import qdarkstyle
 import pygraphviz
 import reportlab
 import reportlab.lib
+import reportlab.pdfbase
 import reportlab.platypus 
 import reportlab.rl_config
+import reportlab.pdfbase.ttfonts
 
 from packaging import version as packaging_version
 
@@ -33,6 +36,8 @@ from .ui.manager_form import Ui_MainWindow as manager_form
 from .ui.node_details_form import Ui_Form as node_details_form
 from .ui.slot_details_form import Ui_Form as slot_details_form
 
+CACHE = threading.local()
+CACHE.data_types = {}
 PROJECT_DIR = os.path.dirname(os.path.dirname(__file__))
 
 with open(os.path.join(PROJECT_DIR, 'VERSION'), 'r') as file:
@@ -369,6 +374,11 @@ class PlumberManager(QtWidgets.QMainWindow):
     def loadDataTypes(cls, nodz):
         """
         """
+
+        if hasattr(CACHE, 'data_types') and CACHE.data_types:
+            cls.data_types = CACHE.data_types
+            return cls.data_types
+
         contents = open(cls.data_icons_path, "r").read()
         config = json.loads(contents)
 
@@ -394,6 +404,8 @@ class PlumberManager(QtWidgets.QMainWindow):
                 print("Absolute path: {}".format(path))
 
             cls.data_types[name] = (dtype, path)
+        
+        CACHE.data_types = cls.data_types
 
         print(pprint.pformat(cls.data_types))
 
@@ -498,20 +510,7 @@ class PlumberManager(QtWidgets.QMainWindow):
     def layoutGraph(self):
         self.layoutGraphForNodz(self.nodz)
 
-    def isolateSelected(self):
-
-        selected_nodes = self.nodz.scene().selectedItems()
-
-        if not selected_nodes or len(selected_nodes) > 1:
-            QtWidgets.QMessageBox.warning(
-                self, "No selected nodes!",
-                (
-                    "Isolate Selected needs one selected node!"
-                )
-            )
-            return
-        
-        node = selected_nodes[0]
+    def __buildNodeIsolationData(self, node):
 
         data = {
             "node": node.name,
@@ -536,6 +535,25 @@ class PlumberManager(QtWidgets.QMainWindow):
                 for n, p in node.plugs.items()
             },
         }
+
+        return data
+
+    def isolateSelected(self):
+
+        selected_nodes = self.nodz.scene().selectedItems()
+
+        if not selected_nodes or len(selected_nodes) > 1:
+            QtWidgets.QMessageBox.warning(
+                self, "No selected nodes!",
+                (
+                    "Isolate Selected needs one selected node!"
+                )
+            )
+            return
+        
+        node = selected_nodes[0]
+
+        data = self.__buildNodeIsolationData(node)
         
         isolated_view = IsolatedViewDialog(
             "Isolated View of {}".format(node.name), 
@@ -545,7 +563,6 @@ class PlumberManager(QtWidgets.QMainWindow):
 
     def __getBackgroundColor(self):
         style_sheet = self.nodz.styleSheet()
-        print(style_sheet)
         pattern = r'background: *rgb\((\d+), *(\d+), *(\d+), *(\d+)\)'
         match = re.search(pattern, style_sheet)
 
@@ -609,8 +626,18 @@ class PlumberManager(QtWidgets.QMainWindow):
         Paragraph = reportlab.platypus.Paragraph
         Image = reportlab.platypus.Image
         Spacer = reportlab.platypus.Spacer 
+        PageBreak = reportlab.platypus.PageBreak
 
+        # A custom font to support emojis on "Normal" text
+        font_file = os.path.join(
+            PROJECT_DIR, "resources", "Symbola.ttf"
+        )
+        font = reportlab.pdfbase.ttfonts.TTFont(
+            'Symbola', font_file
+        )
+        reportlab.pdfbase.pdfmetrics.registerFont(font)
         styles  = reportlab.lib.styles.getSampleStyleSheet()
+        styles["Normal"].fontName = 'Symbola'
 
         inch = reportlab.lib.units.inch
         defaultPageSize = reportlab.rl_config.defaultPageSize
@@ -618,6 +645,17 @@ class PlumberManager(QtWidgets.QMainWindow):
         width = defaultPageSize[0]
 
         def coverPage(canvas, doc):
+            
+            canvas.saveState()
+            canvas.setFillColorCMYK(0.21,0.11,0.0,0.63)
+            canvas.rect(
+                0,0,
+                doc.width+doc.leftMargin+doc.rightMargin,
+                doc.height+doc.topMargin+doc.bottomMargin, 
+                fill=True, stroke=False
+            )
+            canvas.restoreState()
+            
             canvas.saveState()
             canvas.setFont('Times-Bold',16)
             canvas.drawCentredString(width/2.0, hight-108, title)
@@ -628,6 +666,17 @@ class PlumberManager(QtWidgets.QMainWindow):
             canvas.restoreState()
 
         def processPage(canvas, doc):
+            
+            canvas.saveState()
+            canvas.setFillColorCMYK(0.21,0.11,0.0,0.63)
+            canvas.rect(
+                0,0,
+                doc.width+doc.leftMargin+doc.rightMargin,
+                doc.height+doc.topMargin+doc.bottomMargin, 
+                fill=True, stroke=False
+            )
+            canvas.restoreState()
+
             canvas.saveState()
             canvas.setFont('Times-Roman',9)
             canvas.drawString(
@@ -642,21 +691,21 @@ class PlumberManager(QtWidgets.QMainWindow):
         tmp_path = os.path.join(tmp_dir, 'tmp.png')
         self.__exportPNG(rect, tmp_path)
         ratio = float(rect.width() / rect.height())
-        print("Image Ratio: {}".format(ratio))
         max_width = (width - 100)
         max_height = max_width / ratio
         image = Image(tmp_path, width=max_width, height=max_height)  
 
         # build teh document template
         doc = SimpleDocTemplate(path)
-        style = styles["Normal"]
 
         # and start a list with the contents
         flowables = [
             Spacer(1,2*inch),
             image,
-            Spacer(1,2*inch),
+            PageBreak(),
         ]
+
+        data_icon = '<img src="{}" height="{}" width="{}"/>'
         
         for i, node_name in enumerate(self.nodz.scene().nodes.keys()):
 
@@ -664,29 +713,60 @@ class PlumberManager(QtWidgets.QMainWindow):
 
             process_title = Paragraph(
                 (
-                    "<font size=14><b>This is {} Process</b></font>"
-                ).format(node_name), style
+                    "<b>This is {} Process</b>"
+                ).format(node_name), styles["Heading1"]
             )
             flowables.append(process_title)
             flowables.append(Spacer(1,0.4*inch))
 
+
+            data = self.__buildNodeIsolationData(node)
+            isolated_view = IsolatedViewDialog(
+                "Isolated View of {}".format(node.name), 
+                data, parent=self
+            )
+
+            # create a temporary file for the png export
+            tmp_dir = tempfile.mkdtemp()
+            tmp_path = os.path.join(tmp_dir, 'tmp.png')
+            isolated_view.exportPNG(tmp_path)
+            ratio = float(
+                isolated_view.nodz.scene().itemsBoundingRect().width() / 
+                isolated_view.nodz.scene().itemsBoundingRect().height()
+            )
+            max_width = (width - 300)
+            max_height = max_width / ratio
+            image = Image(tmp_path, width=max_width, height=max_height) 
+
+            flowables.append(Spacer(1,0.4*inch))
+            flowables.append(image)
+            flowables.append(Spacer(1,0.4*inch))
+
             inputs_title = Paragraph(
-                "<b>Inputs:</b>", style
+                "<b>Inputs:</b>", styles["Heading2"]
             )
             flowables.append(inputs_title)
             flowables.append(Spacer(1,0.1*inch))
 
             for name, s in node.sockets.items():
-
                 data_type = [
-                    n for n, d in self.data_types.items() 
+                    (n,d[1]) for n, d in self.data_types.items() 
                     if d[0] == s.dataType
-                ][0]
+                ]
+                if data_type:
+                    data_type = data_type[0]
+                else:
+                    data_type = "Unknown"
 
                 input_paragraph = Paragraph(
-                        "- {} ({})".format(
-                        name.title(), data_type
-                    ), style
+                        "- {} ({} {})".format(
+                        name.title(), data_type[0], 
+                        data_icon.format(
+                            data_type[1],
+                            styles["Heading4"].fontSize + 4,
+                            styles["Heading4"].fontSize + 2,
+                        )
+                    ), styles["Heading4"]
                 )
                 flowables.append(input_paragraph)
                 flowables.append(Spacer(1,0.1*inch))
@@ -694,21 +774,30 @@ class PlumberManager(QtWidgets.QMainWindow):
             flowables.append(Spacer(1,0.2*inch))
 
             outputs_title = Paragraph(
-                "<b>Outputs:</b>", style
+                "<b>Outputs:</b>", styles["Heading2"]
             )
             flowables.append(outputs_title)
             flowables.append(Spacer(1,0.1*inch))
-            for name, s in node.sockets.items():
+            for name, s in node.plugs.items():
 
                 data_type = [
-                    n for n, d in self.data_types.items() 
+                    (n,d[1]) for n, d in self.data_types.items() 
                     if d[0] == s.dataType
-                ][0]
+                ]
+                if data_type:
+                    data_type = data_type[0]
+                else:
+                    data_type = "Unknown"
 
                 output_paragraph = Paragraph(
-                        "- {} ({})".format(
-                        name.title(), data_type
-                    ), style
+                        "- {} ({} {})".format(
+                        name.title(), data_type[0],
+                        data_icon.format(
+                            data_type[1], 
+                            styles["Heading4"].fontSize + 4, 
+                            styles["Heading4"].fontSize + 2,
+                        )
+                    ), styles["Heading4"]
                 )
                 flowables.append(output_paragraph)
                 flowables.append(Spacer(1,0.1*inch))
@@ -716,7 +805,7 @@ class PlumberManager(QtWidgets.QMainWindow):
             flowables.append(Spacer(1,0.2*inch))
 
             process_details = Paragraph(
-                "<b>Process Details:</b>", style
+                "<b>Process Details:</b>", styles["Heading2"]
             )
             flowables.append(process_details)
             flowables.append(Spacer(1,0.1*inch))
@@ -724,12 +813,12 @@ class PlumberManager(QtWidgets.QMainWindow):
             process_details = node.metadata["process_details"].split("\n")
             for details_section in process_details:
                 details_paragraph = Paragraph(
-                    details_section
+                    details_section, styles["Normal"]
                 )
                 flowables.append(details_paragraph)
                 flowables.append(Spacer(1,0.1*inch))
             
-            flowables.append(Spacer(1,0.4*inch))
+            flowables.append(PageBreak())
 
         doc.build(
             flowables, 
@@ -743,8 +832,6 @@ class PlumberManager(QtWidgets.QMainWindow):
             self, 'Export Graph {}'.format(image_format.upper()), 
             os.path.expanduser('~'), ("Image (*.{})".format(image_format))
         )
-
-        print(path)
 
         # Calculate the bounding rectangle of all visible items
         visible_rect = self.nodz.scene().itemsBoundingRect()
@@ -1143,3 +1230,57 @@ class IsolatedViewDialog(QtWidgets.QDialog):
             self.setupAttr(node, output, "output", output_data)
 
         PlumberManager.layoutGraphForNodz(self.nodz)
+
+    def __getBackgroundColor(self):
+        style_sheet = self.nodz.styleSheet()
+        pattern = r'background: *rgb\((\d+), *(\d+), *(\d+), *(\d+)\)'
+        match = re.search(pattern, style_sheet)
+
+        if match:
+            r, g, b, a = map(int, match.groups())
+            return (r, g, b, a)
+        else:
+            return None
+    def exportPNG(self, path):
+
+        # Calculate the bounding rectangle of all visible items
+        visible_rect = self.nodz.scene().itemsBoundingRect()
+
+        # Modify the top edge of the QRectF to include extra information
+        visible_rect.setTop(visible_rect.top() - 25)
+        visible_rect.setBottom(visible_rect.bottom() + 5)
+
+        # set current bg color to transparent
+        current_bg_color = self.__getBackgroundColor()
+        self.nodz.setStyleSheet("background: rgb(0,0,0,0)")
+
+        self.nodz.gridVisToggle = False
+
+        # Create a QImage with the desired size
+        width = visible_rect.width()
+        height = visible_rect.height()
+        image = QtGui.QImage(
+            width*2, height*2, 
+            QtGui.QImage.Format_ARGB32_Premultiplied
+        )
+
+        # Create a QPainter and set the QImage as its rendering target
+        painter = QtGui.QPainter(image)
+
+        # Render the QGraphicsScene onto the QImage
+        self.nodz.scene().render(
+            painter, image.rect(), visible_rect
+        )
+
+        # Finish painting
+        painter.end()
+
+        # Save the QImage to a file
+        image.save(path)
+
+        # restore the original bg color
+        self.nodz.setStyleSheet(
+            "background: rgb({}, {}, {}, {})".format(*current_bg_color)
+        )
+
+        self.nodz.gridVisToggle = True
