@@ -11,10 +11,15 @@ import os
 import re
 import json
 import pprint
+import tempfile
 import requests
 import webbrowser
 import qdarkstyle
 import pygraphviz
+import reportlab
+import reportlab.lib
+import reportlab.platypus 
+import reportlab.rl_config
 
 from packaging import version as packaging_version
 
@@ -97,6 +102,10 @@ class PlumberManager(QtWidgets.QMainWindow):
             lambda : self.renderGraph('svg')
         )
 
+        self.ui.actionExportPDF.triggered.connect(
+            lambda : self.renderGraph('pdf')
+        )
+
         self.ui.create_process_btn.clicked.connect(self.createProcess)
         self.ui.layout_graph_btn.clicked.connect(self.layoutGraph)
         self.ui.isolate_selected_btn.clicked.connect(self.isolateSelected)
@@ -164,6 +173,9 @@ class PlumberManager(QtWidgets.QMainWindow):
 
         # a global to track unsaved changes
         self.unsaved_changes = False
+
+        # start maximized
+        self.showMaximized()
 
     ######################################################################
     # Test signals
@@ -542,6 +554,188 @@ class PlumberManager(QtWidgets.QMainWindow):
             return (r, g, b, a)
         else:
             return None
+        
+    def __exportSVG(self, rect, path):
+            
+        # Create a QSvgGenerator and configure it
+        svg_generator = QtSvg.QSvgGenerator()
+        svg_generator.setFileName(path)
+        svg_generator.setViewBox(rect)
+        svg_generator.setSize(rect.size().toSize())
+        # You can adjust other settings like resolution and title here
+
+        # Create a QPainter and set the QSvgGenerator as its output device
+        painter = QtGui.QPainter()
+        painter.begin(svg_generator)
+
+        # Render the QGraphicsScene using the QPainter
+        self.nodz.scene().render(
+            painter, svg_generator.viewBox(), rect
+        )
+
+        # Finish painting and save the SVG file
+        painter.end()
+
+    def __exportPNG(self, rect, path):
+        # Create a QImage with the desired size
+        width = rect.width()
+        height = rect.height()
+        image = QtGui.QImage(
+            width*2, height*2, 
+            QtGui.QImage.Format_ARGB32_Premultiplied
+        )
+
+        # Create a QPainter and set the QImage as its rendering target
+        painter = QtGui.QPainter(image)
+
+        # Render the QGraphicsScene onto the QImage
+        self.nodz.scene().render(
+            painter, image.rect(), rect
+        )
+
+        # Finish painting
+        painter.end()
+
+        # Save the QImage to a file
+        image.save(path)
+
+    def __exportPDF(self, rect, path):
+
+        # create a reportlab PDF canvas
+        title = "Pipeline Document"
+        pageinfo = "Plumber Manager v{}".format(self.version)
+
+        SimpleDocTemplate = reportlab.platypus.SimpleDocTemplate
+        Paragraph = reportlab.platypus.Paragraph
+        Image = reportlab.platypus.Image
+        Spacer = reportlab.platypus.Spacer 
+
+        styles  = reportlab.lib.styles.getSampleStyleSheet()
+
+        inch = reportlab.lib.units.inch
+        defaultPageSize = reportlab.rl_config.defaultPageSize
+        hight = defaultPageSize[1]
+        width = defaultPageSize[0]
+
+        def coverPage(canvas, doc):
+            canvas.saveState()
+            canvas.setFont('Times-Bold',16)
+            canvas.drawCentredString(width/2.0, hight-108, title)
+            canvas.setFont('Times-Roman',9)
+            canvas.drawString(
+                inch, 0.75 * inch, "Made with %s" % pageinfo
+            )
+            canvas.restoreState()
+
+        def processPage(canvas, doc):
+            canvas.saveState()
+            canvas.setFont('Times-Roman',9)
+            canvas.drawString(
+                inch, 0.75 * inch, 
+                "Page %d %s" % (doc.page - 1, pageinfo)
+            )
+            canvas.restoreState()
+
+        # create a temporary file for the png export
+        # reportlab doesnt support the use of svg
+        tmp_dir = tempfile.mkdtemp()
+        tmp_path = os.path.join(tmp_dir, 'tmp.png')
+        self.__exportPNG(rect, tmp_path)
+        ratio = float(rect.width() / rect.height())
+        print("Image Ratio: {}".format(ratio))
+        max_width = (width - 100)
+        max_height = max_width / ratio
+        image = Image(tmp_path, width=max_width, height=max_height)  
+
+        # build teh document template
+        doc = SimpleDocTemplate(path)
+        style = styles["Normal"]
+
+        # and start a list with the contents
+        flowables = [
+            Spacer(1,2*inch),
+            image,
+            Spacer(1,2*inch),
+        ]
+        
+        for i, node_name in enumerate(self.nodz.scene().nodes.keys()):
+
+            node = self.nodz.scene().nodes[node_name]
+
+            process_title = Paragraph(
+                (
+                    "<font size=14><b>This is {} Process</b></font>"
+                ).format(node_name), style
+            )
+            flowables.append(process_title)
+            flowables.append(Spacer(1,0.4*inch))
+
+            inputs_title = Paragraph(
+                "<b>Inputs:</b>", style
+            )
+            flowables.append(inputs_title)
+            flowables.append(Spacer(1,0.1*inch))
+
+            for name, s in node.sockets.items():
+
+                data_type = [
+                    n for n, d in self.data_types.items() 
+                    if d[0] == s.dataType
+                ][0]
+
+                input_paragraph = Paragraph(
+                        "- {} ({})".format(
+                        name.title(), data_type
+                    ), style
+                )
+                flowables.append(input_paragraph)
+                flowables.append(Spacer(1,0.1*inch))
+            
+            flowables.append(Spacer(1,0.2*inch))
+
+            outputs_title = Paragraph(
+                "<b>Outputs:</b>", style
+            )
+            flowables.append(outputs_title)
+            flowables.append(Spacer(1,0.1*inch))
+            for name, s in node.sockets.items():
+
+                data_type = [
+                    n for n, d in self.data_types.items() 
+                    if d[0] == s.dataType
+                ][0]
+
+                output_paragraph = Paragraph(
+                        "- {} ({})".format(
+                        name.title(), data_type
+                    ), style
+                )
+                flowables.append(output_paragraph)
+                flowables.append(Spacer(1,0.1*inch))
+            
+            flowables.append(Spacer(1,0.2*inch))
+
+            process_details = Paragraph(
+                "<b>Process Details:</b>", style
+            )
+            flowables.append(process_details)
+            flowables.append(Spacer(1,0.1*inch))
+            
+            process_details = node.metadata["process_details"].split("\n")
+            for details_section in process_details:
+                details_paragraph = Paragraph(
+                    details_section
+                )
+                flowables.append(details_paragraph)
+                flowables.append(Spacer(1,0.1*inch))
+            
+            flowables.append(Spacer(1,0.4*inch))
+
+        doc.build(
+            flowables, 
+            onFirstPage=coverPage, 
+            onLaterPages=processPage
+        )
 
     def renderGraph(self, image_format):
 
@@ -549,6 +743,8 @@ class PlumberManager(QtWidgets.QMainWindow):
             self, 'Export Graph {}'.format(image_format.upper()), 
             os.path.expanduser('~'), ("Image (*.{})".format(image_format))
         )
+
+        print(path)
 
         # Calculate the bounding rectangle of all visible items
         visible_rect = self.nodz.scene().itemsBoundingRect()
@@ -564,48 +760,13 @@ class PlumberManager(QtWidgets.QMainWindow):
         self.nodz.gridVisToggle = False
 
         if image_format == 'png':
-            # Create a QImage with the desired size
-            width = visible_rect.width()
-            height = visible_rect.height()
-            image = QtGui.QImage(
-                width*2, height*2, 
-                QtGui.QImage.Format_ARGB32_Premultiplied
-            )
-
-            # Create a QPainter and set the QImage as its rendering target
-            painter = QtGui.QPainter(image)
-
-            # Render the QGraphicsScene onto the QImage
-            self.nodz.scene().render(
-                painter, image.rect(), visible_rect
-            )
-
-            # Finish painting
-            painter.end()
-
-            # Save the QImage to a file
-            image.save(path)
+            self.__exportPNG(visible_rect, path)
 
         elif image_format == 'svg':
+            self.__exportSVG(visible_rect, path)
 
-            # Create a QSvgGenerator and configure it
-            svg_generator = QtSvg.QSvgGenerator()
-            svg_generator.setFileName(path)
-            svg_generator.setViewBox(visible_rect)
-            svg_generator.setSize(visible_rect.size().toSize())
-            # You can adjust other settings like resolution and title here
-
-            # Create a QPainter and set the QSvgGenerator as its output device
-            painter = QtGui.QPainter()
-            painter.begin(svg_generator)
-
-            # Render the QGraphicsScene using the QPainter
-            self.nodz.scene().render(
-                painter, svg_generator.viewBox(), visible_rect
-            )
-
-            # Finish painting and save the SVG file
-            painter.end()
+        elif image_format == 'pdf':
+            self.__exportPDF(visible_rect, path)         
 
         else:
             pass

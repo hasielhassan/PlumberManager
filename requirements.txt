@@ -9,3 +9,4 @@ pygraphviz
 qdarkstyle
 webbrowser
 packaging
+reportlab

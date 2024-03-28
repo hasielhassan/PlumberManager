@@ -35,6 +35,8 @@
      </property>
      <addaction name="actionExportPNG"/>
      <addaction name="actionExportSVG"/>
+     <addaction name="separator"/>
+     <addaction name="actionExportPDF"/>
     </widget>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
@@ -159,6 +161,11 @@
   <action name="actionExportSVG">
    <property name="text">
     <string>SVG</string>
+   </property>
+  </action>
+  <action name="actionExportPDF">
+   <property name="text">
+    <string>PDF</string>
    </property>
   </action>
  </widget>

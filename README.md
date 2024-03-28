@@ -50,7 +50,7 @@ All that is what Plumber Manager its aming to offer.
 - [ ] Improve connections ordering functionality
 - [X] Allow for process text descriptions
 - [ ] Process description with support for markdown
-- [ ] Add export documentation functionality, that expots an html or markdown document with all processes and its inputs and outputs
+- [ ] Add export documentation functionality, that expots a pdf document with all processes and its inputs and outputs
 
 And if you have an idea for something else, create a feature request in the form of an issue !
 # Development
@@ -60,6 +60,7 @@ And if you have an idea for something else, create a feature request in the form
 - [qdarkstyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet)
 - [Qt.py](https://github.com/mottosso/Qt.py)
 - [pygraphviz](https://github.com/pygraphviz/pygraphviz)
+- [reportlab](https://www.reportlab.com)
 
 It also uses a modified version of Nodz as a git submodule
 - https://github.com/hasielhassan/Nodz
