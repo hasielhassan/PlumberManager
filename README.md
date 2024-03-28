@@ -59,10 +59,17 @@ And if you have an idea for something else, create a feature request in the form
 - PyQt5 or PySide2
 - [qdarkstyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet)
 - [Qt.py](https://github.com/mottosso/Qt.py)
-- [Nodz (modified version)](https://github.com/hasielhassan/Nodz)
 - [pygraphviz](https://github.com/pygraphviz/pygraphviz)
 
+It also uses a modified version of Nodz as a git submodule
+- https://github.com/hasielhassan/Nodz
+
 ## Setup and run
+
+After clonning the repo, initialize the corresponding git submodule for Nodz
+```
+git submodule init
+```
 
 Install the dependencies on the `requirements.txt` file
 ```
