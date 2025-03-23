@@ -50,7 +50,7 @@ All that is what Plumber Manager its aming to offer.
 - [ ] Improve connections ordering functionality
 - [X] Allow for process text descriptions
 - [ ] Process description with support for markdown
-- [ ] Add export documentation functionality, that expots a pdf document with all processes and its inputs and outputs
+- [X] Add export documentation functionality, that expots a pdf document with all processes and its inputs and outputs
 
 And if you have an idea for something else, create a feature request in the form of an issue !
 # Development
