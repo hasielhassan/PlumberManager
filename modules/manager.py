@@ -1015,6 +1015,7 @@ class SlotDetails(QtWidgets.QWidget):
 
         if current_data_type:
             self.ui.data_type.setCurrentText(current_data_type[0])
+        self.ui.data_type.activated.connect(self.updateDataType)
 
         self.ui.down_btn.setText("")
         self.ui.up_btn.setText("")
@@ -1032,6 +1033,15 @@ class SlotDetails(QtWidgets.QWidget):
 
         self.ui.up_btn.clicked.connect(self.moveUp)
         self.ui.down_btn.clicked.connect(self.moveDown)
+
+    def updateDataType(self):
+        dataTypeName = self.ui.data_type.currentText()
+        dataType = None
+        self.nodz.editAttribute(
+            self.node_details.node, 
+            self.slot.index, newDataType=dataType
+        )
+        self.nodz.scene().updateScene()
 
     def updateName(self):
         newName = self.ui.slot_name.text()
