@@ -88,7 +88,7 @@ jobs:
       - name: Rename artifact if release
         if: inputs.is_release
         run: |
-          Rename-Item -Path dist/PlumberManager.exe -NewName "PlumberManager-${{ inputs.release_tag }}-win.exe"
+          Rename-Item -Path dist/PlumberManager.exe -NewName "PlumberManager-${{ inputs.release_tag }}-windows.exe"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -149,7 +149,7 @@ jobs:
       - name: Rename binaries for release
         if: inputs.is_release
         run: |
-          mv dist/PlumberManager PlumberManager-${{ inputs.release_tag }}-linux
+          mv dist/PlumberManager PlumberManager-${{ inputs.release_tag }}-rocky8
 
       - uses: actions/upload-artifact@v4
         with:
@@ -163,7 +163,9 @@ jobs:
           curl -Lo appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage 
           chmod +x appimagetool
           mkdir -p AppDir/usr/bin
-          cp -r dist/PlumberManager AppDir/usr/bin/
+          cp -r dist/PlumberManager* AppDir/usr/bin/
+          chmod -R +x AppDir/usr/bin
+          ln -s usr/bin/PlumberManager AppDir/AppRun
           cp "$GITHUB_WORKSPACE/resources/icon_256.png" AppDir/plumbermanager.png
           cat > AppDir/plumbermanager.desktop <<EOF
           [Desktop Entry]
@@ -171,7 +173,7 @@ jobs:
           Name=PlumberManager
           Exec=PlumberManager
           Icon=plumbermanager
-          Categories=Utility;
+          Categories=Utility
           EOF
           ./appimagetool --appimage-extract-and-run AppDir PlumberManager-x86_64.AppImage
           echo "Current dir: $(pwd)"
@@ -181,7 +183,7 @@ jobs:
       - name: Rename binaries for release
         if: inputs.is_release
         run: |
-          mv PlumberManager-x86_64.AppImage PlumberManager-${{ inputs.release_tag }}.AppImage
+          mv PlumberManager-x86_64.AppImage PlumberManager-${{ inputs.release_tag }}-linux.AppImage
 
       - uses: actions/upload-artifact@v4
         with:
