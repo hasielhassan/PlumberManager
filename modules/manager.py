@@ -9,11 +9,15 @@
 
 import os
 import re
+import sys
 import json
+import types
 import pprint
+import logging
 import tempfile
 import requests
 import threading
+import packaging
 import webbrowser
 import qdarkstyle
 import pygraphviz
@@ -23,6 +27,8 @@ import reportlab.pdfbase
 import reportlab.platypus 
 import reportlab.rl_config
 import reportlab.pdfbase.ttfonts
+
+from logging.handlers import RotatingFileHandler
 
 from packaging import version as packaging_version
 
@@ -36,10 +42,37 @@ from .ui.manager_form import Ui_MainWindow as manager_form
 from .ui.node_details_form import Ui_Form as node_details_form
 from .ui.slot_details_form import Ui_Form as slot_details_form
 
+# create a logger to a user home file
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(formatter)
+# setup rotating file handler
+file_handler = RotatingFileHandler(
+    os.path.expanduser('~') + '/PlumberManager.log', 'a', 1000000, 1
+)
+file_handler.setFormatter(formatter)
+logger.addHandler(stream_handler)
+logger.addHandler(file_handler)
+
+# as a logging test, log all imported modules
+local_modules = {
+    name: obj 
+    for name, obj in globals().items() 
+    if isinstance(obj, types.ModuleType)
+}
+for module in list(local_modules.values()):
+    logger.debug(f'Loaded module: {module}')
+
+# build a cache for data types
 CACHE = threading.local()
 CACHE.data_types = {}
 PROJECT_DIR = os.path.dirname(os.path.dirname(__file__))
 
+# get the version from file
 with open(os.path.join(PROJECT_DIR, 'VERSION'), 'r') as file:
     VERSION = file.read()
 class PlumberManager(QtWidgets.QMainWindow):
@@ -189,23 +222,23 @@ class PlumberManager(QtWidgets.QMainWindow):
     # Nodes
     @QtCore.Slot(str)
     def on_nodeCreated(self, nodeName):
-        print('node created: {}'.format(nodeName))
+        logger.debug('node created: {}'.format(nodeName))
         self.unsaved_changes = True
 
     @QtCore.Slot(str)
     def on_nodeDeleted(self, nodeName):
-        print('node deleted: {} '.format(nodeName))
+        logger.debug('node deleted: {} '.format(nodeName))
         self.unsaved_changes = True
 
     @QtCore.Slot(str, str)
     def on_nodeEdited(self, nodeName, newName):
-        print('node edited: {0}, new name : {1}'.format(nodeName, newName))
+        logger.debug('node edited: {0}, new name : {1}'.format(nodeName, newName))
         self.unsaved_changes = True
 
     #@QtCore.Slot(str)
     def on_nodeSelected(self, nodeNames):
 
-        print('node selected: {}'.format(nodeNames))
+        logger.debug('node selected: {}'.format(nodeNames))
 
         layout = self.ui.details_panel.layout()
         current_items = layout.count()
@@ -231,61 +264,61 @@ class PlumberManager(QtWidgets.QMainWindow):
 
     @QtCore.Slot(str, object)
     def on_nodeMoved(self, nodeName, nodePos):
-        print('node {0} moved to {1}'.format(nodeName, nodePos))
+        logger.debug('node {0} moved to {1}'.format(nodeName, nodePos))
         self.unsaved_changes = True
 
     @QtCore.Slot(str)
     def on_nodeDoubleClick(self, nodeName):
-        print('double click on node : {0}'.format(nodeName))
+        logger.debug('double click on node : {0}'.format(nodeName))
 
     # Attrs
     @QtCore.Slot(str, int)
     def on_attrCreated(self, nodeName, attrId):
-        print('attr created : {0} at index : {1}'.format(nodeName, attrId))
+        logger.debug('attr created : {0} at index : {1}'.format(nodeName, attrId))
         self.unsaved_changes = True
 
     @QtCore.Slot(str, int)
     def on_attrDeleted(self, nodeName, attrId):
-        print('attr Deleted : {0} at old index : {1}'.format(nodeName, attrId))
+        logger.debug('attr Deleted : {0} at old index : {1}'.format(nodeName, attrId))
         self.unsaved_changes = True
 
     @QtCore.Slot(str, int, int)
     def on_attrEdited(self, nodeName, oldId, newId):
-        print('attr Edited : {0} at old index : {1}, new index : {2}'.format(nodeName, oldId, newId))
+        logger.debug('attr Edited : {0} at old index : {1}, new index : {2}'.format(nodeName, oldId, newId))
         self.unsaved_changes = True
 
     # Connections
     @QtCore.Slot(str, str, str, str)
     def on_connected(self, srcNodeName, srcPlugName, destNodeName, dstSocketName):
-        print('connected src: "{0}" at "{1}" to dst: "{2}" at "{3}"'.format(srcNodeName, srcPlugName, destNodeName, dstSocketName))
+        logger.debug('connected src: "{0}" at "{1}" to dst: "{2}" at "{3}"'.format(srcNodeName, srcPlugName, destNodeName, dstSocketName))
         self.unsaved_changes = True
 
     @QtCore.Slot(str, str, str, str)
     def on_disconnected(self, srcNodeName, srcPlugName, destNodeName, dstSocketName):
-        print('disconnected src: "{0}" at "{1}" from dst: "{2}" at "{3}"'.format(srcNodeName, srcPlugName, destNodeName, dstSocketName))
+        logger.debug('disconnected src: "{0}" at "{1}" from dst: "{2}" at "{3}"'.format(srcNodeName, srcPlugName, destNodeName, dstSocketName))
         self.unsaved_changes = True
 
     # Graph
     @QtCore.Slot()
     def on_graphSaved(self):
-        print('graph saved !')
+        logger.debug('graph saved !')
 
     #@QtCore.Slot()
     #def on_graphLoaded(self):
-    #    print('graph loaded !')
+    #    logger.debug('graph loaded !')
 
     @QtCore.Slot()
     def on_graphCleared(self):
-        print('graph cleared !')
+        logger.debug('graph cleared !')
 
     #@QtCore.Slot()
     #def on_graphEvaluated(self):
-    #    print('graph evaluated !')
+    #    logger.debug('graph evaluated !')
 
     # Other
     @QtCore.Slot(object)
     def on_keyPressed(self, key):
-        print('key pressed : {}'.format(key))
+        logger.debug('key pressed : {}'.format(key))
 
     def closeEvent(self, event):
 
@@ -322,7 +355,7 @@ class PlumberManager(QtWidgets.QMainWindow):
                 )
             ).json()
         except Exception as e:
-            print("Failed to check for updates: {}".format(str(e)))
+            logger.debug("Failed to check for updates: {}".format(str(e)))
             return
 
         title = response["name"]
@@ -396,18 +429,18 @@ class PlumberManager(QtWidgets.QMainWindow):
                 nodz.dataTypes[data_type['type']] = dtype
 
             if path.startswith('./'):
-                print("Resolving relative path for: {}".format(path))
+                logger.debug("Resolving relative path for: {}".format(path))
                 path = path.replace('./', '')
                 path = os.path.normpath(
                     os.path.join(PROJECT_DIR, path)
                 )
-                print("Absolute path: {}".format(path))
+                logger.debug("Absolute path: {}".format(path))
 
             cls.data_types[name] = (dtype, path)
         
         CACHE.data_types = cls.data_types
 
-        print(pprint.pformat(cls.data_types))
+        logger.debug(pprint.pformat(cls.data_types))
 
     def createProcess(self):
         processName, ok = QtWidgets.QInputDialog.getText(
@@ -810,7 +843,7 @@ class PlumberManager(QtWidgets.QMainWindow):
             flowables.append(process_details)
             flowables.append(Spacer(1,0.1*inch))
             
-            process_details = node.metadata["process_details"].split("\n")
+            process_details = node.metadata.get("process_details", "").split("\n")
             for details_section in process_details:
                 details_paragraph = Paragraph(
                     details_section, styles["Normal"]
@@ -935,8 +968,8 @@ class ProcessDetails(QtWidgets.QWidget):
             input_name, data_name = dialog.getInputs()
             type_class, type_icon = self.data_types[data_name]
 
-            print("type_class: {}".format(type_class))
-            print("type_icon: {}".format(type_icon))
+            logger.debug("type_class: {}".format(type_class))
+            logger.debug("type_icon: {}".format(type_icon))
 
             self.nodz.createAttribute(
                 node=self.node, name=input_name, 
@@ -956,8 +989,8 @@ class ProcessDetails(QtWidgets.QWidget):
             output_name, data_name = dialog.getInputs()
             type_class, type_icon = self.data_types[data_name]
 
-            print("type_class: {}".format(type_class))
-            print("type_icon: {}".format(type_icon))
+            logger.debug("type_class: {}".format(type_class))
+            logger.debug("type_icon: {}".format(type_icon))
 
             self.nodz.createAttribute(
                 node=self.node, name=output_name, 
@@ -1015,6 +1048,7 @@ class SlotDetails(QtWidgets.QWidget):
 
         if current_data_type:
             self.ui.data_type.setCurrentText(current_data_type[0])
+        self.ui.data_type.activated.connect(self.updateDataType)
 
         self.ui.down_btn.setText("")
         self.ui.up_btn.setText("")
@@ -1032,6 +1066,15 @@ class SlotDetails(QtWidgets.QWidget):
 
         self.ui.up_btn.clicked.connect(self.moveUp)
         self.ui.down_btn.clicked.connect(self.moveDown)
+
+    def updateDataType(self):
+        dataTypeName = self.ui.data_type.currentText()
+        dataType = None
+        self.nodz.editAttribute(
+            self.node_details.node, 
+            self.slot.index, newDataType=dataType
+        )
+        self.nodz.scene().updateScene()
 
     def updateName(self):
         newName = self.ui.slot_name.text()
@@ -1168,7 +1211,7 @@ class IsolatedViewDialog(QtWidgets.QDialog):
         attr_preset = 'attr_preset_1' if attr_type == 'input' else 'attr_preset_2'
         conn_preset = 'attr_preset_2' if attr_type == 'input' else 'attr_preset_1'
 
-        print("Creating {}.{}".format(node.name, attr))
+        logger.debug("Creating {}.{}".format(node.name, attr))
         self.nodz.createAttribute(
             node=node, name=attr, 
             index=-1, preset=attr_preset,
@@ -1181,13 +1224,13 @@ class IsolatedViewDialog(QtWidgets.QDialog):
             if attr_node_name in self.nodz.scene().nodes.keys():
                 attr_node = self.nodz.scene().nodes[attr_node_name]
             else:
-                print("Creating new {} node".format(attr_node_name))
+                logger.debug("Creating new {} node".format(attr_node_name))
                 attr_node = self.nodz.createNode(
                     name=attr_node_name, 
                     preset="node_preset_1", position=None
                 )
 
-            print("Creating {}.{}".format(attr_node_name, attr_attr_name))
+            logger.debug("Creating {}.{}".format(attr_node_name, attr_attr_name))
             self.nodz.createAttribute(
                 node=attr_node, name=attr_attr_name, 
                 index=-1, preset=conn_preset,
@@ -1197,7 +1240,7 @@ class IsolatedViewDialog(QtWidgets.QDialog):
             )
 
             if attr_type == 'input':
-                print("Connecting {}.{} to {}.{}".format(
+                logger.debug("Connecting {}.{} to {}.{}".format(
                     attr_node_name, attr_attr_name,
                     node.name, attr
                 ))
@@ -1206,7 +1249,7 @@ class IsolatedViewDialog(QtWidgets.QDialog):
                     node.name, attr
                 )
             else:
-                print("Connecting {}.{} to {}.{}".format(
+                logger.debug("Connecting {}.{} to {}.{}".format(
                     node.name, attr,
                     attr_node_name, attr_attr_name
                 ))
@@ -1217,7 +1260,7 @@ class IsolatedViewDialog(QtWidgets.QDialog):
 
     def setupNetwork(self, data):
 
-        print(pprint.pformat(data))
+        logger.debug(pprint.pformat(data))
         
         node = self.nodz.createNode(
             name=data["node"], preset="node_preset_1", position=None

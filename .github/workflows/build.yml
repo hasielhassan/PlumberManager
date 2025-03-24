@@ -1,0 +1,16 @@
+name: CI Build and Release
+
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master ]
+  release:
+    types: [created]
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-template.yml
+    with:
+      is_release: ${{ github.event_name == 'release' }}
+      release_tag: ${{ github.event.release.tag_name }}

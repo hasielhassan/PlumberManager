@@ -3,10 +3,11 @@
 
 #### ESSENTIAL LIBRARIES FOR MAIN FUNCTIONALITY ####
 
-PySide2
+PySide6
 Qt.py
 pygraphviz
 qdarkstyle
-webbrowser
+requests
+qtsass
 packaging
 reportlab

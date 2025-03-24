@@ -1,0 +1,191 @@
+name: Build Template (Windows + Linux) (PyInstaller Packages)
+
+on:
+  workflow_call:
+    inputs:
+      is_release:
+        required: false
+        type: boolean
+        default: false
+      release_tag:
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  build-windows:
+    name: Build on Windows (PyInstaller EXE)
+    runs-on: windows-latest  # Use GitHub-hosted Windows runner
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0  # Needed for git history, versioning, and submodules
+
+      - name: Download latest Graphviz Windows ZIP from GitLab
+        run: |
+          $release = (Invoke-RestMethod -Uri "https://gitlab.com/api/v4/projects/4207231/releases")[0]
+          $version = $release.tag_name
+          Write-Host "Latest version: $version"
+          $url = "https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/$version/windows_10_cmake_Release_Graphviz-$version-win64.zip"
+          Write-Host "Downloading from: $url"
+          Invoke-WebRequest $url -OutFile graphviz.zip
+          Expand-Archive graphviz.zip -DestinationPath "$env:GITHUB_WORKSPACE\graphviz"
+          Get-ChildItem "$env:GITHUB_WORKSPACE\graphviz" -Recurse -Directory
+          echo "GRAPHVIZ_ROOT=$env:GITHUB_WORKSPACE\graphviz\Graphviz-$version-win64" >> $env:GITHUB_ENV
+          echo "$env:GITHUB_WORKSPACE\graphviz\Graphviz-$version-win64\bin" >> $env:GITHUB_PATH
+          Write-Host $GRAPHVIZ_ROOT
+          Write-Host $env:GRAPHVIZ_ROOT
+        shell: powershell
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install PyGraphviz
+        run: |
+          Get-ChildItem "$env:GRAPHVIZ_ROOT" -Recurse -Directory
+
+          $includePath="$env:GRAPHVIZ_ROOT\include"
+          $libPath="$env:GRAPHVIZ_ROOT\lib"
+      
+          Write-Host "Using Graphviz include: $includePath"
+          Write-Host "Using Graphviz lib: $libPath"
+
+          $env:INCLUDE=$includePath
+          $env:LIB=$libPath
+
+          Write-Host "Using INCLUDE: $env:INCLUDE"
+          Write-Host "Using LIB: $env:LIB"
+
+          python -m pip install --upgrade pip
+          pip install pygraphviz
+        shell: powershell
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller pyinstaller-versionfile
+        shell: powershell
+
+      - name: Set dynamic version
+        run: |
+          $branch = "${env:GITHUB_HEAD_REF}"
+          if (-not $branch) { $branch = "${env:GITHUB_REF}" -replace 'refs/heads/', '' }
+          $commit = (git rev-parse --short HEAD).Trim()
+          $version = "$branch-$commit"
+          echo $version > $env:GITHUB_WORKSPACE\VERSION
+        shell: powershell
+
+      - name: Build EXE with PyInstaller
+        run: |
+          pyinstaller $env:GITHUB_WORKSPACE\.spec --noconfirm
+        shell: powershell
+
+      - name: Rename artifact if release
+        if: inputs.is_release
+        run: |
+          Rename-Item -Path dist/PlumberManager.exe -NewName "PlumberManager-${{ inputs.release_tag }}-windows.exe"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PlumberManager-Windows
+          path: dist/PlumberManager*.exe
+
+  build-linux:
+    name: Build on Linux (PyInstaller AppImage)
+    runs-on: ubuntu-latest   # Ubuntu runner, will use Rocky Linux container
+    container: 
+      image: rockylinux:8    # Use Rocky Linux 8 for broad compatibility
+    steps:
+
+      - name: Install build tools
+        run: |
+          dnf install -y dnf-plugins-core
+          dnf install -y epel-release
+          dnf config-manager --set-enabled devel
+          dnf install -y git file
+          dnf install -y python3.11 python3.11-pip python3.11-devel 
+          dnf install -y graphviz graphviz-devel 
+          dnf install -y gcc gcc-c++ 
+          dnf install -y libxkbcommon libxkbcommon-x11 xcb-util-wm libglvnd-egl
+          dnf install -y xcb-util-keysyms xcb-util-renderutil vulkan-loader
+          dnf install -y xcb-util-cursor libglvnd libglvnd-glx xcb-util-image
+          dnf install -y mesa-libGL gtk3 cairo-gobject gdk-pixbuf2 libatomic 
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0  # Needed for git history, versioning, and submodules
+
+      - name: Install Python dependencies
+        run: |
+          python3.11 -m pip install --upgrade pip
+          python3.11 -m pip install -r requirements.txt
+          python3.11 -m pip install pyinstaller pyinstaller-versionfile
+        shell: bash
+
+      - name: Set dynamic version
+        run: |
+          branch="${GITHUB_HEAD_REF:-${GITHUB_REF##*/}}"
+          commit="${GITHUB_SHA:0:7}"
+          version="$branch-$commit"
+          echo "$version" > $GITHUB_WORKSPACE/VERSION
+        shell: bash
+
+      - name: Build Linux binary with PyInstaller
+        run: |
+          cd $GITHUB_WORKSPACE
+          python3.11 -m PyInstaller $GITHUB_WORKSPACE/.spec --noconfirm
+          echo "Current dir: $(pwd)"
+          ls -R
+        shell: bash
+
+      - name: Rename binaries for release
+        if: inputs.is_release
+        run: |
+          mv dist/PlumberManager PlumberManager-${{ inputs.release_tag }}-rocky8
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Upload Linux artifact PlumberManager-Linux-ELF
+          path: dist/PlumberManager*
+
+      - name: Package as AppImage
+        run: |
+          dnf install -y file
+          cd $GITHUB_WORKSPACE
+          curl -Lo appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage 
+          chmod +x appimagetool
+          mkdir -p AppDir/usr/bin
+          cp -r dist/PlumberManager* AppDir/usr/bin/
+          chmod -R +x AppDir/usr/bin
+          ln -s usr/bin/PlumberManager AppDir/AppRun
+          cp "$GITHUB_WORKSPACE/resources/icon_256.png" AppDir/plumbermanager.png
+          cat > AppDir/plumbermanager.desktop <<EOF
+          [Desktop Entry]
+          Type=Application
+          Name=PlumberManager
+          Exec=PlumberManager
+          Icon=plumbermanager
+          Categories=Utility
+          EOF
+          ./appimagetool --appimage-extract-and-run AppDir PlumberManager-x86_64.AppImage
+          echo "Current dir: $(pwd)"
+          ls -R
+        shell: bash
+
+      - name: Rename binaries for release
+        if: inputs.is_release
+        run: |
+          mv PlumberManager-x86_64.AppImage PlumberManager-${{ inputs.release_tag }}-linux.AppImage
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Upload Linux artifact PlumberManager-Linux-AppImage
+          path: PlumberManager*.AppImage
