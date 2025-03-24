@@ -77,7 +77,11 @@ jobs:
           dnf install -y python3.11 python3.11-pip python3.11-devel 
           dnf install -y graphviz graphviz-devel 
           dnf install -y gcc gcc-c++ 
-          dnf install -y libglvnd-glx fuse-sshfs
+          dnf install -y libxkbcommon libxkbcommon-x11 xcb-util-wm libglvnd-egl
+          dnf install -y xcb-util-keysyms xcb-util-renderutil vulkan-loader
+          dnf install -y xcb-util-cursor libglvnd libglvnd-glx xcb-util-image
+          dnf install -y mesa-libGL gtk3 cairo-gobject gdk-pixbuf2 libatomic 
+          dnf install -y fuse-sshfs
 
       - name: Checkout code
         uses: actions/checkout@v4
