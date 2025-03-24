@@ -82,7 +82,7 @@ jobs:
           dnf install -y dnf-plugins-core
           dnf install -y epel-release
           dnf config-manager --set-enabled devel
-          dnf install -y git
+          dnf install -y git file
           dnf install -y python3.11 python3.11-pip python3.11-devel 
           dnf install -y graphviz graphviz-devel 
           dnf install -y gcc gcc-c++ 
