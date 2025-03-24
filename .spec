@@ -8,13 +8,6 @@ import datetime
 import pyinstaller_versionfile
 from PyInstaller.utils.hooks import collect_submodules
 
-import PySide6
-import shiboken6
-
-# To collect all Nodz files we need to collect them manually
-from modules.thirdparty.Nodz import Nodz
-Nodz_location = os.path.dirname(Nodz.__file__)
-
 PROJECT_DIR = os.path.dirname(os.path.abspath(
   inspect.getfile(inspect.currentframe()))
 )
@@ -45,12 +38,10 @@ a = Analysis(
         ("resources", "resources"),
         ("samples", "samples"),
         ("VERSION", "."),
-        (Nodz_location, "Nodz"),
     ],
     hiddenimports=all_hidden_imports,
     hookspath=[],
     runtime_hooks=[],
-    #excludes=["PySide6", "shiboken6"],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
     cipher=block_cipher,
