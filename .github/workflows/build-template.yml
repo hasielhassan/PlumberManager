@@ -1,10 +1,16 @@
-name: CI Build (PyInstaller Packages)
+name: Build Template (Windows + Linux) (PyInstaller Packages)
 
 on:
-  pull_request:
-    branches: [ master ]  # or your main development branch
-  push:
-    branches: [ master ]  # (optional) also build on pushes to master
+  workflow_call:
+    inputs:
+      is_release:
+        required: false
+        type: boolean
+        default: false
+      release_tag:
+        required: false
+        type: string
+        default: ""
 
 jobs:
   build-windows:
@@ -79,10 +85,16 @@ jobs:
           pyinstaller $env:GITHUB_WORKSPACE\.spec --noconfirm
         shell: powershell
 
-      - uses: actions/upload-artifact@v4
+      - name: Rename artifact if release
+        if: inputs.is_release
+        run: |
+          Rename-Item -Path dist/PlumberManager.exe -NewName "PlumberManager-${{ inputs.release_tag }}-win.exe"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: Upload Windows artifact PlumberManager-Windows
-          path: dist/PlumberManager.exe
+          name: PlumberManager-Windows
+          path: dist/PlumberManager*.exe
 
   build-linux:
     name: Build on Linux (PyInstaller AppImage)
@@ -134,10 +146,15 @@ jobs:
           ls -R
         shell: bash
 
+      - name: Rename binaries for release
+        if: inputs.is_release
+        run: |
+          mv dist/PlumberManager PlumberManager-${{ inputs.release_tag }}-linux
+
       - uses: actions/upload-artifact@v4
         with:
           name: Upload Linux artifact PlumberManager-Linux-ELF
-          path: dist/PlumberManager
+          path: dist/PlumberManager*
 
       - name: Package as AppImage
         run: |
@@ -161,7 +178,12 @@ jobs:
           ls -R
         shell: bash
 
+      - name: Rename binaries for release
+        if: inputs.is_release
+        run: |
+          mv PlumberManager-x86_64.AppImage PlumberManager-${{ inputs.release_tag }}.AppImage
+
       - uses: actions/upload-artifact@v4
         with:
           name: Upload Linux artifact PlumberManager-Linux-AppImage
-          path: PlumberManager-x86_64.AppImage
+          path: PlumberManager*.AppImage
