@@ -70,7 +70,6 @@ jobs:
       - name: Enable devel repo (required for graphviz-devel)
         run: |
           dnf install -y dnf-plugins-core
-          dnf config-manager --set-enabled crb
           dnf config-manager --set-enabled devel
 
       - name: Install build tools
