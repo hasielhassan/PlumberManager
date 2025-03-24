@@ -43,17 +43,17 @@ all_hidden_imports += collect_submodules('packaging')
 
 binaries = []
 if sys.platform == "win32":
-    graphviz_bin_path = os.environ.get(
-        "GRAPHVIZ_ROOT", "C:\\Program Files\\Graphviz\\bin"
+    graphviz_root = os.environ.get(
+        "GRAPHVIZ_ROOT", "C:\\Program Files\\Graphviz\"
     )
     binaries.extend(
         [
-            (os.path.join(graphviz_bin_path, "gvc.dll"), "."),
-            (os.path.join(graphviz_bin_path, "cgraph.dll"), "."),
-            (os.path.join(graphviz_bin_path, "cdt.dll"), "."),
-            (os.path.join(graphviz_bin_path, "pathplan.dll"), "."),
-            (os.path.join(graphviz_bin_path, "graph.dll"), "."),
-            (os.path.join(graphviz_bin_path, "gvplugin_core.dll"), "."),
+            (os.path.join(graphviz_root, "bin", "gvc.dll"), "."),
+            (os.path.join(graphviz_root, "bin", "cgraph.dll"), "."),
+            (os.path.join(graphviz_root, "bin", "cdt.dll"), "."),
+            (os.path.join(graphviz_root, "bin", "pathplan.dll"), "."),
+            (os.path.join(graphviz_root, "bin", "graph.dll"), "."),
+            (os.path.join(graphviz_root, "bin", "gvplugin_core.dll"), "."),
         ]
     )
 
