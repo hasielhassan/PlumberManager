@@ -26,8 +26,8 @@ jobs:
           Write-Host "Downloading from: $url"
           Invoke-WebRequest $url -OutFile graphviz.zip
           Expand-Archive graphviz.zip -DestinationPath "$env:RUNNER_TEMP\graphviz"
-          echo "GRAPHVIZ_ROOT=$env:RUNNER_TEMP\graphviz\Graphviz" >> $env:GITHUB_ENV
-          echo "$env:RUNNER_TEMP\graphviz\Graphviz\bin" >> $env:GITHUB_PATH
+          echo "GRAPHVIZ_ROOT=$env:RUNNER_TEMP\graphviz" >> $env:GITHUB_ENV
+          echo "$env:RUNNER_TEMP\graphviz\bin" >> $env:GITHUB_PATH
           echo $env:GITHUB_PATH
           echo $env:GITHUB_ENV
         shell: powershell
@@ -41,7 +41,7 @@ jobs:
         run: |
           echo $env:GITHUB_PATH
           echo $env:GITHUB_ENV
-          $GRAPHVIZ_ROOT="$env:RUNNER_TEMP\graphviz\Graphviz"
+          $GRAPHVIZ_ROOT="$env:RUNNER_TEMP\graphviz"
 
           dir $GRAPHVIZ_ROOT
 
@@ -147,8 +147,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: Upload Linux artifact PlumberManager-Linux-ELF
-          path: |
-           $GITHUB_WORKSPACE/dist/PlumberManager this is the ELF binary
+          path: dist/PlumberManager
 
       - name: Package as AppImage
         run: |
@@ -175,5 +174,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: Upload Linux artifact PlumberManager-Linux-AppImage
-          path: |
-            $GITHUB_WORKSPACE/PlumberManager-x86_64.AppImage
+          path: PlumberManager-x86_64.AppImage
