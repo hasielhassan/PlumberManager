@@ -1,0 +1,126 @@
+name: CI Build (PyInstaller Packages)
+
+on:
+  pull_request:
+    branches: [ master ]  # or your main development branch
+  push:
+    branches: [ master ]  # (optional) also build on pushes to master
+
+jobs:
+  build-windows:
+    name: Build on Windows (PyInstaller EXE)
+    runs-on: windows-latest  # Use GitHub-hosted Windows runner
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Graphviz
+        run: |
+          choco install graphviz -y
+          echo "GRAPHVIZ_ROOT=C:\\Program Files\\Graphviz\\bin" >> $env:GITHUB_ENV
+        shell: powershell
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install PyGraphiz
+        # custom install to be able to pick graphviz include path
+        run: |
+          python -m pip install --upgrade pip
+          pip install --config-settings="--global-option=build_ext" --config-settings="--global-option=-IC:\Program Files\Graphviz\include" --config-settings="--global-option=-LC:\Program Files\Graphviz\lib" pygraphviz
+        shell: powershell
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller pyinstaller-versionfile
+        shell: powershell
+
+      - name: Set dynamic version
+        run: |
+          $branch = "${env:GITHUB_HEAD_REF}"
+          if (-not $branch) { $branch = "${env:GITHUB_REF}" -replace 'refs/heads/', '' }
+          $commit = (git rev-parse --short HEAD).Trim()
+          $version = "$branch-$commit"
+
+          echo $version > VERSION
+
+          # Update versionfile.txt in-place
+          (Get-Content versionfile.txt) -replace "u'ProductVersion', u'.*?'", "u'ProductVersion', u'$version'" |
+            Set-Content versionfile.txt
+
+          (Get-Content versionfile.txt) -replace "u'FileVersion', u'.*?'", "u'FileVersion', u'$version'" |
+            Set-Content versionfile.txt
+        shell: powershell
+
+      - name: Build EXE with PyInstaller
+        run: |
+          pyinstaller .spec --noconfirm
+        shell: powershell
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: PlumberManager-Windows
+          path: dist/PlumberManager.exe
+
+  build-linux:
+    name: Build on Linux (PyInstaller AppImage)
+    runs-on: ubuntu-latest   # Ubuntu runner, will use Rocky Linux container
+    container: 
+      image: rockylinux:8    # Use Rocky Linux 8 for broad compatibility
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install build tools
+        run: dnf install -y python3 python3-pip python3-devel graphviz graphviz-devel gcc gcc-c++ git
+
+      - name: Install Python dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install -r requirements.txt
+          pip3 install pyinstaller
+        shell: bash
+
+      - name: Set dynamic version
+        run: |
+          $branch = "${env:GITHUB_HEAD_REF}"
+          if (-not $branch) { $branch = "${env:GITHUB_REF}" -replace 'refs/heads/', '' }
+          $commit = (git rev-parse --short HEAD).Trim()
+          $version = "$branch-$commit"
+
+          echo $version > VERSION
+        shell: bash
+
+      - name: Build Linux binary with PyInstaller
+        run: |
+          pyinstaller .spec --noconfirm
+        shell: bash
+
+      - name: Package as AppImage
+        run: |
+          # Install AppImage tool
+          curl -Lo appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage 
+          chmod +x appimagetool
+          # Prepare AppDir structure for AppImage
+          mkdir -p AppDir/usr/bin
+          cp -r dist/PlumberManager AppDir/usr/bin/   # copy one-folder output
+          # (If one-file was built, adjust by copying the single binary instead)
+          # Create a .desktop file for AppImage metadata
+          echo "[Desktop Entry]\nType=Application\nName=PlumberManager\nExec=PlumberManager\nIcon=utilities-terminal\nCategories=Utility;" > AppDir/plumbermanager.desktop
+          # (For Icon, you can specify a path or use an existing icon file)
+          # Build the AppImage
+          ./appimagetool AppDir PlumberManager-x86_64.AppImage
+        shell: bash
+
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: PlumberManager-Linux
+          path: |
+            dist/PlumberManager  # if one-file, this is the ELF binary
+            PlumberManager-x86_64.AppImage  # if AppImage was created
