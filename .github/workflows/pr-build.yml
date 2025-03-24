@@ -53,7 +53,7 @@ jobs:
 
       - name: Build EXE with PyInstaller
         run: |
-          pyinstaller .spec --noconfirm
+          pyinstaller $env:GITHUB_WORKSPACE\.spec --noconfirm
         shell: powershell
 
       - uses: actions/upload-artifact@v4
@@ -68,13 +68,16 @@ jobs:
       image: rockylinux:8    # Use Rocky Linux 8 for broad compatibility
     steps:
 
-      - name: Enable devel repo (required for graphviz-devel)
+      - name: Install build tools
         run: |
           dnf install -y dnf-plugins-core
+          dnf install -y epel-release
           dnf config-manager --set-enabled devel
-
-      - name: Install build tools anf git
-        run: dnf install -y python3.11 python3.11-pip python3.11-devel graphviz graphviz-devel gcc gcc-c++ git
+          dnf install -y git
+          dnf install -y python3.11 python3.11-pip python3.11-devel 
+          dnf install -y graphviz graphviz-devel 
+          dnf install -y gcc gcc-c++ 
+          dnf install -y libglvnd-glx fuse-sshfs
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -99,7 +102,7 @@ jobs:
 
       - name: Build Linux binary with PyInstaller
         run: |
-          python3.11 -m PyInstaller .spec --noconfirm
+          python3.11 -m PyInstaller $GITHUB_WORKSPACE/.spec --noconfirm
         shell: bash
 
       - name: Package as AppImage
