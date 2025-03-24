@@ -82,7 +82,6 @@ jobs:
           dnf install -y xcb-util-keysyms xcb-util-renderutil vulkan-loader
           dnf install -y xcb-util-cursor libglvnd libglvnd-glx xcb-util-image
           dnf install -y mesa-libGL gtk3 cairo-gobject gdk-pixbuf2 libatomic 
-          dnf install -y fuse-sshfs
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -110,6 +109,12 @@ jobs:
           python3.11 -m PyInstaller $GITHUB_WORKSPACE/.spec --noconfirm
         shell: bash
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Upload Linux artifact PlumberManager-Linux-ELF
+          path: |
+            dist/PlumberManager this is the ELF binary
+
       - name: Package as AppImage
         run: |
           # Install AppImage tool
@@ -123,12 +128,11 @@ jobs:
           echo "[Desktop Entry]\nType=Application\nName=PlumberManager\nExec=PlumberManager\nIcon=utilities-terminal\nCategories=Utility;" > AppDir/plumbermanager.desktop
           # (For Icon, you can specify a path or use an existing icon file)
           # Build the AppImage
-          ./appimagetool AppDir PlumberManager-x86_64.AppImage
+          ./appimagetool --appimage-extract-and-run AppDir PlumberManager-x86_64.AppImage
         shell: bash
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Upload Linux artifact PlumberManager-Linux
+          name: Upload Linux artifact PlumberManager-Linux-AppImage
           path: |
-            dist/PlumberManager  # if one-file, this is the ELF binary
             PlumberManager-x86_64.AppImage  # if AppImage was created
