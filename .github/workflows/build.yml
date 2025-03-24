@@ -14,3 +14,19 @@ jobs:
     with:
       is_release: ${{ github.event_name == 'release' }}
       release_tag: ${{ github.event.release.tag_name }}
+
+  upload-to-release:
+    needs: build
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          files: artifacts/**/*
