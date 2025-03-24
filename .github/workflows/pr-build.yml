@@ -25,9 +25,10 @@ jobs:
           $url = "https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/$version/windows_10_cmake_Release_Graphviz-$version-win64.zip"
           Write-Host "Downloading from: $url"
           Invoke-WebRequest $url -OutFile graphviz.zip
-          Expand-Archive graphviz.zip -DestinationPath "$env:RUNNER_TEMP\graphviz"
-          echo "GRAPHVIZ_ROOT=$env:RUNNER_TEMP\graphviz" >> $env:GITHUB_ENV
-          echo "$env:RUNNER_TEMP\graphviz\bin" >> $env:GITHUB_PATH
+          Expand-Archive graphviz.zip -DestinationPath "$env:GITHUB_WORKSPACE\graphviz"
+          Get-ChildItem "$env:GITHUB_WORKSPACE\graphviz" -Recurse -Directory
+          echo "GRAPHVIZ_ROOT=$env:GITHUB_WORKSPACE\graphviz" >> $env:GITHUB_ENV
+          echo "$env:GITHUB_WORKSPACE\graphviz\bin" >> $env:GITHUB_PATH
           echo $env:GITHUB_PATH
           echo $env:GITHUB_ENV
         shell: powershell
@@ -39,20 +40,17 @@ jobs:
 
       - name: Install PyGraphviz
         run: |
-          echo $env:GITHUB_PATH
-          echo $env:GITHUB_ENV
-          $GRAPHVIZ_ROOT="$env:RUNNER_TEMP\graphviz"
+          Write-Host $env:GITHUB_PATH
+          Write-Host $env:GITHUB_ENV
+          $GRAPHVIZ_ROOT="$env:GITHUB_WORKSPACE\graphviz"
 
-          dir $GRAPHVIZ_ROOT
+          Get-ChildItem "$env:GRAPHVIZ_ROOT" -Recurse -Directory
 
           $includePath="$env:GRAPHVIZ_ROOT\include"
           $libPath="$env:GRAPHVIZ_ROOT\lib"
       
           Write-Host "Using Graphviz include: $includePath"
           Write-Host "Using Graphviz lib: $libPath"
-
-          dir $includePath
-          dir $libPath
       
           $env:GRAPHVIZ_INCLUDE_DIR=$includePath
           $env:GRAPHVIZ_LIBRARY_DIR=$libPath
