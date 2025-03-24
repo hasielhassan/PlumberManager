@@ -20,7 +20,8 @@ jobs:
       - name: Install Graphviz
         run: |
           choco install graphviz -y
-          echo "GRAPHVIZ_ROOT=C:\\Program Files\\Graphviz\\bin" >> $env:GITHUB_ENV
+          echo "GRAPHVIZ_ROOT=C:\Program Files\Graphviz\bin" >> $env:GITHUB_ENV
+          echo "C:\Program Files\Graphviz\bin" >> $env:GITHUB_PATH
         shell: powershell
 
       - name: Setup Python
