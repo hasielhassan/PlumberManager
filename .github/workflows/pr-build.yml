@@ -61,7 +61,7 @@ jobs:
           pyinstaller .spec --noconfirm
         shell: powershell
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: Upload Windows artifact PlumberManager-Windows
           path: dist/PlumberManager.exe
@@ -115,7 +115,7 @@ jobs:
           ./appimagetool AppDir PlumberManager-x86_64.AppImage
         shell: bash
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: Upload Linux artifact PlumberManager-Linux
           path: |
