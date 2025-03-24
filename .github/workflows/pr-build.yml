@@ -66,6 +66,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch full history to enable git commands
 
       - name: Enable devel repo (required for graphviz-devel)
         run: |
