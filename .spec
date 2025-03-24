@@ -4,6 +4,7 @@ block_cipher = None
 
 import os
 import re
+import sys
 import inspect
 import datetime
 import pyinstaller_versionfile
@@ -40,10 +41,24 @@ all_hidden_imports += collect_submodules('qtsass')
 all_hidden_imports += collect_submodules('qdarkstyle')
 all_hidden_imports += collect_submodules('packaging')
 
+binaries = []
+if sys.platform == "win32":
+    graphviz_bin_path = os.environ.get(
+        "GRAPHVIZ_ROOT", "C:\\Program Files\\Graphviz\\bin"
+    )
+    binaries.extend[
+        (os.path.join(graphviz_bin_path, "gvc.dll"), "."),
+        (os.path.join(graphviz_bin_path, "cgraph.dll"), "."),
+        (os.path.join(graphviz_bin_path, "cdt.dll"), "."),
+        (os.path.join(graphviz_bin_path, "pathplan.dll"), "."),
+        (os.path.join(graphviz_bin_path, "graph.dll"), "."),
+        (os.path.join(graphviz_bin_path, "gvplugin_core.dll"), "."),
+    ]
+
 a = Analysis(
     ['run.py'],
     pathex=[PROJECT_DIR],
-    binaries=[],
+    binaries=binaries,
     datas=[
         ("config", "config"),
         ("modules", "modules"),
