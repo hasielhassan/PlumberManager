@@ -8,8 +8,8 @@ import datetime
 import pyinstaller_versionfile
 from PyInstaller.utils.hooks import collect_submodules
 
-import PySide2
-import shiboken2
+import PySide6
+import shiboken6
 
 # To collect all Nodz files we need to collect them manually
 from modules.thirdparty.Nodz import Nodz
@@ -32,7 +32,7 @@ pyinstaller_versionfile.create_versionfile(
     product_name="Plumber Manager",
 )
 
-hiddenimports_QtSvg = collect_submodules('PySide2.QtSvg')
+hiddenimports_QtSvg = collect_submodules('PySide6.QtSvg')
 all_hidden_imports = hiddenimports_QtSvg
 
 a = Analysis(
