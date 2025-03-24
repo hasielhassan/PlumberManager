@@ -17,11 +17,19 @@ jobs:
           submodules: recursive
           fetch-depth: 0  # Needed for git history, versioning, and submodules
 
-      - name: Install Graphviz
+      - name: Download latest Graphviz Windows ZIP from GitLab
         run: |
-          choco install graphviz -y
-          echo "GRAPHVIZ_ROOT=C:\Program Files\Graphviz\bin" >> $env:GITHUB_ENV
-          echo "C:\Program Files\Graphviz\bin" >> $env:GITHUB_PATH
+          $release = Invoke-RestMethod -Uri "https://gitlab.com/api/v4/projects/4207231/releases" | Select-Object -First 1
+          $version = $release.tag_name
+          Write-Host "Latest version: $version"
+      
+          $url = "https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/$version/windows_10_cmake_Release_Graphviz-$version-win64.zip"
+          Write-Host "Downloading from: $url"
+      
+          Invoke-WebRequest $url -OutFile graphviz.zip
+          Expand-Archive graphviz.zip -DestinationPath "$env:RUNNER_TEMP\graphviz"
+          echo "GRAPHVIZ_ROOT=$env:RUNNER_TEMP\graphviz\Graphviz\bin" >> $env:GITHUB_ENV
+          echo "$env:RUNNER_TEMP\graphviz\Graphviz\bin" >> $env:GITHUB_PATH
         shell: powershell
 
       - name: Setup Python
