@@ -3,6 +3,7 @@
 block_cipher = None
 
 import os
+import re
 import inspect
 import datetime
 import pyinstaller_versionfile
@@ -13,6 +14,9 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(
 )
 with open(os.path.join(PROJECT_DIR, 'VERSION'), 'r') as file:
     VERSION = file.read()
+
+if not re.match(r"^\d+\.\d+\.\d+\.\d+$", VERSION):
+    VERSION = "0.0.0.0"
 
 pyinstaller_versionfile.create_versionfile(
     output_file="versionfile.txt",
