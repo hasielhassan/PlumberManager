@@ -28,6 +28,8 @@ jobs:
           Expand-Archive graphviz.zip -DestinationPath "$env:RUNNER_TEMP\graphviz"
           echo "GRAPHVIZ_ROOT=$env:RUNNER_TEMP\graphviz\Graphviz" >> $env:GITHUB_ENV
           echo "$env:RUNNER_TEMP\graphviz\Graphviz\bin" >> $env:GITHUB_PATH
+          echo $env:GITHUB_PATH
+          echo $env:GITHUB_ENV
         shell: powershell
 
       - name: Setup Python
@@ -37,16 +39,30 @@ jobs:
 
       - name: Install PyGraphviz
         run: |
-          $includePath = "$env:GRAPHVIZ_ROOT\include"
-          $libPath = "$env:GRAPHVIZ_ROOT\lib"
+          echo $env:GITHUB_PATH
+          echo $env:GITHUB_ENV
+          $GRAPHVIZ_ROOT="$env:RUNNER_TEMP\graphviz\Graphviz"
+
+          dir $GRAPHVIZ_ROOT
+
+          $includePath="$env:GRAPHVIZ_ROOT\include"
+          $libPath="$env:GRAPHVIZ_ROOT\lib"
       
           Write-Host "Using Graphviz include: $includePath"
           Write-Host "Using Graphviz lib: $libPath"
+
+          dir $includePath
+          dir $libPath
       
-          $env:GRAPHVIZ_INCLUDE_DIR = "$env:GRAPHVIZ_ROOT\include"
-          $env:GRAPHVIZ_LIBRARY_DIR = "$env:GRAPHVIZ_ROOT\lib"
-          $env:INCLUDE = "$env:GRAPHVIZ_ROOT\include"
-          $env:LIB = "$env:GRAPHVIZ_ROOT\lib"
+          $env:GRAPHVIZ_INCLUDE_DIR=$includePath
+          $env:GRAPHVIZ_LIBRARY_DIR=$libPath
+          $env:INCLUDE=$includePath
+          $env:LIB=$libPath
+
+          Write-Host "Using GRAPHVIZ_INCLUDE_DIR: $env:GRAPHVIZ_INCLUDE_DIR"
+          Write-Host "Using GRAPHVIZ_LIBRARY_DIR: $env:GRAPHVIZ_LIBRARY_DIR"
+          Write-Host "Using INCLUDE: $env:INCLUDE"
+          Write-Host "Using LIB: $env:LIB"
 
           python -m pip install --upgrade pip
           pip install pygraphviz
@@ -122,6 +138,7 @@ jobs:
 
       - name: Build Linux binary with PyInstaller
         run: |
+          cd $GITHUB_WORKSPACE
           python3.11 -m PyInstaller $GITHUB_WORKSPACE/.spec --noconfirm
           echo "Current dir: $(pwd)"
           ls -R
@@ -136,6 +153,7 @@ jobs:
       - name: Package as AppImage
         run: |
           dnf install -y file
+          cd $GITHUB_WORKSPACE
           curl -Lo appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage 
           chmod +x appimagetool
           mkdir -p AppDir/usr/bin
