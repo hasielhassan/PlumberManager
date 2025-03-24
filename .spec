@@ -4,6 +4,7 @@ block_cipher = None
 
 import os
 import inspect
+import datetime
 import pyinstaller_versionfile
 from PyInstaller.utils.hooks import collect_submodules
 
@@ -26,7 +27,7 @@ pyinstaller_versionfile.create_versionfile(
     company_name="HasielHassan",
     file_description="Plumber Manager",
     internal_name="Plumber Manager",
-    legal_copyright="© Hasiel Alvarez 2023",
+    legal_copyright="© Hasiel Alvarez {}".format(datetime.datetime.now().year),
     original_filename="PlumberManager.exe",
     product_name="Plumber Manager",
 )
