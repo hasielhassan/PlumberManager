@@ -7,6 +7,5 @@ PySide6
 Qt.py
 pygraphviz
 qdarkstyle
-webbrowser
 packaging
 reportlab
