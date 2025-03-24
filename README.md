@@ -11,6 +11,7 @@
     <img alt="License" src="https://img.shields.io/github/license/hasielhassan/PlumberManager" />
     <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/hasielhassan/PlumberManager" />
     <img alt="GitHub release downloads" src="https://img.shields.io/github/downloads/hasielhassan/PlumberManager/total" />
+    <img alt="Compatible Python Versions" src="https://img.shields.io/badge/Python Versions- 3.9 / 3.11-blue" />
 </p>
 
 A helper tool to design CG Pipeline interactive diagramas and data flow documentation
@@ -55,8 +56,8 @@ All that is what Plumber Manager its aming to offer.
 And if you have an idea for something else, create a feature request in the form of an issue !
 # Development
 ## Requirements:
-- Python 2 or 3
-- PyQt5 or PySide2
+- Python 3.9+
+- PyQt6 or PySide6
 - [qdarkstyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet)
 - [Qt.py](https://github.com/mottosso/Qt.py)
 - [pygraphviz](https://github.com/pygraphviz/pygraphviz)

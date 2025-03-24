@@ -75,8 +75,8 @@ exe = EXE(
     strip=False,
     upx=True,
     console=False,
-    icon='resources/icon_32.ico',
-    version='versionfile.txt',
+    icon='resources/icon_32.ico', # Windows icon
+    version='versionfile.txt', # Windows version info
 )
 
 #coll = COLLECT(
