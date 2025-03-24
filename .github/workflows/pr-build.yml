@@ -12,7 +12,10 @@ jobs:
     runs-on: windows-latest  # Use GitHub-hosted Windows runner
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0  # Needed for git history, versioning, and submodules
 
       - name: Install Graphviz
         run: |
@@ -64,16 +67,20 @@ jobs:
     container: 
       image: rockylinux:8    # Use Rocky Linux 8 for broad compatibility
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
 
       - name: Enable devel repo (required for graphviz-devel)
         run: |
           dnf install -y dnf-plugins-core
           dnf config-manager --set-enabled devel
 
-      - name: Install build tools
+      - name: Install build tools anf git
         run: dnf install -y python3 python3-pip python3-devel graphviz graphviz-devel gcc gcc-c++ git
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0  # Needed for git history, versioning, and submodules
 
       - name: Install Python dependencies
         run: |
