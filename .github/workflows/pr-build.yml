@@ -27,10 +27,10 @@ jobs:
           Invoke-WebRequest $url -OutFile graphviz.zip
           Expand-Archive graphviz.zip -DestinationPath "$env:GITHUB_WORKSPACE\graphviz"
           Get-ChildItem "$env:GITHUB_WORKSPACE\graphviz" -Recurse -Directory
-          echo "GRAPHVIZ_ROOT=$env:GITHUB_WORKSPACE\graphviz" >> $env:GITHUB_ENV
-          echo "$env:GITHUB_WORKSPACE\graphviz\bin" >> $env:GITHUB_PATH
-          echo $env:GITHUB_PATH
-          echo $env:GITHUB_ENV
+          echo "GRAPHVIZ_ROOT=$env:GITHUB_WORKSPACE\graphviz\Graphviz-$version-win64" >> $env:GITHUB_ENV
+          echo "$env:GITHUB_WORKSPACE\graphviz\Graphviz-$version-win64\bin" >> $env:GITHUB_PATH
+          Write-Host $GRAPHVIZ_ROOT
+          Write-Host $env:GRAPHVIZ_ROOT
         shell: powershell
 
       - name: Setup Python
@@ -40,10 +40,6 @@ jobs:
 
       - name: Install PyGraphviz
         run: |
-          Write-Host $env:GITHUB_PATH
-          Write-Host $env:GITHUB_ENV
-          $GRAPHVIZ_ROOT="$env:GITHUB_WORKSPACE\graphviz"
-
           Get-ChildItem "$env:GRAPHVIZ_ROOT" -Recurse -Directory
 
           $includePath="$env:GRAPHVIZ_ROOT\include"
@@ -51,14 +47,10 @@ jobs:
       
           Write-Host "Using Graphviz include: $includePath"
           Write-Host "Using Graphviz lib: $libPath"
-      
-          $env:GRAPHVIZ_INCLUDE_DIR=$includePath
-          $env:GRAPHVIZ_LIBRARY_DIR=$libPath
+
           $env:INCLUDE=$includePath
           $env:LIB=$libPath
 
-          Write-Host "Using GRAPHVIZ_INCLUDE_DIR: $env:GRAPHVIZ_INCLUDE_DIR"
-          Write-Host "Using GRAPHVIZ_LIBRARY_DIR: $env:GRAPHVIZ_LIBRARY_DIR"
           Write-Host "Using INCLUDE: $env:INCLUDE"
           Write-Host "Using LIB: $env:LIB"
 
