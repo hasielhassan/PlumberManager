@@ -810,7 +810,7 @@ class PlumberManager(QtWidgets.QMainWindow):
             flowables.append(process_details)
             flowables.append(Spacer(1,0.1*inch))
             
-            process_details = node.metadata["process_details"].split("\n")
+            process_details = node.metadata.get("process_details", "").split("\n")
             for details_section in process_details:
                 details_paragraph = Paragraph(
                     details_section, styles["Normal"]
