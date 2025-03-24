@@ -26,7 +26,7 @@ jobs:
           Write-Host "Downloading from: $url"
           Invoke-WebRequest $url -OutFile graphviz.zip
           Expand-Archive graphviz.zip -DestinationPath "$env:RUNNER_TEMP\graphviz"
-          echo "GRAPHVIZ_ROOT=$env:RUNNER_TEMP\graphviz\Graphviz\bin" >> $env:GITHUB_ENV
+          echo "GRAPHVIZ_ROOT=$env:RUNNER_TEMP\graphviz\Graphviz" >> $env:GITHUB_ENV
           echo "$env:RUNNER_TEMP\graphviz\Graphviz\bin" >> $env:GITHUB_PATH
         shell: powershell
 
@@ -35,11 +35,19 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install PyGraphiz
-        # custom install to be able to pick graphviz include path
+      - name: Install PyGraphviz
         run: |
+          $includePath = "$env:GRAPHVIZ_ROOT\include"
+          $libPath = "$env:GRAPHVIZ_ROOT\lib"
+      
+          Write-Host "Using Graphviz include: $includePath"
+          Write-Host "Using Graphviz lib: $libPath"
+      
           python -m pip install --upgrade pip
-          pip install --config-settings="--global-option=build_ext" --config-settings="--global-option=-IC:\Program Files\Graphviz\include" --config-settings="--global-option=-LC:\Program Files\Graphviz\lib" pygraphviz
+      
+          pip install --no-binary :all: pygraphviz `
+            --install-option="--include-path=$includePath" `
+            --install-option="--library-path=$libPath"
         shell: powershell
 
       - name: Install dependencies
@@ -119,7 +127,7 @@ jobs:
         with:
           name: Upload Linux artifact PlumberManager-Linux-ELF
           path: |
-            dist/PlumberManager this is the ELF binary
+           $GITHUB_WORKSPACE/dist/PlumberManager this is the ELF binary
 
       - name: Package as AppImage
         run: |
@@ -144,4 +152,4 @@ jobs:
         with:
           name: Upload Linux artifact PlumberManager-Linux-AppImage
           path: |
-            PlumberManager-x86_64.AppImage  # if AppImage was created
+            $GITHUB_WORKSPACE/PlumberManager-x86_64.AppImage
