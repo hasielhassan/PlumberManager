@@ -5,8 +5,13 @@ block_cipher = None
 import os
 import re
 import sys
+import Qt
 import inspect
+import requests
 import datetime
+import packaging
+import reportlab
+import qdarkstyle
 import pyinstaller_versionfile
 from PyInstaller.utils.hooks import collect_submodules
 
@@ -32,19 +37,21 @@ pyinstaller_versionfile.create_versionfile(
 all_hidden_imports = []
 
 all_hidden_imports += collect_submodules('PySide6.QtSvg')
-all_hidden_imports += collect_submodules('Qt')
-all_hidden_imports += collect_submodules('requests')
-all_hidden_imports += collect_submodules('webbrowser')
+
+# To collect all files from certain packages we need to collect them manually
+requests_location = os.path.dirname(requests.__file__)
+reportlab_location = os.path.dirname(reportlab.__file__)
+packaging_location = os.path.dirname(packaging.__file__)
+qdarkstyle_location = os.path.dirname(qdarkstyle.__file__)
+Qt_location = Qt.__file__
+
 all_hidden_imports += collect_submodules('pygraphviz')
-all_hidden_imports += collect_submodules('reportlab')
 all_hidden_imports += collect_submodules('qtsass')
-all_hidden_imports += collect_submodules('qdarkstyle')
-all_hidden_imports += collect_submodules('packaging')
 
 binaries = []
 if sys.platform == "win32":
     graphviz_root = os.environ.get(
-        "GRAPHVIZ_ROOT", "C:\\Program Files\\Graphviz\"
+        "GRAPHVIZ_ROOT", "C:\\Program Files\\Graphviz"
     )
     binaries.extend(
         [
@@ -52,14 +59,14 @@ if sys.platform == "win32":
             (os.path.join(graphviz_root, "bin", "cgraph.dll"), "."),
             (os.path.join(graphviz_root, "bin", "cdt.dll"), "."),
             (os.path.join(graphviz_root, "bin", "pathplan.dll"), "."),
-            (os.path.join(graphviz_root, "bin", "graph.dll"), "."),
             (os.path.join(graphviz_root, "bin", "gvplugin_core.dll"), "."),
+            (os.path.join(graphviz_root, "bin", "gvplugin_dot_layout.dll"), "."),
         ]
     )
 
 a = Analysis(
     ['run.py'],
-    pathex=[PROJECT_DIR],
+    pathex=[PROJECT_DIR] + sys.path,
     binaries=binaries,
     datas=[
         ("config", "config"),
@@ -67,6 +74,11 @@ a = Analysis(
         ("resources", "resources"),
         ("samples", "samples"),
         ("VERSION", "."),
+        (requests_location, "requests"),
+        (reportlab_location, "reportlab"),
+        (packaging_location, "packaging"),
+        (qdarkstyle_location, "qdarkstyle"),
+        (Qt_location, "."),
     ],
     hiddenimports=all_hidden_imports,
     win_no_prefer_redirects=False,
