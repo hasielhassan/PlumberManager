@@ -31,6 +31,13 @@ pyinstaller_versionfile.create_versionfile(
 
 hiddenimports_QtSvg = collect_submodules('PySide6.QtSvg')
 all_hidden_imports = hiddenimports_QtSvg
+all_hidden_imports.extend(
+    [
+        'requests', 'reportlab', 'qdarkstyle', 
+        'webbrowser', 'pygraphviz', 'packaging',
+        'Qt'
+    ]
+)
 
 a = Analysis(
     ['run.py'],
