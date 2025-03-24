@@ -74,7 +74,7 @@ jobs:
           dnf config-manager --set-enabled devel
 
       - name: Install build tools anf git
-        run: dnf install -y python3 python3-pip python3-devel graphviz graphviz-devel gcc gcc-c++ git
+        run: dnf install -y python3.11 python3.11-pip python3.11-devel graphviz graphviz-devel gcc gcc-c++ git
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -84,9 +84,9 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          python3 -m pip install --upgrade pip
-          pip3 install -r requirements.txt
-          pip3 install pyinstaller pyinstaller-versionfile
+          python3.11 -m pip install --upgrade pip
+          python3.11 -m pip install -r requirements.txt
+          python3.11 -m pip install pyinstaller pyinstaller-versionfile
         shell: bash
 
       - name: Set dynamic version
@@ -99,7 +99,7 @@ jobs:
 
       - name: Build Linux binary with PyInstaller
         run: |
-          pyinstaller .spec --noconfirm
+          python3.11 -m PyInstaller .spec --noconfirm
         shell: bash
 
       - name: Package as AppImage
