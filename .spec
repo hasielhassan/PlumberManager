@@ -8,11 +8,11 @@ import datetime
 import pyinstaller_versionfile
 from PyInstaller.utils.hooks import collect_submodules
 
-import Nodz
 import PySide2
 import shiboken2
 
 # To collect all Nodz files we need to collect them manually
+from modules.thirdparty.Nodz import Nodz
 Nodz_location = os.path.dirname(Nodz.__file__)
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(
