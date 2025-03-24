@@ -45,15 +45,7 @@ jobs:
           if (-not $branch) { $branch = "${env:GITHUB_REF}" -replace 'refs/heads/', '' }
           $commit = (git rev-parse --short HEAD).Trim()
           $version = "$branch-$commit"
-
-          echo $version > VERSION
-
-          # Update versionfile.txt in-place
-          (Get-Content versionfile.txt) -replace "u'ProductVersion', u'.*?'", "u'ProductVersion', u'$version'" |
-            Set-Content versionfile.txt
-
-          (Get-Content versionfile.txt) -replace "u'FileVersion', u'.*?'", "u'FileVersion', u'$version'" |
-            Set-Content versionfile.txt
+          echo $version > $env:GITHUB_WORKSPACE\VERSION
         shell: powershell
 
       - name: Build EXE with PyInstaller
@@ -75,6 +67,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Enable EPEL (required for graphviz-devel)
+        run: |
+          dnf install -y epel-release
+
       - name: Install build tools
         run: dnf install -y python3 python3-pip python3-devel graphviz graphviz-devel gcc gcc-c++ git
 
@@ -91,7 +87,7 @@ jobs:
           commit=$(git rev-parse --short HEAD)
           version="$branch-$commit"
 
-          echo "$version" > VERSION
+          echo "$version" > $GITHUB_WORKSPACE/VERSION
         shell: bash
 
       - name: Build Linux binary with PyInstaller
