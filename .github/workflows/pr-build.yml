@@ -66,8 +66,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Fetch full history to enable git commands
 
       - name: Enable devel repo (required for graphviz-devel)
         run: |
@@ -87,9 +85,8 @@ jobs:
       - name: Set dynamic version
         run: |
           branch="${GITHUB_HEAD_REF:-${GITHUB_REF##*/}}"
-          commit=$(git rev-parse --short HEAD)
+          commit="${GITHUB_SHA:0:7}"
           version="$branch-$commit"
-
           echo "$version" > $GITHUB_WORKSPACE/VERSION
         shell: bash
 
