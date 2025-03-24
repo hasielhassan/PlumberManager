@@ -43,11 +43,13 @@ jobs:
           Write-Host "Using Graphviz include: $includePath"
           Write-Host "Using Graphviz lib: $libPath"
       
+          $env:GRAPHVIZ_INCLUDE_DIR = "$env:GRAPHVIZ_ROOT\include"
+          $env:GRAPHVIZ_LIBRARY_DIR = "$env:GRAPHVIZ_ROOT\lib"
+          $env:INCLUDE = "$env:GRAPHVIZ_ROOT\include"
+          $env:LIB = "$env:GRAPHVIZ_ROOT\lib"
+
           python -m pip install --upgrade pip
-      
-          pip install --no-binary :all: pygraphviz `
-            --install-option="--include-path=$includePath" `
-            --install-option="--library-path=$libPath"
+          pip install pygraphviz
         shell: powershell
 
       - name: Install dependencies
@@ -121,6 +123,8 @@ jobs:
       - name: Build Linux binary with PyInstaller
         run: |
           python3.11 -m PyInstaller $GITHUB_WORKSPACE/.spec --noconfirm
+          echo "Current dir: $(pwd)"
+          ls -R
         shell: bash
 
       - uses: actions/upload-artifact@v4
@@ -146,6 +150,8 @@ jobs:
           Categories=Utility;
           EOF
           ./appimagetool --appimage-extract-and-run AppDir PlumberManager-x86_64.AppImage
+          echo "Current dir: $(pwd)"
+          ls -R
         shell: bash
 
       - uses: actions/upload-artifact@v4
