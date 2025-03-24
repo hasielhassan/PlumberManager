@@ -61,10 +61,9 @@ jobs:
           pyinstaller .spec --noconfirm
         shell: powershell
 
-      - name: Upload Windows artifact
-        uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
-          name: PlumberManager-Windows
+          name: Upload Windows artifact PlumberManager-Windows
           path: dist/PlumberManager.exe
 
   build-linux:
@@ -116,10 +115,9 @@ jobs:
           ./appimagetool AppDir PlumberManager-x86_64.AppImage
         shell: bash
 
-      - name: Upload Linux artifact
-        uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
-          name: PlumberManager-Linux
+          name: Upload Linux artifact PlumberManager-Linux
           path: |
             dist/PlumberManager  # if one-file, this is the ELF binary
             PlumberManager-x86_64.AppImage  # if AppImage was created
