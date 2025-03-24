@@ -19,13 +19,11 @@ jobs:
 
       - name: Download latest Graphviz Windows ZIP from GitLab
         run: |
-          $release = Invoke-RestMethod -Uri "https://gitlab.com/api/v4/projects/4207231/releases" | Select-Object -First 1
+          $release = (Invoke-RestMethod -Uri "https://gitlab.com/api/v4/projects/4207231/releases")[0]
           $version = $release.tag_name
           Write-Host "Latest version: $version"
-      
           $url = "https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/$version/windows_10_cmake_Release_Graphviz-$version-win64.zip"
           Write-Host "Downloading from: $url"
-      
           Invoke-WebRequest $url -OutFile graphviz.zip
           Expand-Archive graphviz.zip -DestinationPath "$env:RUNNER_TEMP\graphviz"
           echo "GRAPHVIZ_ROOT=$env:RUNNER_TEMP\graphviz\Graphviz\bin" >> $env:GITHUB_ENV
@@ -125,17 +123,20 @@ jobs:
 
       - name: Package as AppImage
         run: |
-          # Install AppImage tool
+          dnf install -y file
           curl -Lo appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage 
           chmod +x appimagetool
-          # Prepare AppDir structure for AppImage
           mkdir -p AppDir/usr/bin
-          cp -r dist/PlumberManager AppDir/usr/bin/   # copy one-folder output
-          # (If one-file was built, adjust by copying the single binary instead)
-          # Create a .desktop file for AppImage metadata
-          echo "[Desktop Entry]\nType=Application\nName=PlumberManager\nExec=PlumberManager\nIcon=utilities-terminal\nCategories=Utility;" > AppDir/plumbermanager.desktop
-          # (For Icon, you can specify a path or use an existing icon file)
-          # Build the AppImage
+          cp -r dist/PlumberManager AppDir/usr/bin/
+          cp "$GITHUB_WORKSPACE/resources/icon_256.png" AppDir/plumbermanager.png
+          cat > AppDir/plumbermanager.desktop <<EOF
+          [Desktop Entry]
+          Type=Application
+          Name=PlumberManager
+          Exec=PlumberManager
+          Icon=plumbermanager
+          Categories=Utility;
+          EOF
           ./appimagetool --appimage-extract-and-run AppDir PlumberManager-x86_64.AppImage
         shell: bash
 
