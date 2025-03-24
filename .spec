@@ -28,20 +28,21 @@ pyinstaller_versionfile.create_versionfile(
     original_filename="PlumberManager.exe",
     product_name="Plumber Manager",
 )
+all_hidden_imports = []
 
-hiddenimports_QtSvg = collect_submodules('PySide6.QtSvg')
-all_hidden_imports = hiddenimports_QtSvg
-all_hidden_imports.extend(
-    [
-        'requests', 'reportlab', 'qdarkstyle', 
-        'webbrowser', 'pygraphviz', 'packaging',
-        'Qt'
-    ]
-)
+all_hidden_imports += collect_submodules('PySide6.QtSvg')
+all_hidden_imports += collect_submodules('Qt')
+all_hidden_imports += collect_submodules('requests')
+all_hidden_imports += collect_submodules('webbrowser')
+all_hidden_imports += collect_submodules('pygraphviz')
+all_hidden_imports += collect_submodules('reportlab')
+all_hidden_imports += collect_submodules('qtsass')
+all_hidden_imports += collect_submodules('qdarkstyle')
+all_hidden_imports += collect_submodules('packaging')
 
 a = Analysis(
     ['run.py'],
-    pathex=[],
+    pathex=[PROJECT_DIR],
     binaries=[],
     datas=[
         ("config", "config"),
@@ -51,8 +52,6 @@ a = Analysis(
         ("VERSION", "."),
     ],
     hiddenimports=all_hidden_imports,
-    hookspath=[],
-    runtime_hooks=[],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
     cipher=block_cipher,
