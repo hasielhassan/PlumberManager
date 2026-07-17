@@ -6,6 +6,12 @@
         "type": "Alembic"
     }, 
     {
+        "code": "atom", 
+        "description": "", 
+        "path": "./resources/data_type_icons/atom.png", 
+        "type": "Atom"
+    }, 
+    {
         "code": "exr", 
         "description": "", 
         "path": "./resources/data_type_icons/exr.png", 
