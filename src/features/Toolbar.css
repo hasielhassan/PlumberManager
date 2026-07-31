@@ -1,0 +1,18 @@
+.ds-toolbar {
+  height: 48px;
+  background-color: var(--ds-bg-sidebar);
+  border-bottom: 1px solid var(--ds-border-color);
+  user-select: none;
+  padding-left: 24px !important;
+  padding-right: 16px;
+}
+
+.ds-toolbar .ds-button {
+  box-shadow: var(--ds-shadow-sm);
+}
+
+.ds-button--active {
+  background-color: var(--ds-color-accent-alpha) !important;
+  border-color: var(--ds-border-focus) !important;
+  color: var(--ds-color-accent) !important;
+}

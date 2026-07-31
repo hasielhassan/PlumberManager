@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <!-- Definitions for crisp rendering -->
+  <defs>
+    <style>
+      .bg-hexagon {
+        fill: #00b047;
+        stroke: #03311e;
+        stroke-width: 36;
+        stroke-linejoin: miter;
+      }
+      .icon-element {
+        fill: #03311e;
+        stroke: #03311e;
+        stroke-width: 34;
+        stroke-linecap: round;
+      }
+    </style>
+  </defs>
+
+  <!-- Hexagon Background -->
+  <polygon points="250,18 451,134 451,366 250,482 49,366 49,134" class="bg-hexagon" />
+
+  <!-- Share Icon Nodes and Connections -->
+  <g>
+    <!-- Connecting Bars -->
+    <line x1="160" y1="250" x2="340" y2="165" class="icon-element" />
+    <line x1="160" y1="250" x2="340" y2="335" class="icon-element" />
+    
+    <!-- Nodes (Circles) -->
+    <circle cx="160" cy="250" r="42" fill="#03311e" />
+    <circle cx="340" cy="165" r="42" fill="#03311e" />
+    <circle cx="340" cy="335" r="42" fill="#03311e" />
+  </g>
+</svg>

@@ -1,0 +1,33 @@
+name: CI Test Bed
+
+on:
+  pull_request:
+    branches: [main, master, web]
+  workflow_dispatch:
+
+jobs:
+  test-and-build:
+    name: Test & Build PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Linter
+        run: npm run lint
+
+      - name: Build Web Application
+        run: npm run build
+
+      - name: Build Standalone Viewer Widget
+        run: npm run build:widget

@@ -1,0 +1,59 @@
+:root {
+  /* Surface Colors */
+  --ds-bg-app: hsl(210, 12%, 15%);
+  --ds-bg-sidebar: hsl(210, 12%, 18%);
+  --ds-bg-card: hsl(210, 12%, 22%);
+  --ds-bg-active: hsl(210, 12%, 28%);
+  --ds-bg-hover: hsl(210, 12%, 25%);
+  --ds-bg-overlay: hsla(210, 12%, 10%, 0.85);
+  
+  /* Borders and Dividers */
+  --ds-border-color: hsl(210, 12%, 24%);
+  --ds-border-focus: hsl(142, 36%, 59%);
+  
+  /* Brand/Accent Colors (Sleek HSL Tailored Node Green) */
+  --ds-color-accent: hsl(142, 36%, 59%);
+  --ds-color-accent-hover: hsl(142, 36%, 66%);
+  --ds-color-accent-active: hsl(142, 36%, 50%);
+  --ds-color-accent-alpha: hsla(142, 36%, 59%, 0.15);
+
+  /* Feedback Colors */
+  --ds-color-error: hsl(0, 72%, 60%);
+  --ds-color-error-hover: hsl(0, 72%, 66%);
+  --ds-color-error-alpha: hsla(0, 72%, 60%, 0.15);
+  
+  /* Text Colors */
+  --ds-text-primary: hsl(0, 0%, 93%);
+  --ds-text-secondary: hsl(210, 8%, 72%);
+  --ds-text-muted: hsl(210, 8%, 52%);
+  --ds-text-on-accent: hsl(210, 12%, 10%);
+
+  /* Spacing Scale */
+  --ds-spacing-1: 0.25rem; /* 4px */
+  --ds-spacing-2: 0.5rem;  /* 8px */
+  --ds-spacing-3: 0.75rem; /* 12px */
+  --ds-spacing-4: 1rem;    /* 16px */
+  --ds-spacing-6: 1.5rem;  /* 24px */
+  --ds-spacing-8: 2rem;    /* 32px */
+  
+  /* Typography */
+  --ds-font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --ds-font-size-xs: 0.75rem;
+  --ds-font-size-sm: 0.875rem;
+  --ds-font-size-md: 1rem;
+  --ds-font-size-lg: 1.25rem;
+  --ds-font-size-xl: 1.5rem;
+
+  /* Borders & Shadows */
+  --ds-radius-sm: 4px;
+  --ds-radius-md: 8px;
+  --ds-radius-lg: 12px;
+  --ds-radius-round: 9999px;
+  --ds-shadow-sm: 0 1px 2px hsla(0, 0%, 0%, 0.4);
+  --ds-shadow-md: 0 4px 12px hsla(0, 0%, 0%, 0.5);
+  --ds-shadow-lg: 0 12px 24px hsla(0, 0%, 0%, 0.6);
+
+  /* Transitions */
+  --ds-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --ds-transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}

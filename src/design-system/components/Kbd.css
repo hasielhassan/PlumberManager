@@ -1,0 +1,16 @@
+.ds-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--ds-bg-sidebar);
+  border: 1px solid var(--ds-border-color);
+  border-bottom: 2px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-sm);
+  padding: 0.1rem 0.35rem;
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: var(--ds-text-secondary);
+  font-weight: 500;
+  user-select: none;
+  box-shadow: 0 1px 0 hsla(0, 0%, 0%, 0.2);
+}

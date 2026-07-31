@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg-grad-grm" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95"/>
+    </linearGradient>
+    <filter id="shadow-grm" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Perfect 6-Sided Symmetric Hexagonal Badge Frame -->
+  <polygon 
+    points="32,4 56,18 56,46 32,60 8,46 8,18" 
+    fill="url(#bg-grad-grm)" 
+    stroke="#EAB308" 
+    stroke-width="2.5" 
+    stroke-linejoin="round"
+    filter="url(#shadow-grm)"
+  />
+
+  <!-- Perfectly Centered Vector Logo (centered around y=25.5) -->
+  <g stroke="#EAB308" stroke-width="2" stroke-linecap="round" fill="none">
+  <path d="M 21 35 C 21 24 25 18 25 14"/>
+  <path d="M 27 35 C 27 22 31 17 31 13"/>
+  <path d="M 33 35 C 33 23 37 18 37 14"/>
+  <path d="M 39 35 C 39 25 43 20 43 15"/>
+</g>
+
+  <!-- Optimal Positioned & Sized Format Title (y=46.5) -->
+  <text 
+    x="32" 
+    y="46.5" 
+    text-anchor="middle" 
+    fill="#F8FAFC" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+    font-size="9.0" 
+    font-weight="700" 
+    letter-spacing="0.4"
+  >GRM</text>
+</svg>

@@ -1,0 +1,198 @@
+/* Custom Format ComboBox Dropdown */
+.ds-format-select-container {
+  position: relative;
+  width: 100%;
+}
+
+.ds-format-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 4px var(--ds-spacing-3);
+  background-color: var(--ds-bg-app);
+  border: 1px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-text-primary);
+  font-size: var(--ds-font-size-xs);
+  cursor: pointer;
+  text-align: left;
+  height: 38px;
+  box-shadow: var(--ds-shadow-sm);
+  transition: border-color var(--ds-transition-fast);
+}
+
+.ds-format-select-trigger:focus,
+.ds-format-select-trigger:hover {
+  border-color: var(--ds-border-focus);
+  outline: none;
+}
+
+.ds-format-select-icon {
+  width: 28px !important;
+  height: 28px !important;
+  object-fit: contain;
+  flex-shrink: 0;
+  margin-right: var(--ds-spacing-2);
+}
+
+.ds-format-select-label {
+  flex-grow: 1;
+  text-transform: uppercase;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ds-format-select-arrow {
+  font-size: 8px;
+  color: var(--ds-text-secondary);
+  margin-left: var(--ds-spacing-2);
+  transition: transform var(--ds-transition-fast);
+}
+
+.ds-format-select-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  background-color: var(--ds-bg-sidebar);
+  border: 1px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-md);
+  box-shadow: var(--ds-shadow-lg);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  min-width: 280px;
+  overflow: hidden;
+}
+
+/* Search input bar inside dropdown */
+.ds-format-select-search-wrap {
+  padding: var(--ds-spacing-2);
+  border-bottom: 1px solid var(--ds-border-color);
+  background-color: var(--ds-bg-app);
+}
+
+.ds-format-select-search-input {
+  width: 100%;
+  height: 30px;
+  padding: 0 var(--ds-spacing-2);
+  background-color: var(--ds-bg-sidebar);
+  border: 1px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-text-primary);
+  font-size: var(--ds-font-size-xs);
+  outline: none;
+  transition: border-color var(--ds-transition-fast);
+}
+
+.ds-format-select-search-input:focus {
+  border-color: var(--ds-border-focus);
+}
+
+.ds-format-select-options-list {
+  max-height: 240px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: var(--ds-spacing-1) 0;
+}
+
+.ds-format-select-empty {
+  padding: var(--ds-spacing-4) var(--ds-spacing-3);
+  text-align: center;
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-text-muted);
+}
+
+.ds-format-select-option {
+  display: flex;
+  align-items: center;
+  padding: var(--ds-spacing-2) var(--ds-spacing-3);
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-text-secondary);
+  cursor: pointer;
+  transition: background-color var(--ds-transition-fast), color var(--ds-transition-fast);
+  gap: var(--ds-spacing-2);
+}
+
+.ds-format-select-option:hover,
+.ds-format-select-option--highlighted {
+  background-color: var(--ds-bg-hover);
+  color: var(--ds-text-primary);
+}
+
+.ds-format-select-option--selected {
+  background-color: var(--ds-bg-active);
+  color: var(--ds-text-primary);
+  border-left: 2px solid var(--ds-color-accent);
+}
+
+.ds-format-select-option-icon {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Option info block: code + name on first line, description below */
+.ds-format-select-option-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.ds-format-select-option-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ds-spacing-2);
+}
+
+.ds-format-select-option-code {
+  font-weight: 700;
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-text-primary);
+  flex-shrink: 0;
+}
+
+.ds-format-select-option-name {
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--ds-text-muted);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ds-format-select-option-desc {
+  font-size: 10px;
+  color: var(--ds-text-muted);
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Badge for built-in / custom indicator */
+.ds-format-select-option-badge {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 5px;
+  border-radius: var(--ds-radius-sm);
+  background-color: var(--ds-color-accent-alpha);
+  color: var(--ds-color-accent);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.ds-format-select-option-badge--custom {
+  background-color: var(--ds-color-error-alpha);
+  color: var(--ds-color-error);
+}

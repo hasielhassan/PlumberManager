@@ -1,0 +1,64 @@
+.ds-error-boundary-container {
+  align-items: center;
+  background-color: var(--ds-bg-app);
+  color: var(--ds-text-primary);
+  display: flex;
+  font-family: var(--ds-font-family);
+  height: 100vh;
+  justify-content: center;
+  padding: var(--ds-spacing-6);
+  width: 100vw;
+}
+
+.ds-error-boundary-card {
+  background-color: var(--ds-bg-card);
+  border: 1px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-lg);
+  max-width: 540px;
+  padding: var(--ds-spacing-6);
+  text-align: center;
+  width: 100%;
+}
+
+.ds-error-boundary-icon {
+  color: var(--ds-color-error);
+  font-size: 3rem;
+  margin-bottom: var(--ds-spacing-2);
+}
+
+.ds-error-boundary-title {
+  color: var(--ds-text-primary);
+  font-size: var(--ds-font-size-lg);
+  font-weight: 700;
+  margin-bottom: var(--ds-spacing-2);
+}
+
+.ds-error-boundary-msg {
+  color: var(--ds-text-secondary);
+  font-size: var(--ds-font-size-sm);
+  line-height: 1.5;
+  margin-bottom: var(--ds-spacing-4);
+}
+
+.ds-error-boundary-details {
+  background-color: var(--ds-bg-app);
+  border: 1px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-md);
+  color: var(--ds-text-muted);
+  font-family: monospace;
+  font-size: var(--ds-font-size-xs);
+  max-height: 160px;
+  margin-bottom: var(--ds-spacing-4);
+  overflow-y: auto;
+  padding: var(--ds-spacing-3);
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.ds-error-boundary-actions {
+  display: flex;
+  gap: var(--ds-spacing-3);
+  justify-content: center;
+}

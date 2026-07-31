@@ -1,0 +1,85 @@
+.ds-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--ds-bg-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9990; /* Position below Joyride tour overlay (z-index 10050) */
+  backdrop-filter: blur(4px);
+  animation: fadeIn var(--ds-transition-fast);
+}
+
+.ds-modal {
+  background-color: var(--ds-bg-sidebar);
+  border: 1px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-lg);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  max-width: 95vw;
+  animation: scaleUp var(--ds-transition-fast);
+  overflow: hidden;
+}
+
+/* Sizes */
+.ds-modal--sm { width: 360px; }
+.ds-modal--md { width: 520px; }
+.ds-modal--lg { width: 800px; }
+.ds-modal--xl { width: 1000px; }
+.ds-modal--2xl { width: 1200px; }
+
+.ds-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ds-spacing-4);
+  border-bottom: 1px solid var(--ds-border-color);
+  background-color: var(--ds-bg-sidebar);
+}
+
+.ds-modal__title {
+  margin: 0;
+  font-size: var(--ds-font-size-md);
+  font-weight: 600;
+}
+
+.ds-modal__content {
+  padding: var(--ds-spacing-6) var(--ds-spacing-4);
+  overflow-y: auto;
+  flex-grow: 1;
+  background-color: var(--ds-bg-app);
+}
+
+.ds-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ds-spacing-3);
+  padding: var(--ds-spacing-4);
+  border-top: 1px solid var(--ds-border-color);
+  background-color: var(--ds-bg-sidebar);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Helper to allow overlays/dropdowns to display outside the modal without clipping */
+.ds-modal.ds-modal--overflow-visible {
+  overflow: visible;
+}
+
+.ds-modal.ds-modal--overflow-visible .ds-modal__content {
+  overflow: visible;
+}

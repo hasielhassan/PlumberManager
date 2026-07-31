@@ -1,0 +1,113 @@
+.ds-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-spacing-2);
+  border-radius: var(--ds-radius-md);
+  font-weight: 500;
+  transition: background-color var(--ds-transition-fast), border-color var(--ds-transition-fast), opacity var(--ds-transition-fast);
+  user-select: none;
+  border: 1px solid transparent;
+}
+
+.ds-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Sizes */
+.ds-button--sm {
+  padding: 0.25rem 0.5rem;
+  font-size: var(--ds-font-size-xs);
+  height: 28px;
+}
+
+.ds-button--md {
+  padding: 0.5rem 0.75rem;
+  font-size: var(--ds-font-size-sm);
+  height: 36px;
+}
+
+.ds-button--lg {
+  padding: 0.75rem 1rem;
+  font-size: var(--ds-font-size-md);
+  height: 44px;
+}
+
+.ds-button--icon-only {
+  padding: 0;
+}
+
+.ds-button--icon-only.ds-button--sm { width: 28px; }
+.ds-button--icon-only.ds-button--md { width: 36px; }
+.ds-button--icon-only.ds-button--lg { width: 44px; }
+
+/* Variants */
+.ds-button--primary {
+  background-color: var(--ds-color-accent);
+  color: var(--ds-text-on-accent);
+}
+
+.ds-button--primary:not(:disabled):hover {
+  background-color: var(--ds-color-accent-hover);
+}
+
+.ds-button--primary:not(:disabled):active {
+  background-color: var(--ds-color-accent-active);
+}
+
+.ds-button--secondary {
+  background-color: var(--ds-bg-card);
+  color: var(--ds-text-primary);
+  border-color: var(--ds-border-color);
+}
+
+.ds-button--secondary:not(:disabled):hover {
+  background-color: var(--ds-bg-hover);
+  border-color: var(--ds-bg-active);
+}
+
+.ds-button--secondary:not(:disabled):active {
+  background-color: var(--ds-bg-active);
+}
+
+.ds-button--ghost {
+  background-color: transparent;
+  color: var(--ds-text-secondary);
+}
+
+.ds-button--ghost:not(:disabled):hover {
+  background-color: var(--ds-bg-hover);
+  color: var(--ds-text-primary);
+}
+
+.ds-button--ghost:not(:disabled):active {
+  background-color: var(--ds-bg-active);
+}
+
+.ds-button--danger {
+  background-color: var(--ds-color-error-alpha);
+  color: var(--ds-color-error);
+  border-color: hsla(0, 72%, 60%, 0.3);
+}
+
+.ds-button--danger:not(:disabled):hover {
+  background-color: var(--ds-color-error);
+  color: var(--ds-text-on-accent);
+  border-color: transparent;
+}
+
+.ds-button--danger:not(:disabled):active {
+  background-color: var(--ds-color-error-hover);
+}
+
+.ds-button__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1em;
+}
+
+.ds-button__text {
+  display: inline-block;
+}

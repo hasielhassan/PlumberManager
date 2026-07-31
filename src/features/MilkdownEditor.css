@@ -1,0 +1,243 @@
+/*
+ * Dark theme overrides for the Milkdown Crepe editor
+ * to match the PlumberManager design system tokens.
+ */
+
+/* Container wrapper — controls height and overflow */
+.ds-milkdown-wrapper {
+  width: 100%;
+  border: 1px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-md);
+  overflow: hidden;
+  background-color: var(--ds-bg-app);
+}
+
+/* Override Milkdown's root editor div */
+.ds-milkdown-wrapper [data-milkdown-root] {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Crepe editor body */
+.ds-milkdown-wrapper .milkdown {
+  background-color: var(--ds-bg-app);
+  color: var(--ds-text-primary);
+  font-family: var(--ds-font-family);
+  font-size: var(--ds-font-size-sm);
+  line-height: 1.6;
+}
+
+/* ProseMirror content area */
+.ds-milkdown-wrapper .ProseMirror {
+  padding: var(--ds-spacing-4);
+  min-height: 200px;
+  outline: none;
+  color: var(--ds-text-primary);
+  overflow-y: auto;
+}
+
+.ds-milkdown-wrapper .ProseMirror:focus {
+  outline: none;
+}
+
+/* Headings */
+.ds-milkdown-wrapper .ProseMirror h1,
+.ds-milkdown-wrapper .ProseMirror h2,
+.ds-milkdown-wrapper .ProseMirror h3,
+.ds-milkdown-wrapper .ProseMirror h4 {
+  color: var(--ds-text-primary);
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+/* Paragraphs */
+.ds-milkdown-wrapper .ProseMirror p {
+  margin-bottom: 0.75em;
+  color: var(--ds-text-secondary);
+}
+
+/* Inline code */
+.ds-milkdown-wrapper .ProseMirror code {
+  background-color: var(--ds-bg-active);
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--ds-radius-sm);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.85em;
+  color: var(--ds-color-accent);
+}
+
+/* Code blocks */
+.ds-milkdown-wrapper .ProseMirror pre {
+  background-color: var(--ds-bg-sidebar);
+  border: 1px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-spacing-3);
+  overflow-x: auto;
+}
+
+.ds-milkdown-wrapper .ProseMirror pre code {
+  background: none;
+  padding: 0;
+  color: var(--ds-text-primary);
+}
+
+/* Lists */
+.ds-milkdown-wrapper .ProseMirror ul,
+.ds-milkdown-wrapper .ProseMirror ol {
+  margin: 0 0 0.75em 1.5em;
+  padding: 0;
+  color: var(--ds-text-secondary);
+}
+
+/* Blockquotes */
+.ds-milkdown-wrapper .ProseMirror blockquote {
+  border-left: 3px solid var(--ds-color-accent);
+  padding-left: var(--ds-spacing-3);
+  margin: 0.75em 0;
+  color: var(--ds-text-muted);
+  font-style: italic;
+}
+
+/* Horizontal rule */
+.ds-milkdown-wrapper .ProseMirror hr {
+  border: none;
+  border-top: 1px solid var(--ds-border-color);
+  margin: 1.5em 0;
+}
+
+/* Links */
+.ds-milkdown-wrapper .ProseMirror a {
+  color: var(--ds-color-accent);
+  text-decoration: underline;
+  text-decoration-color: var(--ds-color-accent-alpha);
+}
+
+.ds-milkdown-wrapper .ProseMirror a:hover {
+  text-decoration-color: var(--ds-color-accent);
+}
+
+/* Tables */
+.ds-milkdown-wrapper .ProseMirror table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.75em 0;
+}
+
+.ds-milkdown-wrapper .ProseMirror th,
+.ds-milkdown-wrapper .ProseMirror td {
+  border: 1px solid var(--ds-border-color);
+  padding: var(--ds-spacing-2) var(--ds-spacing-3);
+  text-align: left;
+}
+
+.ds-milkdown-wrapper .ProseMirror th {
+  background-color: var(--ds-bg-sidebar);
+  font-weight: 600;
+  color: var(--ds-text-primary);
+}
+
+/* Strong & emphasis */
+.ds-milkdown-wrapper .ProseMirror strong {
+  color: var(--ds-text-primary);
+}
+
+/* Placeholder text */
+.ds-milkdown-wrapper .ProseMirror .placeholder {
+  color: var(--ds-text-muted);
+}
+
+/* ─── Layout & Sizing ─── */
+
+/* Make sure the editor and all its internal containers stretch properly to fill their wrapper */
+.ds-milkdown-wrapper,
+.ds-milkdown-wrapper [data-milkdown-root],
+.ds-milkdown-wrapper .milkdown {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.ds-milkdown-wrapper .ProseMirror {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Modal editor needs to fill the outer flex-container height */
+.ds-milkdown-modal {
+  height: 100%;
+}
+
+/* ─── Crepe TopBar Overrides ─── */
+.ds-milkdown-wrapper .milkdown-top-bar {
+  background-color: var(--ds-bg-sidebar) !important;
+  border-bottom: 1px solid var(--ds-border-color) !important;
+}
+
+.ds-milkdown-wrapper .milkdown-top-bar .top-bar-divider {
+  background-color: var(--ds-border-color) !important;
+}
+
+.ds-milkdown-wrapper .milkdown-top-bar .top-bar-heading-button {
+  background-color: var(--ds-bg-app) !important;
+  border: 1px solid var(--ds-border-color);
+}
+
+.ds-milkdown-wrapper .milkdown-top-bar .top-bar-heading-button:hover {
+  background-color: var(--ds-bg-hover) !important;
+  border-color: var(--ds-border-focus);
+}
+
+.ds-milkdown-wrapper .milkdown-top-bar .top-bar-heading-button .top-bar-heading-label {
+  color: var(--ds-text-primary) !important;
+}
+
+.ds-milkdown-wrapper .milkdown-top-bar .top-bar-heading-button .top-bar-chevron svg {
+  color: var(--ds-text-secondary) !important;
+  stroke: var(--ds-text-secondary) !important;
+}
+
+.ds-milkdown-wrapper .milkdown-top-bar .top-bar-heading-dropdown {
+  background-color: var(--ds-bg-sidebar) !important;
+  border: 1px solid var(--ds-border-color) !important;
+  box-shadow: var(--ds-shadow-lg) !important;
+}
+
+.ds-milkdown-wrapper .milkdown-top-bar .top-bar-heading-option {
+  color: var(--ds-text-secondary) !important;
+}
+
+.ds-milkdown-wrapper .milkdown-top-bar .top-bar-heading-option:hover {
+  background-color: var(--ds-bg-hover) !important;
+  color: var(--ds-text-primary) !important;
+}
+
+.ds-milkdown-wrapper .milkdown-top-bar .top-bar-heading-option.active {
+  color: var(--ds-color-accent) !important;
+  font-weight: 600;
+}
+
+.ds-milkdown-wrapper .milkdown-top-bar .top-bar-item {
+  color: var(--ds-text-secondary) !important;
+}
+
+.ds-milkdown-wrapper .milkdown-top-bar .top-bar-item:hover {
+  background-color: var(--ds-bg-hover) !important;
+}
+
+.ds-milkdown-wrapper .milkdown-top-bar .top-bar-item:active,
+.ds-milkdown-wrapper .milkdown-top-bar .top-bar-item.active {
+  background-color: var(--ds-bg-active) !important;
+}
+
+.ds-milkdown-wrapper .milkdown-top-bar .top-bar-item svg {
+  color: var(--ds-text-secondary) !important;
+  fill: var(--ds-text-secondary) !important;
+}
+
+.ds-milkdown-wrapper .milkdown-top-bar .top-bar-item.active svg {
+  color: var(--ds-color-accent) !important;
+  fill: var(--ds-color-accent) !important;
+}

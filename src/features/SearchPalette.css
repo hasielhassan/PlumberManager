@@ -1,0 +1,102 @@
+.ds-palette-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(10, 12, 16, 0.6);
+  z-index: 1200;
+  display: flex;
+  justify-content: center;
+  padding-top: 15vh;
+  backdrop-filter: blur(2px);
+  animation: fadeIn var(--ds-transition-fast);
+}
+
+.ds-palette {
+  width: 100%;
+  max-width: 500px;
+  background-color: var(--ds-bg-sidebar);
+  border: 1px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-lg);
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  max-height: 320px;
+  overflow: hidden;
+  animation: scaleUp var(--ds-transition-fast);
+}
+
+.ds-palette-search-container {
+  display: flex;
+  align-items: center;
+  padding: var(--ds-spacing-3) var(--ds-spacing-4);
+  border-bottom: 1px solid var(--ds-border-color);
+  gap: var(--ds-spacing-3);
+  background-color: var(--ds-bg-sidebar);
+}
+
+.ds-palette-search-icon {
+  font-size: 1.1rem;
+  color: var(--ds-text-secondary);
+}
+
+.ds-palette-input {
+  flex-grow: 1;
+  border: none;
+  background: none;
+  outline: none;
+  font-size: var(--ds-font-size-md);
+  color: var(--ds-text-primary);
+  height: 30px;
+}
+
+.ds-palette-esc-badge {
+  font-size: 0.65rem;
+  color: var(--ds-text-muted);
+  border: 1px solid var(--ds-border-color);
+  padding: 0.1rem 0.3rem;
+  border-radius: var(--ds-radius-sm);
+  background-color: var(--ds-bg-app);
+}
+
+.ds-palette-results {
+  overflow-y: auto;
+  background-color: var(--ds-bg-app);
+}
+
+.ds-palette-empty {
+  padding: var(--ds-spacing-6);
+  text-align: center;
+  color: var(--ds-text-muted);
+  font-size: var(--ds-font-size-sm);
+}
+
+.ds-palette-item {
+  display: flex;
+  align-items: center;
+  padding: var(--ds-spacing-3) var(--ds-spacing-4);
+  cursor: pointer;
+  gap: var(--ds-spacing-3);
+  transition: background-color var(--ds-transition-fast);
+}
+
+.ds-palette-item--selected {
+  background-color: var(--ds-bg-active);
+}
+
+.ds-palette-item-icon {
+  font-size: 1rem;
+}
+
+.ds-palette-item-name {
+  font-size: var(--ds-font-size-sm);
+  color: var(--ds-text-primary);
+  flex-grow: 1;
+}
+
+.ds-palette-enter-indicator {
+  font-size: 0.65rem;
+  color: var(--ds-color-accent);
+}

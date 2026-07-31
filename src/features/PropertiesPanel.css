@@ -1,0 +1,146 @@
+.ds-properties-panel {
+  user-select: none;
+}
+
+/* ─── Tab Bar ─── */
+.ds-tab-bar {
+  display: flex;
+  gap: 2px;
+  padding: var(--ds-spacing-2) var(--ds-spacing-3);
+  background-color: var(--ds-bg-sidebar);
+  border-bottom: 1px solid var(--ds-border-color);
+  flex-shrink: 0;
+}
+
+.ds-tab {
+  flex: 1;
+  padding: var(--ds-spacing-2) var(--ds-spacing-3);
+  font-size: var(--ds-font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ds-text-muted);
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-sm);
+  cursor: pointer;
+  transition: all var(--ds-transition-fast);
+  text-align: center;
+}
+
+.ds-tab:hover {
+  color: var(--ds-text-secondary);
+  background-color: var(--ds-bg-hover);
+}
+
+.ds-tab--active {
+  color: var(--ds-text-primary);
+  background-color: var(--ds-bg-active);
+  border-color: var(--ds-border-color);
+  box-shadow: var(--ds-shadow-sm);
+}
+
+/* ─── Tab Content ─── */
+.ds-tab-content {
+  min-height: 0;
+}
+
+/* ─── Textarea ─── */
+.ds-textarea {
+  width: 100%;
+  background-color: var(--ds-bg-sidebar);
+  border: 1px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-md);
+  color: var(--ds-text-primary);
+  font-size: var(--ds-font-size-sm);
+  font-family: var(--ds-font-family);
+  line-height: 1.5;
+  outline: none;
+  resize: vertical;
+}
+
+.ds-textarea:focus {
+  border-color: var(--ds-border-focus);
+}
+
+/* Details tab textarea fills available space */
+.ds-details-textarea {
+  min-height: 280px;
+  flex: 1;
+}
+
+.ds-details-editor {
+  flex: 1;
+}
+
+.ds-details-preview {
+  min-height: 280px;
+  flex: 1;
+}
+
+/* ─── Markdown Preview ─── */
+.ds-markdown-preview {
+  font-size: var(--ds-font-size-sm);
+  color: var(--ds-text-secondary);
+  line-height: 1.6;
+  min-height: 140px;
+  overflow-y: auto;
+}
+
+.ds-markdown-preview h1, 
+.ds-markdown-preview h2, 
+.ds-markdown-preview h3 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+.ds-markdown-preview p {
+  margin-bottom: 1em;
+}
+
+.ds-markdown-preview ul, 
+.ds-markdown-preview ol {
+  margin: 0 0 1em 1.5em;
+  padding: 0;
+}
+
+.ds-markdown-preview code {
+  background-color: var(--ds-bg-active);
+  padding: 0.1rem 0.3rem;
+  border-radius: var(--ds-radius-sm);
+  font-family: monospace;
+}
+
+/* ─── Markdown Toolbar ─── */
+.ds-markdown-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--ds-bg-sidebar);
+  border: 1px solid var(--ds-border-color);
+  border-bottom: none;
+  border-top-left-radius: var(--ds-radius-md);
+  border-top-right-radius: var(--ds-radius-md);
+  padding: 4px;
+}
+
+.ds-markdown-btn {
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: bold;
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-text-secondary);
+  border: 1px solid transparent;
+  transition: all var(--ds-transition-fast);
+}
+
+.ds-markdown-btn:hover {
+  background-color: var(--ds-bg-hover);
+  color: var(--ds-text-primary);
+  border-color: var(--ds-border-color);
+}
+
+.ds-textarea-with-toolbar {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}

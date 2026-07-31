@@ -1,0 +1,108 @@
+.ds-mismatch-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-spacing-3);
+}
+
+.ds-mismatch-description {
+  font-size: var(--ds-font-size-sm);
+  color: var(--ds-text-primary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.ds-mismatch-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: var(--ds-radius-sm);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.03em;
+}
+
+.ds-mismatch-badge--old {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.ds-mismatch-badge--new {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.ds-mismatch-list {
+  max-height: 180px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-spacing-2);
+  background-color: var(--ds-bg-app);
+  border: 1px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-spacing-2);
+}
+
+.ds-mismatch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ds-spacing-2) var(--ds-spacing-3);
+  background-color: var(--ds-bg-sidebar);
+  border: 1px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-sm);
+}
+
+.ds-mismatch-endpoint {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-spacing-2);
+  min-width: 0;
+}
+
+.ds-mismatch-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.ds-mismatch-node-name {
+  font-weight: 700;
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-text-primary);
+}
+
+.ds-mismatch-attr-name {
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-color-accent);
+}
+
+.ds-mismatch-flow-arrow {
+  color: var(--ds-text-muted);
+  font-size: 14px;
+  padding: 0 var(--ds-spacing-2);
+}
+
+.ds-mismatch-callout {
+  background-color: rgba(99, 102, 241, 0.1);
+  border-left: 3px solid #6366f1;
+  padding: var(--ds-spacing-2) var(--ds-spacing-3);
+  border-radius: var(--ds-radius-sm);
+}
+
+.ds-mismatch-callout p {
+  margin: 0;
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-text-secondary);
+  line-height: 1.4;
+}
+
+.ds-mismatch-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ds-spacing-2);
+  width: 100%;
+}

@@ -1,6 +1,5 @@
-
 <p align="center">
-    <img src="resources/icon_256.png" width="128"/>
+    <img src="public/favicon.svg" width="128"/>
 </p>
 
 <h1 align="center">Plumber Manager</h1>
@@ -10,94 +9,139 @@
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/hasielhassan/PlumberManager" />
     <img alt="License" src="https://img.shields.io/github/license/hasielhassan/PlumberManager" />
     <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/hasielhassan/PlumberManager" />
-    <img alt="GitHub release downloads" src="https://img.shields.io/github/downloads/hasielhassan/PlumberManager/total" />
-    <img alt="Compatible Python Versions" src="https://img.shields.io/badge/Python Versions- 3.9 / 3.11-blue" />
+    <a href="https://buymeacoffee.com/hasielhassan" target="_blank">
+        <img alt="Buy Me A Coffee" src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black" />
+    </a>
 </p>
 
-A helper tool to design CG Pipeline interactive diagramas and data flow documentation
+A modern web-based node editor and visualization tool designed specifically for planning, documenting, and managing CG Pipeline data flows and DCC connection structures.
 
-![Screenshot](screenshot.png)
+---
 
-## Download it from Release!
+## Why Plumber Manager?
 
-A packaged binary version is provided as a release thanks to PyInstaller!
+At its core, a CG Pipeline is about the flow of data. Its primary building blocks are processes with inputs and outputs (e.g., publishing assets in Maya, loading sequences in Nuke). 
 
-At the moment I'm only making it for Windows, mostly for testing.
+**Plumber Manager** provides a dedicated, highly interactive node graph editor configured with CG pipeline concepts:
+* **Node Graph Editor**: Interactive canvas designed with visual standards familiar to CG artists and TD professionals.
+* **Format-Aware Inputs & Outputs**: Integrated data type registers (USD, Alembic, EXR, Maya, etc.) to visualize plugs, sockets, and connection requirements.
+* **Automatic Compound Layout**: Integrated hierarchy routing to automatically align complex node networks, keeping notes adjacent to their processes and nested elements grouped inside backdrops.
+* **Documentation First**: Rich Markdown descriptions with WYSIWYG tools on each node to build a live documentation hub of your pipeline assets.
+* **Embeddable Widget**: Build and bundle the canvas as a self-contained shadow DOM custom element (`<plumber-viewer>`) to drop pipeline charts directly into corporate wikis, Nuke panels, or web portals.
 
-[Download it from Release here!](https://github.com/hasielhassan/PlumberManager/releases)
-### Why yet another diagraming tool?
+---
 
-Pipeline can be many things ranging from Tasks, DCC's and Tools, but personally I find it that at its core, Pipeline is mostly about the flow of data, and its main building blocks are just a bunch of processes with inputs and outputs (Loaders and Publishers)
+## Key Features
 
-While Pipeline diagrams can be made out from any diagraming software, there is none that comes with certain preconfigured concepts from our industry, and I also think that Node networks are the best way to represet that idea of "a bunch of processes with inputs and outputs"
+* **Interactive Canvas**: Smooth mouse-wheel centered zooming, panning, marquee box multi-node selection, and mini-map navigation.
+* **Backdrop Group Boxes**: Create compound backdrop boxes with dynamic bottom-right resize grabbers. Moving a backdrop automatically moves all nested nodes, and auto-layout organizes them inside the group.
+* **Rich Markdown Notes**: Place yellow sticky notes on the canvas that render formatted markdown elements (headers, bullets, bold text) with dynamic YIQ contrast coloring to ensure legibility.
+* **Format Type Manager**: Custom creation and registry of custom format files with unique color codings and SVG file type icons.
+* **Format Path Badges**: Connection paths dynamically center formatted type badges (e.g. `USD`, `MA`, `EXR`) in both the canvas editor and exported vectors.
+* **Robust Exports**: Export diagrams as high-resolution PNGs, clean vector SVGs (with embedded formats and notes), or multi-page PDF documents.
+* **100% Backward Compatible**: Parsers support importing legacy PyQt `.gph` diagrams.
+* **Full Undo/Redo History**: Command history stack tracks node creations, attribute swaps, drag-resizes, coloring, and markdown descriptions.
 
-What if there is a tool that offers:
-- An editable Node network similar to those from all the DCC's that we use all  day.
-- Pre-configured with all the known standard formats used in the industry as inputs and outputs.
-- Automatic layout of the network, usefull when things get really big an complex.
-- Interactive navigation and preview of isolated parts of the network.
-- Store documentation of process and its inputs and outputs.
+---
 
-All that is what Plumber Manager its aming to offer.
+## Technology Stack
 
-## Roadmap
+The application is built on modern web-native architectures:
+* **Frontend Framework**: [React 18](https://react.dev/)
+* **Build System**: [Vite](https://vite.dev/)
+* **Layout Engine**: [dagre](https://github.com/dagrejs/dagre)
+* **Styling**: Pure CSS variables and custom design system themes
+* **Rendering**: Native HTML5 2D Canvas API
 
-- [X] Allow to update connection names on existing nodes
-- [ ] Allow to update connection data types on existing nodes
-- [X] Display the data type icons on the node slot names
-- [X] Option to preview isolated view of a selected node and just its direct connections
-- [X] Save relative icons paths on graph files
-- [X] Fix properties panel to not display duplicated widgets after selection
-- [ ] Improve connections ordering functionality
-- [X] Allow for process text descriptions
-- [ ] Process description with support for markdown
-- [X] Add export documentation functionality, that expots a pdf document with all processes and its inputs and outputs
+---
 
-And if you have an idea for something else, create a feature request in the form of an issue !
-# Development
-## Requirements:
-- Python 3.9+
-- PyQt6 or PySide6
-- [qdarkstyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet)
-- [Qt.py](https://github.com/mottosso/Qt.py)
-- [pygraphviz](https://github.com/pygraphviz/pygraphviz)
-- [reportlab](https://www.reportlab.com)
+## Development & Setup
 
-It also uses a modified version of Nodz as a git submodule
-- https://github.com/hasielhassan/Nodz
+### Prerequisites
+* [Node.js](https://nodejs.org/) (v18+)
+* npm (v9+)
 
-## Setup and run
-
-After clonning the repo, initialize the corresponding git submodule for Nodz
-```
-git submodule init
+### Installation
+Clone the repository and install the project dependencies:
+```bash
+git clone https://github.com/hasielhassan/PlumberManager.git
+cd PlumberManager
+npm install
 ```
 
-Install the dependencies on the `requirements.txt` file
+### Running Locally
+Start the local development server:
+```bash
+npm run dev
 ```
-python -m pip install requirements.txt
+Open your browser and navigate to `http://localhost:5173`.
+
+### Production Build
+Build the optimized web application:
+```bash
+npm run build
+```
+Build outputs are generated in the `/dist` directory.
+
+### Build Standalone Widget
+To compile the standalone embeddable custom element viewer widget:
+```bash
+npm run build:widget
+```
+This generates `dist/widget/plumber-viewer.umd.js` and `dist/widget/plumber-viewer.es.js`.
+
+---
+
+## Embedding the Viewer Widget
+
+Once built, you can embed Plumber diagrams inside any HTML page, wiki, or pipeline dashboard.
+
+An interactive showcase of the widget embedding features, control APIs, and event handling is available in [public/embed-example.html](public/embed-example.html). To preview it, start the local development server and navigate to `http://localhost:5173/embed-example.html`.
+
+Here is a quick example showing how to embed the widget in any page:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pipeline Docs</title>
+  <!-- Load the Widget Script -->
+  <script src="./dist/widget/plumber-viewer.umd.js"></script>
+</head>
+<body>
+  <h1>Asset Publish Flow</h1>
+
+  <!-- Embedded Custom Element Viewer -->
+  <plumber-viewer 
+    src="/path/to/my_pipeline.gph" 
+    style="width: 100%; height: 600px; border: 1px solid #2d3748; display: block;"
+  ></plumber-viewer>
+</body>
+</html>
 ```
 
-To start PlumberManager just run the `run.py` script
+---
 
-```
-python /PlumberManager/run.py
-```
+## 🤖 AI & Craftsmanship Disclaimer
 
-## Packaging
+Plumber Manager was built with love, hands-on CG pipeline engineering experience, and lots of coffee ☕ — developed with the interactive pair-programming assistance of **Claude** (Anthropic) and **Gemini** (Google DeepMind).
 
-This project its intended to be used directly and it the most simple way, and that its easier if its distributed as a single executable package
+If you find Plumber Manager helpful for your studio or personal workflows, consider supporting its development:
 
-The binary release its done with PyInstaller and the `.spec` file its included in the repo
+<p align="center">
+    <a href="https://buymeacoffee.com/hasielhassan" target="_blank">
+        <img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support%20Development-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" height="42" />
+    </a>
+</p>
 
-To create a build from source just make sure to have PyInstaller
+---
 
-```
-pip install pyinstaller
-```
+> [!NOTE]
+> Looking for the legacy desktop client? The previous Qt/Python desktop application is archived on the [v0.0.3.0 tag](https://github.com/hasielhassan/PlumberManager/tree/v0.0.3.0) and available for download on the [v0.0.3.0 releases page](https://github.com/hasielhassan/PlumberManager/releases/tag/v0.0.3.0).
 
-And run the packaging using the included `.spec` file
+---
 
-```
-pyinstaller /PlumberManager/.spec
-```
+## License
+Licensed under the GNU General Public License v3.0.  
+Copyright © 2019-2026 Hasiel Alvarez.

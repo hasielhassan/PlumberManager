@@ -1,0 +1,35 @@
+@import './tokens.css';
+@import './reset.css';
+@import './typography.css';
+
+/* Shared utility classes */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-row { flex-direction: row; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.flex-1 { flex: 1 1 0%; }
+.grow { flex-grow: 1; }
+.shrink-0 { flex-shrink: 0; }
+
+.gap-1 { gap: var(--ds-spacing-1); }
+.gap-2 { gap: var(--ds-spacing-2); }
+.gap-3 { gap: var(--ds-spacing-3); }
+.gap-4 { gap: var(--ds-spacing-4); }
+
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+
+.overflow-auto { overflow: auto; }
+.overflow-hidden { overflow: hidden; }
+
+.relative { position: relative; }
+.absolute { position: absolute; }
+
+/* Custom global styles or overrides */
+body {
+  background-color: var(--ds-bg-app);
+  color: var(--ds-text-primary);
+  user-select: none;
+}
