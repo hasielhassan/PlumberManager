@@ -1,0 +1,1079 @@
+{
+    "NODES": {
+        "Animation": {
+            "preset": "node_preset_1",
+            "position": [
+                2502.7504525965314,
+                690.7670094141661
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "rig",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "mayaascii",
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "camera",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "mayaascii",
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "main positions",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "json",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "review",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "review",
+                    "connectionIcon": "./review.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "caches",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "alembic",
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "curves",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "xml",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Compositing": {
+            "preset": "node_preset_1",
+            "position": [
+                3690,
+                1198.5
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "matte",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "exr",
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "image sequences",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "exr",
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "image sequence",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "exr",
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Concept": {
+            "preset": "node_preset_1",
+            "position": [
+                560,
+                806.5
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "script",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "screenjson",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "concepts",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "jpg",
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Editorial": {
+            "preset": "node_preset_1",
+            "position": [
+                1325,
+                129.5
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "panels",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "jpg",
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "timeline",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "otio",
+                    "connectionIcon": "./otio.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "review",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "review",
+                    "connectionIcon": "./review.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Editorial 2": {
+            "preset": "node_preset_1",
+            "position": [
+                3921.9991564604925,
+                216.8504111085145
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "timeline",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "otio",
+                    "connectionIcon": "./otio.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "review",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "review",
+                    "connectionIcon": "./review.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Editorial 3": {
+            "preset": "node_preset_1",
+            "position": [
+                4020,
+                1144.5
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "timeline",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "otio",
+                    "connectionIcon": "./otio.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "image sequences",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "exr",
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "delivery",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "review",
+                    "connectionIcon": "./review.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Layout": {
+            "preset": "node_preset_1",
+            "position": [
+                2153.729557473675,
+                717.6651335790948
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "timeline",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "otio",
+                    "connectionIcon": "./otio.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "rig",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "mayaascii",
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "geometry",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "alembic",
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "cameras",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "mayaascii",
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "main positions",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "json",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Lighting": {
+            "preset": "node_preset_1",
+            "position": [
+                3030,
+                1277
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "caches",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "alembic",
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "geometry",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "alembic",
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "shaders",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "xml",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "assignments",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "xml",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "lighting setup",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "mayaascii",
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "MattePainting": {
+            "preset": "node_preset_1",
+            "position": [
+                2160,
+                1107
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "concepts",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "jpg",
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "matte",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "exr",
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Modelado": {
+            "preset": "node_preset_1",
+            "position": [
+                1325,
+                783.5
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "concepts",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "jpg",
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "design sheets",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "jpg",
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "geometry",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "alembic",
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "ProductionDesign": {
+            "preset": "node_preset_1",
+            "position": [
+                960,
+                1366.5
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "concepts",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "jpg",
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "design sheets",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "jpg",
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "ProductionManagement": {
+            "preset": "node_preset_1",
+            "position": [
+                1830,
+                254
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "timeline",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "otio",
+                    "connectionIcon": "./otio.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "script",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "screenjson",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Render": {
+            "preset": "node_preset_1",
+            "position": [
+                3360,
+                1316
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "lighting setup",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "mayaascii",
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "image sequences",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "exr",
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Rigging": {
+            "preset": "node_preset_1",
+            "position": [
+                1742.2138046314592,
+                542.7971681052568
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "geometry",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "alembic",
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "rig",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "mayaascii",
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "rig data",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "xml",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Shading": {
+            "preset": "node_preset_1",
+            "position": [
+                2160,
+                1277
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "geometry",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "alembic",
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "textures",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "exr",
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "shaders",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "xml",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "assignments",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "xml",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "shaded geometry",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "mayaascii",
+                    "connectionIcon": "./mayaascii.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Story": {
+            "preset": "node_preset_1",
+            "position": [
+                175,
+                337
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "script",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "screenjson",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "StoryBoard": {
+            "preset": "node_preset_1",
+            "position": [
+                960,
+                129.5
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "sript",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "screenjson",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "concepts",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "jpg",
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "panels",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "jpg",
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Textures": {
+            "preset": "node_preset_1",
+            "position": [
+                1830,
+                1350.5
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "geometry",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "alembic",
+                    "connectionIcon": "./alembic.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "concept",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "jpg",
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "design sheets",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "jpg",
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "textures",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "exr",
+                    "connectionIcon": "./exr.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Pre-Production": {
+            "preset": "node_preset_backdrop",
+            "position": [
+                50,
+                50
+            ],
+            "alternate": true,
+            "attributes": [],
+            "metadata": {
+                "process_details": "",
+                "width": 1570,
+                "height": 987,
+                "custom_color": "#6366F1"
+            }
+        },
+        "Asset Build": {
+            "preset": "node_preset_backdrop",
+            "position": [
+                890,
+                1057
+            ],
+            "alternate": true,
+            "attributes": [],
+            "metadata": {
+                "process_details": "",
+                "width": 1530,
+                "height": 492,
+                "custom_color": "#10B981"
+            }
+        },
+        "Shot Production": {
+            "preset": "node_preset_backdrop",
+            "position": [
+                1667.5109727367158,
+                376.75628305260807
+            ],
+            "alternate": true,
+            "attributes": [],
+            "metadata": {
+                "process_details": "",
+                "width": 1227.734337579176,
+                "height": 596.3821249475543,
+                "custom_color": "#F59E0B"
+            }
+        },
+        "Post-Production": {
+            "preset": "node_preset_backdrop",
+            "position": [
+                2960,
+                56.5
+            ],
+            "alternate": true,
+            "attributes": [],
+            "metadata": {
+                "process_details": "",
+                "width": 1320,
+                "height": 1532.5,
+                "custom_color": "#EF4444"
+            }
+        },
+        "Pipeline Overview": {
+            "preset": "node_preset_note",
+            "position": [
+                120,
+                1087
+            ],
+            "alternate": true,
+            "attributes": [],
+            "metadata": {
+                "process_details": "# Animation Pipeline\n\n* **Pre-Production**: Story, Concept, Editorial\n\n* **Asset Build**: Modeling, Texturing, Rigging, Shading\n\n* **Shot Production**: Layout, Animation, Lighting\n\n* **Post-Production**: Render, Compositing, Final Edit\n\n",
+                "custom_color": "#8B5CF6",
+                "width": 300,
+                "height": 180
+            }
+        },
+        "Asset Notes": {
+            "preset": "node_preset_note",
+            "position": [
+                1290,
+                478
+            ],
+            "alternate": true,
+            "attributes": [],
+            "metadata": {
+                "process_details": "# Asset Standards\n- Geometry published as **Alembic**\n- Textures in **EXR** format\n- Rigs as **Maya ASCII** files",
+                "custom_color": "#10B981",
+                "width": 260,
+                "height": 140
+            }
+        }
+    },
+    "CONNECTIONS": [
+        [
+            "Story.script",
+            "StoryBoard.sript"
+        ],
+        [
+            "Story.script",
+            "ProductionManagement.script"
+        ],
+        [
+            "Story.script",
+            "Concept.script"
+        ],
+        [
+            "StoryBoard.panels",
+            "Editorial.panels"
+        ],
+        [
+            "Editorial.timeline",
+            "ProductionManagement.timeline"
+        ],
+        [
+            "Concept.concepts",
+            "MattePainting.concepts"
+        ],
+        [
+            "Concept.concepts",
+            "StoryBoard.concepts"
+        ],
+        [
+            "Concept.concepts",
+            "ProductionDesign.concepts"
+        ],
+        [
+            "ProductionDesign.design sheets",
+            "Modelado.design sheets"
+        ],
+        [
+            "Concept.concepts",
+            "Modelado.concepts"
+        ],
+        [
+            "Modelado.geometry",
+            "Rigging.geometry"
+        ],
+        [
+            "Modelado.geometry",
+            "Textures.geometry"
+        ],
+        [
+            "ProductionDesign.design sheets",
+            "Textures.design sheets"
+        ],
+        [
+            "Concept.concepts",
+            "Textures.concept"
+        ],
+        [
+            "Textures.textures",
+            "Shading.textures"
+        ],
+        [
+            "Modelado.geometry",
+            "Shading.geometry"
+        ],
+        [
+            "Rigging.rig",
+            "Layout.rig"
+        ],
+        [
+            "Editorial.timeline",
+            "Layout.timeline"
+        ],
+        [
+            "Modelado.geometry",
+            "Layout.geometry"
+        ],
+        [
+            "Layout.cameras",
+            "Animation.camera"
+        ],
+        [
+            "Rigging.rig",
+            "Animation.rig"
+        ],
+        [
+            "Layout.main positions",
+            "Animation.main positions"
+        ],
+        [
+            "Modelado.geometry",
+            "Lighting.geometry"
+        ],
+        [
+            "Shading.shaders",
+            "Lighting.shaders"
+        ],
+        [
+            "Animation.caches",
+            "Lighting.caches"
+        ],
+        [
+            "Shading.assignments",
+            "Lighting.assignments"
+        ],
+        [
+            "Lighting.lighting setup",
+            "Render.lighting setup"
+        ],
+        [
+            "Render.image sequences",
+            "Compositing.image sequences"
+        ],
+        [
+            "Animation.review",
+            "Editorial 2.review"
+        ],
+        [
+            "Editorial.timeline",
+            "Editorial 2.timeline"
+        ],
+        [
+            "Compositing.image sequence",
+            "Editorial 3.image sequences"
+        ],
+        [
+            "Editorial.timeline",
+            "Editorial 3.timeline"
+        ],
+        [
+            "MattePainting.matte",
+            "Compositing.matte"
+        ]
+    ],
+    "CUSTOM_TYPES": []
+}

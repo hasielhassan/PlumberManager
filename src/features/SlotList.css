@@ -1,0 +1,64 @@
+.ds-slot-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ds-slot-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-spacing-2);
+  background-color: var(--ds-bg-sidebar);
+  border: 1px solid var(--ds-border-color);
+  padding: var(--ds-spacing-2);
+  border-radius: var(--ds-radius-md);
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.ds-slot-row:focus-within,
+.ds-slot-row:hover {
+  z-index: 50; /* Draw dropdown above neighboring rows */
+}
+
+.ds-slot-name-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.ds-slot-type-select {
+  width: 140px; /* Give more width to the type field */
+  flex-shrink: 0;
+}
+
+.ds-slot-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+/* Compact styling overrides for inputs/triggers inside slot list rows */
+.ds-slot-row .ds-input-group {
+  margin-bottom: 0;
+}
+
+.ds-slot-row .ds-text-input {
+  height: 28px;
+  font-size: var(--ds-font-size-xs);
+  padding: 0 var(--ds-spacing-2);
+  border-radius: var(--ds-radius-sm);
+}
+
+.ds-slot-row .ds-format-select-trigger {
+  height: 28px;
+  border-radius: var(--ds-radius-sm);
+  padding: 0 var(--ds-spacing-2);
+}
+
+.ds-slot-row .ds-format-select-icon {
+  width: 16px !important;
+  height: 16px !important;
+  margin-right: var(--ds-spacing-1);
+}

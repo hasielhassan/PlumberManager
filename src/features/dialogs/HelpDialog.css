@@ -1,0 +1,102 @@
+.ds-help-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-spacing-6);
+  padding: var(--ds-spacing-2) 0;
+}
+
+.ds-help-section-title {
+  margin: 0 0 var(--ds-spacing-3) 0;
+  font-size: var(--ds-font-size-md);
+  font-weight: 600;
+  color: var(--ds-color-accent);
+}
+
+/* Features Grid */
+.ds-features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--ds-spacing-4);
+}
+
+.ds-feature-card {
+  display: flex;
+  gap: var(--ds-spacing-3);
+  padding: var(--ds-spacing-4);
+  background-color: var(--ds-bg-sidebar);
+  border: 1px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-lg);
+  transition: border-color var(--ds-transition-fast), box-shadow var(--ds-transition-fast), transform var(--ds-transition-fast);
+}
+
+.ds-feature-card:hover {
+  border-color: var(--ds-color-accent);
+  box-shadow: var(--ds-shadow-sm);
+  transform: translateY(-1px);
+}
+
+.ds-feature-icon {
+  flex-shrink: 0;
+  color: var(--ds-color-accent);
+  display: flex;
+  align-items: flex-start;
+  padding-top: 1px;
+}
+
+.ds-feature-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-spacing-1);
+}
+
+.ds-feature-title {
+  font-weight: 600;
+  font-size: var(--ds-font-size-sm);
+  color: var(--ds-text-primary);
+}
+
+.ds-feature-desc {
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-text-secondary);
+  line-height: 1.4;
+}
+
+/* Keyboard Shortcuts List */
+.ds-shortcuts-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-spacing-2);
+}
+.ds-shortcut-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ds-spacing-2) var(--ds-spacing-4);
+  border-radius: var(--ds-radius-md);
+  border: 1px solid transparent;
+  transition: background-color var(--ds-transition-fast), border-color var(--ds-transition-fast);
+}
+
+.ds-shortcut-row:hover {
+  background-color: var(--ds-bg-sidebar);
+  border-color: var(--ds-border-color);
+}
+
+.ds-shortcut-name {
+  font-weight: 500;
+  font-size: var(--ds-font-size-sm);
+  color: var(--ds-text-primary);
+}
+.ds-shortcut-keys-container {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-spacing-1);
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-text-muted);
+}
+
+.ds-shortcut-action-text {
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-text-secondary);
+  font-style: italic;
+}

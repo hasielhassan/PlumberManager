@@ -1,0 +1,78 @@
+.ds-select-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-spacing-1);
+  margin-bottom: var(--ds-spacing-2);
+  width: 100%;
+}
+
+.ds-select-group--inline {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-spacing-4);
+  margin-bottom: var(--ds-spacing-3);
+}
+
+.ds-select-group--inline .ds-select-label {
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
+.ds-select-group--inline .ds-select-container {
+  width: 100%;
+  max-width: 240px;
+}
+
+.ds-select-label {
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-text-secondary);
+  font-weight: 500;
+  user-select: none;
+}
+
+.ds-select-container {
+  position: relative;
+  width: 100%;
+}
+
+.ds-select {
+  width: 100%;
+  height: 36px;
+  background-color: var(--ds-bg-sidebar);
+  border: 1px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-md);
+  padding: 0 var(--ds-spacing-8) 0 var(--ds-spacing-3);
+  font-size: var(--ds-font-size-sm);
+  color: var(--ds-text-primary);
+  outline: none;
+  cursor: pointer;
+  appearance: none; /* remove default arrow */
+  transition: border-color var(--ds-transition-fast), box-shadow var(--ds-transition-fast);
+}
+
+.ds-select:focus {
+  border-color: var(--ds-border-focus);
+  box-shadow: 0 0 0 2px var(--ds-color-accent-alpha);
+}
+
+.ds-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ds-select-arrow {
+  position: absolute;
+  right: var(--ds-spacing-3);
+  top: 50%;
+  transform: translateY(-50%) scale(0.7);
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-text-muted);
+  pointer-events: none;
+  user-select: none;
+}
+
+.ds-select-option {
+  background-color: var(--ds-bg-sidebar);
+  color: var(--ds-text-primary);
+}

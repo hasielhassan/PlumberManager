@@ -1,0 +1,132 @@
+/* Global Joyride container elevation to sit above modal backdrops */
+div[id*="react-joyride"],
+.__floater,
+.react-joyride__overlay,
+.react-joyride__spotlight,
+.react-joyride__tooltip {
+  z-index: 10050 !important;
+}
+
+.ds-tour-tooltip {
+  background-color: var(--ds-bg-card);
+  border: 1px solid var(--ds-border-color);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(108, 193, 136, 0.3);
+  color: var(--ds-text-primary);
+  font-family: var(--ds-font-family);
+  max-width: 480px;
+  min-width: 360px;
+  padding: 20px 24px;
+  position: relative;
+  z-index: 10052 !important;
+}
+
+.ds-tour-header {
+  align-items: center;
+  border-bottom: 1px solid var(--ds-border-color);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+}
+
+.ds-tour-title {
+  color: var(--ds-text-primary);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.ds-tour-step-badge {
+  background-color: var(--ds-color-accent-alpha);
+  border: 1px solid var(--ds-color-accent);
+  border-radius: var(--ds-radius-round);
+  color: var(--ds-color-accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+
+.ds-tour-body {
+  color: var(--ds-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+.ds-tour-body strong {
+  color: var(--ds-text-primary);
+}
+
+.ds-tour-body code {
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--ds-border-color);
+  border-radius: 4px;
+  color: var(--ds-color-accent);
+  font-size: 0.88rem;
+  padding: 2px 6px;
+}
+
+.ds-tour-footer {
+  align-items: center;
+  border-top: 1px solid var(--ds-border-color);
+  display: flex;
+  justify-content: space-between;
+  padding-top: 14px;
+}
+
+.ds-tour-skip-btn {
+  background: transparent;
+  border: none;
+  color: var(--ds-text-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 6px 10px;
+  transition: color var(--ds-transition-fast);
+}
+
+.ds-tour-skip-btn:hover {
+  color: var(--ds-color-error);
+}
+
+.ds-tour-actions {
+  display: flex;
+  gap: var(--ds-spacing-2);
+}
+
+.ds-tour-btn {
+  border-radius: var(--ds-radius-md);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  transition: all var(--ds-transition-fast);
+}
+
+.ds-tour-btn-secondary {
+  background-color: var(--ds-bg-hover);
+  border: 1px solid var(--ds-border-color);
+  color: var(--ds-text-primary);
+}
+
+.ds-tour-btn-secondary:hover:not(:disabled) {
+  background-color: var(--ds-bg-active);
+}
+
+.ds-tour-btn-secondary:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.ds-tour-btn-primary {
+  background-color: var(--ds-color-accent);
+  border: 1px solid var(--ds-color-accent);
+  color: var(--ds-text-on-accent);
+}
+
+.ds-tour-btn-primary:hover {
+  background-color: var(--ds-color-accent-hover);
+}

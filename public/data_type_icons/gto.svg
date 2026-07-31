@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg-grad-gto" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95"/>
+    </linearGradient>
+    <filter id="shadow-gto" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Perfect 6-Sided Symmetric Hexagonal Badge Frame -->
+  <polygon 
+    points="32,4 56,18 56,46 32,60 8,46 8,18" 
+    fill="url(#bg-grad-gto)" 
+    stroke="#0284C7" 
+    stroke-width="2.5" 
+    stroke-linejoin="round"
+    filter="url(#shadow-gto)"
+  />
+
+  <!-- Perfectly Centered Vector Logo (centered around y=25.5) -->
+  <g stroke="#0284C7" stroke-width="1.6" fill="none" stroke-linejoin="round">
+  <path d="M 32 14 L 42 20 L 42 32 L 32 38 L 22 32 L 22 20 Z" fill="#0284C7" fill-opacity="0.25"/>
+  <line x1="32" y1="14" x2="32" y2="38"/>
+  <line x1="22" y1="20" x2="42" y2="32"/>
+  <line x1="42" y1="20" x2="22" y2="32"/>
+  <rect x="30" y="12" width="4" height="4" fill="#F59E0B" stroke="none"/>
+  <rect x="40" y="18" width="4" height="4" fill="#0284C7" stroke="none"/>
+  <rect x="40" y="30" width="4" height="4" fill="#F59E0B" stroke="none"/>
+  <rect x="30" y="36" width="4" height="4" fill="#0284C7" stroke="none"/>
+  <rect x="20" y="30" width="4" height="4" fill="#F59E0B" stroke="none"/>
+  <rect x="20" y="18" width="4" height="4" fill="#0284C7" stroke="none"/>
+</g>
+
+  <!-- Optimal Positioned & Sized Format Title (y=46.5) -->
+  <text 
+    x="32" 
+    y="46.5" 
+    text-anchor="middle" 
+    fill="#F8FAFC" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+    font-size="9.0" 
+    font-weight="700" 
+    letter-spacing="0.4"
+  >GTO</text>
+</svg>
