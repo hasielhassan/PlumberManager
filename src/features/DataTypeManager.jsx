@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Modal, TextInput, Button, IconButton, Badge, ScrollArea } from '../design-system/components';
 import { dataTypeRegistry } from '../core/data-types';
 import { generateHexagonBadgeSvg } from '../utils/hexagon-badge-generator';
+import { getAssetUrl } from '../utils/asset-path';
 import { ConfirmDialog } from './dialogs';
 import './DataTypeManager.css';
 
@@ -99,7 +100,7 @@ export function DataTypeManager({ isOpen, onClose, onUpdate }) {
     setDescription('');
     setColor('#38BDF8');
     setSvgIcon('');
-    
+
     if (onUpdate) onUpdate();
   };
 
@@ -130,7 +131,7 @@ export function DataTypeManager({ isOpen, onClose, onUpdate }) {
           {/* Form to Add New */}
           <form onSubmit={handleAddType} className="ds-type-manager-form">
             <h3 className="ds-type-manager-section-title">Add Custom Format</h3>
-            
+
             <TextInput
               label="Format Code (e.g., usd, abc)"
               value={code}
@@ -138,7 +139,7 @@ export function DataTypeManager({ isOpen, onClose, onUpdate }) {
               placeholder="e.g. exr"
               required
             />
-            
+
             <TextInput
               label="Format Display Name"
               value={name}
@@ -209,7 +210,7 @@ export function DataTypeManager({ isOpen, onClose, onUpdate }) {
           {/* Formats Registry List */}
           <div className="ds-type-manager-list-pane">
             <h3 className="ds-type-manager-section-title">Registered Data Formats ({filteredTypes.length})</h3>
-            
+
             <div className="mb-2">
               <TextInput
                 placeholder="Search format code, name, description..."
@@ -226,16 +227,16 @@ export function DataTypeManager({ isOpen, onClose, onUpdate }) {
                   </div>
                 ) : (
                   filteredTypes.map((dt) => {
-                    const iconSrc = dt.iconPath || `/data_type_icons/${dt.code}.svg`;
+                    const iconSrc = getAssetUrl(`/data_type_icons/${dt.code}.svg`);
                     return (
                       <div key={dt.code} className="ds-format-row">
                         <div className="ds-format-row-info-wrap">
-                          <img 
-                            src={iconSrc} 
-                            alt="" 
+                          <img
+                            src={iconSrc}
+                            alt=""
                             className="ds-format-row-icon"
                             onError={(e) => {
-                              e.target.src = '/data_type_icons/usd.svg';
+                              e.target.src = getAssetUrl('/data_type_icons/usd.svg');
                             }}
                           />
                           <div className="ds-format-info">

@@ -14,11 +14,12 @@ export function GraphProvider({ children }) {
   const [selection, setSelection] = useState([]);
   const [updateTrigger, setUpdateTrigger] = useState(0);
 
-  // Force re-render on any graph modification
+  // Force re-render on any graph modification or icon preload
   useEffect(() => {
     const forceUpdate = () => setUpdateTrigger(prev => prev + 1);
     
     dataTypeRegistry.initialize();
+    const unsubRegistry = dataTypeRegistry.onLoaded(forceUpdate);
 
     const unsubCreated = graph.on('node:created', forceUpdate);
     const unsubDeleted = graph.on('node:deleted', forceUpdate);
@@ -34,6 +35,7 @@ export function GraphProvider({ children }) {
     const unsubCleared = graph.on('graph:cleared', forceUpdate);
 
     return () => {
+      unsubRegistry();
       unsubCreated();
       unsubDeleted();
       unsubRenamed();

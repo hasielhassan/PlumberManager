@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { dataTypeRegistry } from '../core/data-types';
+import { getAssetUrl } from '../utils/asset-path';
 import './FormatSelect.css';
 
 /**
@@ -108,7 +109,7 @@ export function FormatSelect({ value, onChange, options }) {
         aria-expanded={isOpen}
       >
         <img 
-          src={`/data_type_icons/${value}.svg`} 
+          src={getAssetUrl(`/data_type_icons/${value}.svg`)} 
           alt="" 
           className="ds-format-select-icon"
           onError={(e) => {
@@ -157,7 +158,7 @@ export function FormatSelect({ value, onChange, options }) {
                     onMouseEnter={() => setHighlightedIndex(idx)}
                   >
                     <img 
-                      src={`/data_type_icons/${opt.value}.svg`} 
+                      src={getAssetUrl(`/data_type_icons/${opt.value}.svg`)} 
                       alt="" 
                       className="ds-format-select-option-icon"
                       onError={(e) => {
