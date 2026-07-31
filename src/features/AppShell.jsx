@@ -19,6 +19,7 @@ import { serializeGraph, deserializeGraph } from '../core/graph-serializer';
 import { layoutGraph } from '../core/graph-layout';
 import { localStorageManager } from '../core/local-storage';
 import { downloadFile, uploadFile } from '../utils/file-io';
+import { getAssetUrl } from '../utils/asset-path';
 import { useCommandHistory } from '../hooks/useCommandHistory';
 import { SearchPalette } from './SearchPalette';
 import { DataTypeManager } from './DataTypeManager';
@@ -69,7 +70,7 @@ export function AppShell() {
 
   // Fetch samples manifest
   useEffect(() => {
-    fetch('/samples/manifest.json')
+    fetch(getAssetUrl('/samples/manifest.json'))
       .then(res => {
         if (res.ok) return res.json();
         throw new Error('No manifest file');
@@ -248,7 +249,7 @@ export function AppShell() {
   const handleLoadSample = async (sampleName, quiet = false) => {
     try {
       if (!quiet) setProgressData({ isOpen: true, title: 'Loading Sample', message: `Fetching /samples/${sampleName}.gph...` });
-      const response = await fetch(`/samples/${sampleName}.gph`);
+      const response = await fetch(getAssetUrl(`/samples/${sampleName}.gph`));
       if (!response.ok) {
         throw new Error('Sample file not found');
       }
@@ -380,7 +381,7 @@ export function AppShell() {
       <header className="ds-menu-bar flex items-center justify-between shrink-0" data-tour="menu-bar">
         <div className="flex items-center gap-4">
           <div className="ds-app-logo flex items-center gap-2">
-            <img src="/favicon.svg" alt="" className="ds-logo-icon" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
+            <img src={getAssetUrl('/favicon.svg')} alt="" className="ds-logo-icon" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
             <span className="ds-logo-text font-bold">PlumberManager</span>
           </div>
           <nav className="ds-menu-nav flex items-center">

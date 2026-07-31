@@ -33,6 +33,7 @@ export default defineConfig(({ mode }) => {
 
   // Default App Build Configuration
   return {
+    base: '/PlumberManager/',
     plugins: [react()],
     define: {
       __APP_VERSION__: JSON.stringify(appVersion)

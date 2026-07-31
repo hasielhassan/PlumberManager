@@ -1,43 +1,46 @@
 import builtInConfig from '../../config/data-types.json';
 import { customTypeStore } from './custom-type-store';
+import { getAssetUrl } from '../utils/asset-path';
 
 export class DataTypeRegistry {
   constructor() {
     this.types = new Map();
     this.imageCaches = new Map();
     this.initialized = false;
+    this.onLoadedListeners = new Set();
+
+    // Populate default types map synchronously on construction
+    this.registerDefaults();
   }
 
-  async initialize() {
-    if (this.initialized) return;
-
-    // Load built-in types
+  registerDefaults() {
     builtInConfig.forEach(dt => {
-      this.types.set(dt.code, {
+      this.types.set(dt.code.toLowerCase(), {
         code: dt.code,
         type: dt.type,
         description: dt.description || '',
-        iconPath: dt.path,
+        iconPath: getAssetUrl(`/data_type_icons/${dt.code}.svg`),
         isCustom: false
       });
     });
 
-    // Load custom types from local storage store
     const customTypes = customTypeStore.getTypes();
     customTypes.forEach(ct => {
-      this.types.set(ct.code, {
+      this.types.set(ct.code.toLowerCase(), {
         code: ct.code,
         type: ct.type,
         description: ct.description || '',
-        iconPath: ct.iconPath || '',
+        iconPath: getAssetUrl(`/data_type_icons/${ct.code}.svg`),
         isCustom: true,
         hash: ct.hash
       });
     });
+  }
 
-    // Pre-load images for Canvas
-    await this.preloadImages();
+  async initialize() {
+    if (this.initialized) return;
     this.initialized = true;
+    await this.preloadImages();
   }
 
   getAllTypes() {
@@ -45,35 +48,8 @@ export class DataTypeRegistry {
   }
 
   getType(code) {
-    // If not initialized, do a sync register check
-    if (!this.initialized) {
-      this.initializeSync();
-    }
-    return this.types.get(code?.toLowerCase());
-  }
-
-  initializeSync() {
-    if (this.initialized) return;
-    builtInConfig.forEach(dt => {
-      this.types.set(dt.code, {
-        code: dt.code,
-        type: dt.type,
-        description: dt.description || '',
-        iconPath: dt.path,
-        isCustom: false
-      });
-    });
-    const customTypes = customTypeStore.getTypes();
-    customTypes.forEach(ct => {
-      this.types.set(ct.code, {
-        code: ct.code,
-        type: ct.type,
-        description: ct.description || '',
-        iconPath: ct.iconPath || '',
-        isCustom: true,
-        hash: ct.hash
-      });
-    });
+    if (!code) return null;
+    return this.types.get(code.toLowerCase()) || null;
   }
 
   async preloadImages() {
@@ -84,29 +60,56 @@ export class DataTypeRegistry {
       }
     }
     await Promise.all(promises);
+    this.notifyLoaded();
   }
 
   loadImage(code, path) {
+    const cleanCode = code?.toLowerCase();
+    if (!cleanCode || !path) return Promise.resolve(null);
+
     return new Promise((resolve) => {
-      if (this.imageCaches.has(code)) {
-        resolve(this.imageCaches.get(code));
+      if (this.imageCaches.has(cleanCode)) {
+        resolve(this.imageCaches.get(cleanCode));
         return;
       }
       const img = new Image();
-      img.src = path;
+      const resolvedUrl = path;
+      img.src = resolvedUrl;
       img.onload = () => {
-        this.imageCaches.set(code, img);
+        this.imageCaches.set(cleanCode, img);
+        this.notifyLoaded();
         resolve(img);
       };
       img.onerror = () => {
-        console.warn(`Failed to load data type icon for ${code}: ${path}`);
+        console.warn(`Failed to load data type icon for ${cleanCode}: ${resolvedUrl}`);
         resolve(null);
       };
     });
   }
 
   getImage(code) {
-    return this.imageCaches.get(code?.toLowerCase()) || null;
+    if (!code) return null;
+    const cleanCode = code.toLowerCase();
+    if (this.imageCaches.has(cleanCode)) {
+      return this.imageCaches.get(cleanCode);
+    }
+    // Lazy-trigger load if not yet cached
+    const typeInfo = this.types.get(cleanCode);
+    if (typeInfo && typeInfo.iconPath) {
+      this.loadImage(cleanCode, typeInfo.iconPath);
+    }
+    return null;
+  }
+
+  onLoaded(fn) {
+    this.onLoadedListeners.add(fn);
+    return () => this.onLoadedListeners.delete(fn);
+  }
+
+  notifyLoaded() {
+    this.onLoadedListeners.forEach(fn => {
+      try { fn(); } catch { /* ignore listener errors */ }
+    });
   }
 
   // Check compatibility (same-type matching)
@@ -118,23 +121,28 @@ export class DataTypeRegistry {
   // Register custom type dynamically
   addCustomType(typeConfig) {
     const hash = customTypeStore.addType(typeConfig);
-    this.types.set(typeConfig.code, {
+    const cleanCode = typeConfig.code.toLowerCase();
+    const iconPath = typeConfig.iconPath ? getAssetUrl(typeConfig.iconPath) : '';
+    this.types.set(cleanCode, {
       code: typeConfig.code,
       type: typeConfig.type,
       description: typeConfig.description || '',
-      iconPath: typeConfig.iconPath,
+      iconPath,
       isCustom: true,
       hash
     });
-    // Load image async
-    this.loadImage(typeConfig.code, typeConfig.iconPath);
+    if (iconPath) {
+      this.loadImage(cleanCode, iconPath);
+    }
     return hash;
   }
 
   removeCustomType(code) {
-    customTypeStore.removeType(code);
-    this.types.delete(code);
-    this.imageCaches.delete(code);
+    const cleanCode = code?.toLowerCase();
+    if (!cleanCode) return;
+    customTypeStore.removeType(cleanCode);
+    this.types.delete(cleanCode);
+    this.imageCaches.delete(cleanCode);
   }
 }
 

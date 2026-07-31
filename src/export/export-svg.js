@@ -1,5 +1,6 @@
 import { getNodeDimensions } from '../canvas/node-renderer';
 import { getSlotCenter } from '../canvas/hit-testing';
+import { getAssetUrl } from '../utils/asset-path';
 import editorConfig from '../../config/editor-config.json';
 import { convertArrayToRgba, getColorWithOpacity } from '../utils/color';
 
@@ -132,7 +133,7 @@ export function generateSvgString(graphModel, includeBackground = true) {
 
       svg += `    <g class="format-badge" transform="translate(${mx}, ${my})">\n`;
       svg += `      <circle cx="0" cy="0" r="17" fill="#0f172a" />\n`;
-      svg += `      <image href="/data_type_icons/${codeLower}.svg" x="${-badgeSize / 2}" y="${-badgeSize / 2}" width="${badgeSize}" height="${badgeSize}" />\n`;
+      svg += `      <image href="${getAssetUrl(`/data_type_icons/${codeLower}.svg`)}" x="${-badgeSize / 2}" y="${-badgeSize / 2}" width="${badgeSize}" height="${badgeSize}" />\n`;
       svg += `    </g>\n`;
     }
   });
@@ -222,7 +223,6 @@ export function generateSvgString(graphModel, includeBackground = true) {
             const level = headingMatch[1].length;
             const headingText = headingMatch[2].replace(/\*\*/g, '');
             const fontSize = Math.max(8, 12 - level);
-            const hCharWidth = fontSize * 0.55;
             const hWrapped = svgWrapText(headingText, 0);
             hWrapped.forEach(wLine => {
               if (rowY + fontSize + 4 > maxY) return;

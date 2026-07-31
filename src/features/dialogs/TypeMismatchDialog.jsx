@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Button } from '../../design-system/components';
+import { getAssetUrl } from '../../utils/asset-path';
 import './TypeMismatchDialog.css';
 
 export function TypeMismatchDialog({
@@ -50,7 +51,7 @@ export function TypeMismatchDialog({
             <div key={idx} className="ds-mismatch-row">
               <div className="ds-mismatch-endpoint">
                 <img
-                  src={`/data_type_icons/${conn.sourceType.toLowerCase()}.svg`}
+                  src={getAssetUrl(`/data_type_icons/${conn.sourceType.toLowerCase()}.svg`)}
                   alt=""
                   className="ds-mismatch-icon"
                   onError={(e) => { e.target.style.display = 'none'; }}
@@ -65,7 +66,7 @@ export function TypeMismatchDialog({
 
               <div className="ds-mismatch-endpoint">
                 <img
-                  src={`/data_type_icons/${conn.targetType.toLowerCase()}.svg`}
+                  src={getAssetUrl(`/data_type_icons/${conn.targetType.toLowerCase()}.svg`)}
                   alt=""
                   className="ds-mismatch-icon"
                   onError={(e) => { e.target.style.display = 'none'; }}

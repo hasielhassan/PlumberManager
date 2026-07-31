@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Button } from '../../design-system/components';
+import { getAssetUrl } from '../../utils/asset-path';
 
 export function AboutDialog({ isOpen, onClose }) {
   const actions = (
@@ -11,7 +12,7 @@ export function AboutDialog({ isOpen, onClose }) {
       <div className="flex flex-col items-center text-center gap-4 py-2">
         {/* Prominent Centered Logo */}
         <img 
-          src="/favicon.svg" 
+          src={getAssetUrl('/favicon.svg')} 
           alt="PlumberManager Logo" 
           style={{ width: '96px', height: '96px', objectFit: 'contain', filter: 'drop-shadow(0 4px 14px rgba(16, 185, 129, 0.3))' }} 
         />

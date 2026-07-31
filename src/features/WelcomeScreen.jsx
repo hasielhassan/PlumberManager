@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '../design-system/components';
+import { getAssetUrl } from '../utils/asset-path';
 import './WelcomeScreen.css';
 
 export function WelcomeScreen({
@@ -14,7 +15,7 @@ export function WelcomeScreen({
     <div className="ds-welcome-screen p-8 absolute inset-0 z-10">
       <div className="ds-welcome-container">
         <div className="ds-welcome-logo flex flex-col items-center gap-2">
-          <img src="/favicon.svg" alt="PlumberManager" style={{ width: '80px', height: '80px', objectFit: 'contain', marginBottom: '8px' }} />
+          <img src={getAssetUrl('/favicon.svg')} alt="PlumberManager" style={{ width: '80px', height: '80px', objectFit: 'contain', marginBottom: '8px' }} />
           <h1 className="text-xl font-bold">Welcome to Plumber Manager</h1>
           <p className="text-sm text-secondary">
             Design CG Pipeline interactive diagrams and structure your data flow documentation.
