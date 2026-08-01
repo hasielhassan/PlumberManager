@@ -5,7 +5,7 @@ A lightweight, framework-agnostic JavaScript widget to embed interactive, read-o
 ## Features
 
 - **No Framework Dependency**: Written in vanilla JavaScript with Shadow DOM for style encapsulation.
-- **Interactive Navigation**: Supports mouse panning and zooming out of the box.
+- **Interactive Navigation**: Supports mouse panning and zooming, plus touch screen gestures (1-finger pan/node selection and 2-finger pinch-to-zoom).
 - **Format Icons**: Circular format icons are rendered on connection lines.
 - **Collapsible Sidebar**: Automatically shows detailed process metadata and markdown-rendered descriptions when a node is clicked.
 - **Node Isolation View**: Focuses on a single selected node and its direct inputs and outputs.
@@ -14,11 +14,11 @@ A lightweight, framework-agnostic JavaScript widget to embed interactive, read-o
 ## Installation
 
 ### Script Tag (UMD)
-Load the script from the CDN and initialize:
+Load the script from the CDN or local build output:
 
 ```html
-<!-- Load Widget Bundle -->
-<script src="https://plumber-manager.pages.dev/widget/plumber-viewer.umd.js"></script>
+<!-- Load Widget Bundle from CDN -->
+<script src="https://www.hasielhassan.com/PlumberManager/widget/plumber-viewer.umd.js"></script>
 
 <!-- Container Element -->
 <div id="pipeline-viewer" style="width: 100%; height: 500px; border-radius: 8px;"></div>

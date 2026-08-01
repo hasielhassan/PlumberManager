@@ -16,7 +16,10 @@
 
 A modern web-based node editor and visualization tool designed specifically for planning, documenting, and managing CG Pipeline data flows and DCC connection structures.
 
----
+
+<p align="center">
+    <img src="screenshot.png" width="600"/>
+</p>
 
 ## Why Plumber Manager?
 
@@ -33,7 +36,7 @@ At its core, a CG Pipeline is about the flow of data. Its primary building block
 
 ## Key Features
 
-* **Interactive Canvas**: Smooth mouse-wheel centered zooming, panning, marquee box multi-node selection, and mini-map navigation.
+* **Interactive Canvas & Touch Support**: Smooth mouse-wheel centered zooming, panning, marquee box multi-node selection, mini-map navigation, and full touch screen support (1-finger node selecting and dragging, 2-finger pinch-to-zoom).
 * **Backdrop Group Boxes**: Create compound backdrop boxes with dynamic bottom-right resize grabbers. Moving a backdrop automatically moves all nested nodes, and auto-layout organizes them inside the group.
 * **Rich Markdown Notes**: Place yellow sticky notes on the canvas that render formatted markdown elements (headers, bullets, bold text) with dynamic YIQ contrast coloring to ensure legibility.
 * **Format Type Manager**: Custom creation and registry of custom format files with unique color codings and SVG file type icons.
@@ -94,7 +97,7 @@ This generates `dist/widget/plumber-viewer.umd.js` and `dist/widget/plumber-view
 
 ## Embedding the Viewer Widget
 
-Once built, you can embed Plumber diagrams inside any HTML page, wiki, or pipeline dashboard.
+Once built, you can embed Plumber diagrams inside any HTML page, wiki, or pipeline dashboard using the hosted CDN script or local build asset.
 
 An interactive showcase of the widget embedding features, control APIs, and event handling is available in [public/embed-example.html](public/embed-example.html). To preview it, start the local development server and navigate to `http://localhost:5173/PlumberManager/embed-example.html`.
 
@@ -106,8 +109,8 @@ Here is a quick example showing how to embed the widget in any page:
 <head>
   <meta charset="UTF-8">
   <title>Pipeline Docs</title>
-  <!-- Load the Widget Script -->
-  <script src="./dist/widget/plumber-viewer.umd.js"></script>
+  <!-- Load the Widget Script from CDN -->
+  <script src="https://www.hasielhassan.com/PlumberManager/widget/plumber-viewer.umd.js"></script>
 </head>
 <body>
   <h1>Asset Publish Flow</h1>

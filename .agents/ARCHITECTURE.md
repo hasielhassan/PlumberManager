@@ -31,7 +31,7 @@ Responsible for graph state, serialization/deserialization, layouts, and histori
 Calculates hit testing and draws nodes, grids, connections, and badges on the 2D HTML5 canvas.
 
 * **[NodeEditorCanvas.jsx](../src/canvas/NodeEditorCanvas.jsx)**:
-  * Canvas container, mouse event handlers, and keyboard shortcut listeners (F2, Fit F, Spawn Ctrl+Arrow, Paste Ctrl+V).
+  * Canvas container, mouse & touch event handlers (1-finger note selection & node drag, 2-finger pinch zoom), and keyboard shortcut listeners (F2, Fit F, Spawn Ctrl+Arrow, Paste Ctrl+V).
   * Manages the canvas interaction state machine (`DRAG_NODE`, `DRAW_CONNECTION`, `DRAG_RESIZE_BACKDROP`, `SELECTION`, `DRAG_VIEW`).
 * **[node-renderer.js](../src/canvas/node-renderer.js)**:
   * Custom drawings of node shapes.
@@ -58,7 +58,7 @@ React user interfaces, property sheets, and popup control panels.
 * **[DataTypeManager.jsx](../src/features/DataTypeManager.jsx)**:
   * Layout modal manager for registering and deleting custom DCC formats/extensions.
 * **[IsolatedView.jsx](../src/features/IsolatedView.jsx)**:
-  * Sub-viewport rendering isolated subgraphs and neighboring dependencies.
+  * Sub-viewport rendering isolated subgraphs and neighboring dependencies with touch pan and pinch zoom handlers.
 * **[WelcomeScreen.jsx](../src/features/WelcomeScreen.jsx)**:
   * Centered landing dashboard containing quick buttons, template graph loaders, and recent files paths.
 * **[dialogs/](../src/features/dialogs/)**:
@@ -79,3 +79,5 @@ Calculates scales, ranges, and formats diagrams into downloadable file formats.
 ## 5. Embeddable Shadow DOM Widget (`src/embed/`)
 
 * **[plumber-viewer.js](../src/embed/plumber-viewer.js)**: Standalone UMD/ES component encapsulating the 2D viewer canvas inside a shadow DOM root, ensuring style isolation from host web applications.
+* **[viewer-canvas.js](../src/embed/viewer-canvas.js)**: 2D Canvas viewport renderer with mouse & touch gesture handling (1-finger pan/node click, 2-finger pinch zoom).
+
