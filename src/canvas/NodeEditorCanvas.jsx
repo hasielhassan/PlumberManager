@@ -773,6 +773,123 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
     return () => canvas.removeEventListener('wheel', handleWheelEvent);
   }, []);
 
+  // Touch event handlers for pan (1 finger) and pinch-to-zoom (2 fingers)
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    // Track touch state in a local mutable ref-like object to avoid stale closures
+    const touchState = {
+      lastTouch: null,      // { x, y } for single-finger pan
+      pinchStartDist: null, // initial distance between two fingers
+      pinchStartZoom: null, // zoom at start of pinch
+      pinchMidpoint: null   // { x, y } screen-space midpoint of two fingers
+    };
+
+    const getTouchDistance = (t1, t2) => {
+      return Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+    };
+
+    const getTouchMidpoint = (t1, t2, rect) => {
+      return {
+        x: ((t1.clientX + t2.clientX) / 2) - rect.left,
+        y: ((t1.clientY + t2.clientY) / 2) - rect.top
+      };
+    };
+
+    const handleTouchStart = (e) => {
+      if (e.touches.length === 1) {
+        // Single finger — start panning
+        e.preventDefault();
+        touchState.lastTouch = {
+          x: e.touches[0].clientX,
+          y: e.touches[0].clientY
+        };
+        touchState.pinchStartDist = null;
+      } else if (e.touches.length === 2) {
+        // Two fingers — start pinch-to-zoom
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        touchState.pinchStartDist = getTouchDistance(e.touches[0], e.touches[1]);
+        touchState.pinchStartZoom = zoomRef.current;
+        touchState.pinchMidpoint = getTouchMidpoint(e.touches[0], e.touches[1], rect);
+        touchState.lastTouch = null;
+      }
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches.length === 1 && touchState.lastTouch && touchState.pinchStartDist === null) {
+        // Single finger pan
+        e.preventDefault();
+        const dx = e.touches[0].clientX - touchState.lastTouch.x;
+        const dy = e.touches[0].clientY - touchState.lastTouch.y;
+
+        setPan(prev => ({ x: prev.x + dx, y: prev.y + dy }));
+
+        touchState.lastTouch = {
+          x: e.touches[0].clientX,
+          y: e.touches[0].clientY
+        };
+      } else if (e.touches.length === 2 && touchState.pinchStartDist !== null) {
+        // Two finger pinch-to-zoom
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const currentDist = getTouchDistance(e.touches[0], e.touches[1]);
+        const scale = currentDist / touchState.pinchStartDist;
+        const newZoom = Math.max(0.1, Math.min(4.0, touchState.pinchStartZoom * scale));
+
+        const midpoint = getTouchMidpoint(e.touches[0], e.touches[1], rect);
+        const currentPan = panRef.current;
+
+        // Compute world point at the original midpoint, then re-derive pan so that point stays fixed
+        const worldX = (touchState.pinchMidpoint.x - currentPan.x) / zoomRef.current;
+        const worldY = (touchState.pinchMidpoint.y - currentPan.y) / zoomRef.current;
+
+        // Also account for the midpoint moving (two-finger drag)
+        const midDx = midpoint.x - touchState.pinchMidpoint.x;
+        const midDy = midpoint.y - touchState.pinchMidpoint.y;
+
+        setZoom(newZoom);
+        setPan({
+          x: midpoint.x - worldX * newZoom + midDx,
+          y: midpoint.y - worldY * newZoom + midDy
+        });
+
+        // Update pinch midpoint for continuous drag tracking
+        touchState.pinchMidpoint = midpoint;
+      }
+    };
+
+    const handleTouchEnd = (e) => {
+      if (e.touches.length === 0) {
+        // All fingers lifted — reset state
+        touchState.lastTouch = null;
+        touchState.pinchStartDist = null;
+        touchState.pinchStartZoom = null;
+        touchState.pinchMidpoint = null;
+      } else if (e.touches.length === 1) {
+        // Went from 2 fingers to 1: transition to single-finger pan
+        touchState.pinchStartDist = null;
+        touchState.pinchStartZoom = null;
+        touchState.pinchMidpoint = null;
+        touchState.lastTouch = {
+          x: e.touches[0].clientX,
+          y: e.touches[0].clientY
+        };
+      }
+    };
+
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+    canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+    canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+    return () => {
+      canvas.removeEventListener('touchstart', handleTouchStart);
+      canvas.removeEventListener('touchmove', handleTouchMove);
+      canvas.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, []);
+
   const handleContextMenu = (e) => {
     e.preventDefault();
     const rect = canvasRef.current.getBoundingClientRect();

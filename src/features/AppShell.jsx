@@ -246,7 +246,7 @@ export function AppShell() {
     }, 300);
   };
 
-  const handleLoadSample = async (sampleName, quiet = false) => {
+  const handleLoadSample = useCallback(async (sampleName, quiet = false) => {
     try {
       if (!quiet) setProgressData({ isOpen: true, title: 'Loading Sample', message: `Fetching /samples/${sampleName}.gph...` });
       const response = await fetch(getAssetUrl(`/samples/${sampleName}.gph`));
@@ -271,7 +271,7 @@ export function AppShell() {
       console.warn('Fetch failed, loading fallback local samples.', err);
       if (!quiet) showToast(`Failed to fetch sample: /samples/${sampleName}.gph`, 'danger');
     }
-  };
+  }, [graph, clearHistory, setSelection, showToast]);
 
   const handleCreateNode = (nodeName) => {
     executeAction(() => {
@@ -632,6 +632,7 @@ export function AppShell() {
         setActiveModal={setActiveModal}
         setSidebarTab={setSidebarTab}
         setSelection={setSelection}
+        setPanelWidth={setPanelWidth}
         selection={selection}
       />
 
