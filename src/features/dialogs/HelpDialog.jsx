@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Button, Kbd } from '../../design-system/components';
+import { getAssetUrl } from '../../utils/asset-path';
 import './HelpDialog.css';
 
 export function HelpDialog({ isOpen, onClose, onStartTour }) {
@@ -196,7 +197,7 @@ export function HelpDialog({ isOpen, onClose, onStartTour }) {
           <span>Want to embed diagrams in your wiki or pipeline dashboards?</span>
           <div style={{ display: 'flex', gap: '16px' }}>
             <a 
-              href="/embed-example.html" 
+              href={getAssetUrl('/embed-example.html')} 
               target="_blank" 
               rel="noreferrer"
               style={{ color: 'var(--ds-color-accent)', textDecoration: 'none', fontWeight: '600' }}

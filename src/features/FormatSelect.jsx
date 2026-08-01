@@ -10,7 +10,7 @@ import './FormatSelect.css';
  * - Real-time text search filtering (code, display name, description)
  * - Auto-focused search input inside dropdown
  * - Full keyboard navigation (Arrow keys, Enter, Escape)
- * - Inline vector format badges
+ * - Inline vector format badges for built-in and custom types
  */
 export function FormatSelect({ value, onChange, options }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +36,8 @@ export function FormatSelect({ value, onChange, options }) {
       const codeMatch = opt.value.toLowerCase().includes(q);
       const nameMatch = (typeInfo?.type || opt.label || '').toLowerCase().includes(q);
       const descMatch = (typeInfo?.description || '').toLowerCase().includes(q);
-      return codeMatch || nameMatch || descMatch;
+      const extMatch = (typeInfo?.extensions || []).some(ext => ext.toLowerCase().includes(q));
+      return codeMatch || nameMatch || descMatch || extMatch;
     });
   }, [sortedOptions, searchQuery]);
 
@@ -100,6 +101,9 @@ export function FormatSelect({ value, onChange, options }) {
     }
   };
 
+  const selectedTypeInfo = dataTypeRegistry.getType(value);
+  const selectedIconSrc = selectedTypeInfo?.iconPath || dataTypeRegistry.getDataUrl(value) || getAssetUrl(`/data_type_icons/${value}.svg`);
+
   return (
     <div ref={containerRef} className="ds-format-select-container" onKeyDown={handleKeyDown}>
       <button 
@@ -109,7 +113,7 @@ export function FormatSelect({ value, onChange, options }) {
         aria-expanded={isOpen}
       >
         <img 
-          src={getAssetUrl(`/data_type_icons/${value}.svg`)} 
+          src={selectedIconSrc} 
           alt="" 
           className="ds-format-select-icon"
           onError={(e) => {
@@ -147,6 +151,7 @@ export function FormatSelect({ value, onChange, options }) {
                 const isCustom = typeInfo?.isCustom ?? false;
                 const description = typeInfo?.description || '';
                 const displayName = typeInfo?.type || opt.label;
+                const optionIconSrc = typeInfo?.iconPath || dataTypeRegistry.getDataUrl(opt.value) || getAssetUrl(`/data_type_icons/${opt.value}.svg`);
                 const isSelected = opt.value === value;
                 const isHighlighted = idx === highlightedIndex;
 
@@ -158,7 +163,7 @@ export function FormatSelect({ value, onChange, options }) {
                     onMouseEnter={() => setHighlightedIndex(idx)}
                   >
                     <img 
-                      src={getAssetUrl(`/data_type_icons/${opt.value}.svg`)} 
+                      src={optionIconSrc} 
                       alt="" 
                       className="ds-format-select-option-icon"
                       onError={(e) => {

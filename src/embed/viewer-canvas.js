@@ -12,12 +12,18 @@ export class ViewerCanvas {
 
     this.pan = { x: 0, y: 0 };
     this.zoom = 1.0;
+    this.selectedNodeName = null;
     
     // Simple state
     this.isPanning = false;
     this.panStart = { x: 0, y: 0 };
 
     this.initEvents();
+  }
+
+  setSelectedNode(nodeName) {
+    this.selectedNodeName = nodeName || null;
+    this.render();
   }
 
   initEvents() {
@@ -64,7 +70,11 @@ export class ViewerCanvas {
     const clickedNode = hitTestNode(worldPoint, this.graph.nodes);
 
     if (clickedNode) {
+      this.setSelectedNode(clickedNode.name);
       this.onNodeClick(clickedNode.name);
+    } else {
+      this.setSelectedNode(null);
+      this.onNodeClick(null);
     }
   }
 
@@ -128,7 +138,7 @@ export class ViewerCanvas {
       x: this.canvas.width / 2 - (node.position.x + width / 2) * this.zoom,
       y: this.canvas.height / 2 - (node.position.y + height / 2) * this.zoom
     };
-    this.render();
+    this.setSelectedNode(nodeName);
   }
 
   render() {
@@ -155,9 +165,10 @@ export class ViewerCanvas {
       drawConnection(ctx, pSource, pTarget, conn, attr?.dataType, true, this.graph);
     });
 
-    // 3. Nodes
+    // 3. Nodes with selection highlighting
     this.graph.nodes.forEach(node => {
-      drawNode(ctx, node, false);
+      const isSelected = this.selectedNodeName === node.name;
+      drawNode(ctx, node, isSelected);
     });
 
     ctx.restore();

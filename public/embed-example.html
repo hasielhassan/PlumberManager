@@ -207,7 +207,7 @@
           "alternate": true,
           "attributes": [
             { "name": "assets", "plug": false, "socket": true, "dataType": "usd" },
-            { "name": "cache", "plug": true, "socket": false, "dataType": "abc" }
+            { "name": "cache", "plug": true, "socket": false, "dataType": "alembic" }
           ],
           "metadata": {
             "process_details": "# Animation\n\nCharacter and prop layout and keyframe animation.\n\n### Inputs:\n- **assets**: Inbound scene geometries\n\n### Outputs:\n- **cache**: Animation curve bake caches"
@@ -218,7 +218,7 @@
           "position": [640, 100],
           "alternate": false,
           "attributes": [
-            { "name": "cache", "plug": false, "socket": true, "dataType": "abc" },
+            { "name": "cache", "plug": false, "socket": true, "dataType": "alembic" },
             { "name": "output", "plug": true, "socket": false, "dataType": "exr" }
           ],
           "metadata": {
@@ -258,9 +258,10 @@
 
     // Dynamic resource loader to support dev server HMR and production static builds
     const isDev = window.location.port === '5173' || window.location.hostname === 'localhost';
+    const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
     if (isDev) {
       // Import the source ES Module directly during local dev
-      import('/src/embed/plumber-viewer.js')
+      import(`${basePath}src/embed/plumber-viewer.js`)
         .then((mod) => {
           window.PlumberViewer = mod.PlumberViewer;
           initializeViewer();
@@ -272,7 +273,7 @@
     } else {
       // In production, dynamically load the UMD build asset
       const script = document.createElement('script');
-      script.src = './widget/plumber-viewer.umd.js';
+      script.src = `${basePath}widget/plumber-viewer.umd.js`;
       script.onload = () => {
         if (typeof PlumberViewer !== 'undefined') {
           initializeViewer();

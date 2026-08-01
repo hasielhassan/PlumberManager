@@ -5,37 +5,67 @@ import { getAssetUrl } from '../utils/asset-path';
 export class DataTypeRegistry {
   constructor() {
     this.types = new Map();
+    this.extensionMap = new Map();
     this.imageCaches = new Map();
     this.dataUrlCaches = new Map();
     this.svgTextCaches = new Map();
     this.initialized = false;
     this.onLoadedListeners = new Set();
 
-    // Populate default types map synchronously on construction
+    // Populate default types & dynamic extensions from config on construction
     this.registerDefaults();
+  }
+
+  resolveCode(code) {
+    if (!code) return '';
+    const clean = code.toLowerCase();
+    return this.extensionMap.get(clean) || clean;
   }
 
   registerDefaults() {
     builtInConfig.forEach(dt => {
-      this.types.set(dt.code.toLowerCase(), {
+      const primaryCode = dt.code.toLowerCase();
+      const typeInfo = {
         code: dt.code,
         type: dt.type,
+        extensions: dt.extensions || [],
         description: dt.description || '',
         iconPath: getAssetUrl(`/data_type_icons/${dt.code}.svg`),
         isCustom: false
-      });
+      };
+      this.types.set(primaryCode, typeInfo);
+
+      if (Array.isArray(dt.extensions)) {
+        dt.extensions.forEach(ext => {
+          this.extensionMap.set(ext.toLowerCase(), primaryCode);
+        });
+      }
     });
 
     const customTypes = customTypeStore.getTypes();
     customTypes.forEach(ct => {
-      this.types.set(ct.code.toLowerCase(), {
+      const primaryCode = ct.code.toLowerCase();
+      const iconPath = ct.iconPath || '';
+      const typeInfo = {
         code: ct.code,
         type: ct.type,
+        extensions: ct.extensions || [],
         description: ct.description || '',
-        iconPath: getAssetUrl(`/data_type_icons/${ct.code}.svg`),
+        iconPath,
         isCustom: true,
         hash: ct.hash
-      });
+      };
+      this.types.set(primaryCode, typeInfo);
+
+      if (Array.isArray(ct.extensions)) {
+        ct.extensions.forEach(ext => {
+          this.extensionMap.set(ext.toLowerCase(), primaryCode);
+        });
+      }
+
+      if (iconPath) {
+        this.loadImage(primaryCode, iconPath);
+      }
     });
   }
 
@@ -51,7 +81,8 @@ export class DataTypeRegistry {
 
   getType(code) {
     if (!code) return null;
-    return this.types.get(code.toLowerCase()) || null;
+    const cleanCode = this.resolveCode(code);
+    return this.types.get(cleanCode) || null;
   }
 
   async preloadImages() {
@@ -66,7 +97,7 @@ export class DataTypeRegistry {
   }
 
   loadImage(code, path) {
-    const cleanCode = code?.toLowerCase();
+    const cleanCode = this.resolveCode(code);
     if (!cleanCode || !path) return Promise.resolve(null);
 
     return new Promise((resolve) => {
@@ -78,6 +109,21 @@ export class DataTypeRegistry {
       // If path is already a data URL (e.g. custom types with embedded icons)
       if (path.startsWith('data:')) {
         this.dataUrlCaches.set(cleanCode, path);
+        try {
+          if (path.includes('base64,')) {
+            const base64Str = path.split('base64,')[1] || '';
+            const rawSvg = atob(base64Str);
+            if (rawSvg && rawSvg.includes('<svg')) {
+              this.svgTextCaches.set(cleanCode, rawSvg);
+            }
+          } else {
+            const rawSvg = decodeURIComponent(path.split(',')[1] || '');
+            if (rawSvg && rawSvg.includes('<svg')) {
+              this.svgTextCaches.set(cleanCode, rawSvg);
+            }
+          }
+        } catch { /* ignore parse error */ }
+
         const img = new Image();
         img.src = path;
         img.onload = () => {
@@ -85,7 +131,10 @@ export class DataTypeRegistry {
           this.notifyLoaded();
           resolve(img);
         };
-        img.onerror = () => resolve(null);
+        img.onerror = (e) => {
+          console.warn(`Failed to load Data URI image for custom type ${cleanCode}:`, e);
+          resolve(null);
+        };
         return;
       }
 
@@ -136,7 +185,7 @@ export class DataTypeRegistry {
 
   getImage(code) {
     if (!code) return null;
-    const cleanCode = code.toLowerCase();
+    const cleanCode = this.resolveCode(code);
     if (this.imageCaches.has(cleanCode)) {
       return this.imageCaches.get(cleanCode);
     }
@@ -150,13 +199,13 @@ export class DataTypeRegistry {
 
   getDataUrl(code) {
     if (!code) return null;
-    const cleanCode = code.toLowerCase();
+    const cleanCode = this.resolveCode(code);
     return this.dataUrlCaches.get(cleanCode) || null;
   }
 
   getSvgText(code) {
     if (!code) return null;
-    const cleanCode = code.toLowerCase();
+    const cleanCode = this.resolveCode(code);
     return this.svgTextCaches.get(cleanCode) || null;
   }
 
@@ -171,25 +220,36 @@ export class DataTypeRegistry {
     });
   }
 
-  // Check compatibility (same-type matching)
+  // Check compatibility (same-type matching with extension resolution)
   acceptsConnection(sourceType, targetType) {
     if (!sourceType || !targetType) return false;
-    return sourceType.toLowerCase() === targetType.toLowerCase();
+    return this.resolveCode(sourceType) === this.resolveCode(targetType);
   }
 
   // Register custom type dynamically
   addCustomType(typeConfig) {
     const hash = customTypeStore.addType(typeConfig);
-    const cleanCode = typeConfig.code.toLowerCase();
-    const iconPath = typeConfig.iconPath ? getAssetUrl(typeConfig.iconPath) : '';
-    this.types.set(cleanCode, {
-      code: typeConfig.code,
-      type: typeConfig.type,
-      description: typeConfig.description || '',
+    const stored = customTypeStore.getType(typeConfig.code);
+    const cleanCode = this.resolveCode(typeConfig.code);
+    const iconPath = stored?.iconPath || typeConfig.iconPath || '';
+
+    const typeInfo = {
+      code: stored?.code || typeConfig.code,
+      type: stored?.type || typeConfig.type,
+      extensions: stored?.extensions || typeConfig.extensions || [],
+      description: stored?.description || typeConfig.description || '',
       iconPath,
       isCustom: true,
       hash
-    });
+    };
+    this.types.set(cleanCode, typeInfo);
+
+    if (Array.isArray(typeInfo.extensions)) {
+      typeInfo.extensions.forEach(ext => {
+        this.extensionMap.set(ext.toLowerCase(), cleanCode);
+      });
+    }
+
     if (iconPath) {
       this.loadImage(cleanCode, iconPath);
     }
@@ -197,8 +257,16 @@ export class DataTypeRegistry {
   }
 
   removeCustomType(code) {
-    const cleanCode = code?.toLowerCase();
+    const cleanCode = this.resolveCode(code);
     if (!cleanCode) return;
+
+    // Remove file extensions associated with this code
+    for (const [ext, primary] of this.extensionMap.entries()) {
+      if (primary === cleanCode) {
+        this.extensionMap.delete(ext);
+      }
+    }
+
     customTypeStore.removeType(cleanCode);
     this.types.delete(cleanCode);
     this.imageCaches.delete(cleanCode);
