@@ -6,6 +6,8 @@ export class DataTypeRegistry {
   constructor() {
     this.types = new Map();
     this.imageCaches = new Map();
+    this.dataUrlCaches = new Map();
+    this.svgTextCaches = new Map();
     this.initialized = false;
     this.onLoadedListeners = new Set();
 
@@ -68,22 +70,67 @@ export class DataTypeRegistry {
     if (!cleanCode || !path) return Promise.resolve(null);
 
     return new Promise((resolve) => {
-      if (this.imageCaches.has(cleanCode)) {
+      if (this.imageCaches.has(cleanCode) && this.dataUrlCaches.has(cleanCode)) {
         resolve(this.imageCaches.get(cleanCode));
         return;
       }
-      const img = new Image();
-      const resolvedUrl = path;
-      img.src = resolvedUrl;
-      img.onload = () => {
-        this.imageCaches.set(cleanCode, img);
-        this.notifyLoaded();
-        resolve(img);
-      };
-      img.onerror = () => {
-        console.warn(`Failed to load data type icon for ${cleanCode}: ${resolvedUrl}`);
-        resolve(null);
-      };
+
+      // If path is already a data URL (e.g. custom types with embedded icons)
+      if (path.startsWith('data:')) {
+        this.dataUrlCaches.set(cleanCode, path);
+        const img = new Image();
+        img.src = path;
+        img.onload = () => {
+          this.imageCaches.set(cleanCode, img);
+          this.notifyLoaded();
+          resolve(img);
+        };
+        img.onerror = () => resolve(null);
+        return;
+      }
+
+      // Otherwise fetch path to create standalone Base64 Data URL for SVG export & cache HTMLImageElement
+      fetch(path)
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.text();
+        })
+        .then(text => {
+          this.svgTextCaches.set(cleanCode, text);
+          const encoded = btoa(unescape(encodeURIComponent(text)));
+          const dataUrl = `data:image/svg+xml;base64,${encoded}`;
+          this.dataUrlCaches.set(cleanCode, dataUrl);
+
+          const img = new Image();
+          img.src = dataUrl;
+          img.onload = () => {
+            this.imageCaches.set(cleanCode, img);
+            this.notifyLoaded();
+            resolve(img);
+          };
+          img.onerror = () => {
+            // Fallback: load standard image URL directly
+            const fallbackImg = new Image();
+            fallbackImg.src = path;
+            fallbackImg.onload = () => {
+              this.imageCaches.set(cleanCode, fallbackImg);
+              this.notifyLoaded();
+              resolve(fallbackImg);
+            };
+            fallbackImg.onerror = () => resolve(null);
+          };
+        })
+        .catch(err => {
+          console.warn(`Failed to fetch SVG content for ${cleanCode}:`, err);
+          const fallbackImg = new Image();
+          fallbackImg.src = path;
+          fallbackImg.onload = () => {
+            this.imageCaches.set(cleanCode, fallbackImg);
+            this.notifyLoaded();
+            resolve(fallbackImg);
+          };
+          fallbackImg.onerror = () => resolve(null);
+        });
     });
   }
 
@@ -99,6 +146,18 @@ export class DataTypeRegistry {
       this.loadImage(cleanCode, typeInfo.iconPath);
     }
     return null;
+  }
+
+  getDataUrl(code) {
+    if (!code) return null;
+    const cleanCode = code.toLowerCase();
+    return this.dataUrlCaches.get(cleanCode) || null;
+  }
+
+  getSvgText(code) {
+    if (!code) return null;
+    const cleanCode = code.toLowerCase();
+    return this.svgTextCaches.get(cleanCode) || null;
   }
 
   onLoaded(fn) {
@@ -143,6 +202,8 @@ export class DataTypeRegistry {
     customTypeStore.removeType(cleanCode);
     this.types.delete(cleanCode);
     this.imageCaches.delete(cleanCode);
+    this.dataUrlCaches.delete(cleanCode);
+    this.svgTextCaches.delete(cleanCode);
   }
 }
 

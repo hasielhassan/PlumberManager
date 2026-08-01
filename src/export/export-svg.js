@@ -3,6 +3,7 @@ import { getSlotCenter } from '../canvas/hit-testing';
 import { getAssetUrl } from '../utils/asset-path';
 import editorConfig from '../../config/editor-config.json';
 import { convertArrayToRgba, getColorWithOpacity } from '../utils/color';
+import { dataTypeRegistry } from '../core/data-types';
 
 export function generateSvgString(graphModel, includeBackground = true) {
   if (graphModel.nodes.size === 0) return '';
@@ -130,10 +131,11 @@ export function generateSvgString(graphModel, includeBackground = true) {
 
       const codeLower = dataTypeCode.toLowerCase();
       const badgeSize = 42;
+      const dataUrl = dataTypeRegistry.getDataUrl(codeLower) || getAssetUrl(`/data_type_icons/${codeLower}.svg`);
 
       svg += `    <g class="format-badge" transform="translate(${mx}, ${my})">\n`;
       svg += `      <circle cx="0" cy="0" r="17" fill="#0f172a" />\n`;
-      svg += `      <image href="${getAssetUrl(`/data_type_icons/${codeLower}.svg`)}" x="${-badgeSize / 2}" y="${-badgeSize / 2}" width="${badgeSize}" height="${badgeSize}" />\n`;
+      svg += `      <image href="${dataUrl}" x="${-badgeSize / 2}" y="${-badgeSize / 2}" width="${badgeSize}" height="${badgeSize}" />\n`;
       svg += `    </g>\n`;
     }
   });

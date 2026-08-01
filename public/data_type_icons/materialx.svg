@@ -23,10 +23,7 @@
   <g transform="translate(18.88, 16.90) scale(0.0462)">
   
   <defs
-     id="defs12">
-    <style
-       id="style1">.cls-1{fill:#306384;}.cls-2{fill:#276d88;}.cls-3{fill:#0b7a90;}.cls-4{fill:#bd295b;}.cls-5{fill:#fcc;}.cls-6{fill:#d64274;}.cls-7{fill:none;}.cls-8{fill:url(#linear-gradient);}.cls-9{fill:#b3e0df;}.cls-10{fill:url(#linear-gradient-2);}</style>
-    <linearGradient
+     id="defs12"><linearGradient
        id="linear-gradient"
        x1="166.21"
        y1="369.24"
@@ -99,323 +96,323 @@
     <g
        id="Glyph">
       <polygon
-         class="cls-1"
+         fill="#306384"
          points="284.33 219.08 378.83 164.52 378.83 273.64 284.33 219.08"
          id="polygon12" />
       <polygon
-         class="cls-2"
+         fill="#276d88"
          points="473.33 219.08 378.83 273.64 378.83 164.52 473.33 219.08"
          id="polygon13" />
       <polygon
-         class="cls-3"
+         fill="#0b7a90"
          points="378.83 273.64 473.33 219.08 473.33 328.2 378.83 273.64"
          id="polygon14" />
       <polygon
-         class="cls-3"
+         fill="#0b7a90"
          points="567.83 273.64 473.33 328.2 473.33 219.08 567.83 273.64"
          id="polygon15" />
       <polygon
-         class="cls-3"
+         fill="#0b7a90"
          points="567.83 55.52 473.33 110.08 473.33 0.96 567.83 55.52"
          id="polygon16" />
       <polygon
-         class="cls-4"
+         fill="#bd295b"
          points="284.33 110.08 189.83 164.64 189.83 55.52 284.33 110.08"
          id="polygon17" />
       <path
-         class="cls-5"
+         fill="#fcc"
          d="M189,166.07v-112l97,56ZM190.66,57V163.2l92-53.12Z"
          id="path17" />
       <polygon
-         class="cls-4"
+         fill="#bd295b"
          points="95.33 110.08 189.83 55.52 189.83 164.64 95.33 110.08"
          id="polygon18" />
       <polygon
-         class="cls-6"
+         fill="#d64274"
          points="0.83 55.52 95.33 0.96 95.33 110.08 0.83 55.52"
          id="polygon19" />
       <polygon
-         class="cls-4"
+         fill="#bd295b"
          points="189.83 55.52 95.33 110.08 95.33 0.96 189.83 55.52"
          id="polygon20" />
       <polygon
-         class="cls-7"
+         fill="none"
          points="96.16 2.4 96.16 108.64 188.17 55.52 96.16 2.4"
          id="polygon21" />
       <polygon
-         class="cls-7"
+         fill="none"
          points="96.99 110.08 189 163.2 189 56.96 143 83.52 96.99 110.08"
          id="polygon22" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="93.67 110.08 94.5 110.56 94.5 109.6 93.67 110.08"
          id="polygon23" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="96.16 108.64 142.16 82.08 95.33 109.12 96.16 109.6 96.16 108.64"
          id="polygon24" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="190.66 56 189 56.96 189 163.2 96.99 110.08 143 83.52 95.33 111.04 190.66 166.07 190.66 56"
          id="polygon25" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="143 83.52 189 56.96 189 56.95 143 83.52"
          id="polygon26" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="94.5 108.64 94.5 109.6 95.33 109.12 94.5 108.64"
          id="polygon27" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="94.5 111.52 95.33 111.04 94.5 110.56 94.5 111.52"
          id="polygon28" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="96.16 0.48 96.16 2.4 188.17 55.52 142.16 82.08 189.83 54.56 96.16 0.48"
          id="polygon29" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="191.49 55.52 190.66 55.04 190.66 56 191.49 55.52"
          id="polygon30" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="189 56.95 189 56.96 190.66 56 190.66 55.04 189.83 54.56 142.16 82.08 96.16 108.64 96.16 109.6 95.33 109.12 94.5 109.6 94.5 110.56 95.33 111.04 143 83.52 189 56.95"
          id="polygon31" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="0.83 54.56 48.49 82.08 2.49 55.52 94.5 2.4 94.5 0.48 0.83 54.56"
          id="polygon32" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="96.16 109.6 96.16 108.64 96.16 2.4 96.16 0.48 95.33 0 94.5 0.48 94.5 2.4 94.5 108.64 96.16 109.6"
          id="polygon33" />
       <polygon
-         class="cls-8"
+         fill="url(#linear-gradient)"
          points="473.33 110.08 95.33 328.32 95.33 219.2 473.33 0.96 473.33 110.08"
          id="polygon34" />
       <polygon
-         class="cls-6"
+         fill="#d64274"
          points="95.33 219.2 0.83 273.76 0.83 164.64 95.33 219.2"
          id="polygon35" />
       <polygon
-         class="cls-6"
+         fill="#d64274"
          points="0.83 164.64 95.33 110.08 95.33 219.2 0.83 164.64"
          id="polygon36" />
       <polygon
-         class="cls-6"
+         fill="#d64274"
          points="95.33 110.08 0.83 164.64 0.83 55.52 95.33 110.08"
          id="polygon37" />
       <polygon
-         class="cls-7"
+         fill="none"
          points="93.67 110.08 47.66 83.52 1.66 56.96 1.66 163.2 93.67 110.08"
          id="polygon38" />
       <polygon
-         class="cls-7"
+         fill="none"
          points="2.49 55.52 48.49 82.08 94.5 108.64 94.5 2.4 2.49 55.52"
          id="polygon39" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="96.99 110.08 96.16 109.6 96.16 110.56 96.99 110.08"
          id="polygon40" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="94.5 108.64 94.5 108.64 48.49 82.08 94.5 108.64"
          id="polygon41" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="93.67 110.08 1.66 163.2 1.66 56.96 0 56 0 166.07 95.33 111.04 47.66 83.52 93.67 110.08"
          id="polygon42" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="96.16 110.56 95.33 111.04 96.16 111.52 96.16 110.56"
          id="polygon43" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="1.66 56.95 1.66 56.96 47.66 83.52 1.66 56.95"
          id="polygon44" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="96.16 109.6 94.5 108.64 94.5 108.64 48.49 82.08 0.83 54.56 0 55.04 0 56 1.66 56.96 1.66 56.95 47.66 83.52 95.33 111.04 96.16 110.56 96.16 109.6"
          id="polygon45" />
       <polygon
-         class="cls-6"
+         fill="#d64274"
          points="0.83 273.76 95.33 219.2 95.33 328.32 0.83 273.76"
          id="polygon46" />
       <polygon
-         class="cls-7"
+         fill="none"
          points="94.5 326.88 94.5 220.63 2.49 273.76 94.5 326.88"
          id="polygon47" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="284.33 220.16 282.67 219.2 96.16 326.88 96.16 328.8 284.33 220.16"
          id="polygon48" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="96.16 219.68 189.83 165.59 188.17 164.64 94.92 218.48 94.5 218.72 94.5 218.72 96.16 217.76 96.16 219.68"
          id="polygon49" />
       <polygon
-         class="cls-7"
+         fill="none"
          points="1.66 166.07 1.66 272.32 46.77 246.28 93.67 219.2 1.66 166.07"
          id="polygon50" />
       <polygon
-         class="cls-7"
+         fill="none"
          points="2.49 164.64 48.49 191.2 94.5 217.76 94.5 111.52 2.49 164.64"
          id="polygon51" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="1.66 166.07 47.66 192.64 1.66 166.07 1.66 166.07"
          id="polygon52" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="2.49 164.64 94.5 111.52 94.5 217.76 96.16 218.72 96.16 108.64 0.83 163.68 48.49 191.2 2.49 164.64"
          id="polygon53" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="96.16 219.68 95.33 220.16 96.16 220.63 96.16 219.68"
          id="polygon54" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="93.67 219.2 94.5 219.68 94.5 218.72 93.67 219.2"
          id="polygon55" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="0 273.28 1.66 272.32 1.66 166.07 0 165.12 0 273.28"
          id="polygon56" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="93.67 219.2 46.77 246.28 93.67 219.2 47.66 192.64 93.67 219.2"
          id="polygon57" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="94.5 220.63 48.49 247.2 95.33 220.16 94.5 219.68 94.5 220.63"
          id="polygon58" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="94.5 217.76 94.5 217.76 48.49 191.2 94.5 217.76"
          id="polygon59" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="0 163.2 0 164.16 0.83 163.68 0 163.2"
          id="polygon60" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="96.16 218.72 94.5 217.76 94.5 217.76 48.49 191.2 0.83 163.68 0 164.16 0 165.12 1.66 166.07 1.66 166.07 47.66 192.64 93.67 219.2 94.5 218.72 94.5 219.68 95.33 220.16 96.16 219.68 96.16 218.72"
          id="polygon61" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="48.49 247.2 0.83 274.71 94.5 328.8 94.5 326.88 2.49 273.76 48.49 247.2"
          id="polygon62" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="1.66 272.32 46.77 246.28 1.66 272.32 1.66 272.32"
          id="polygon63" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="94.5 220.63 94.5 218.72 46.77 246.28 1.66 272.32 1.66 272.32 0 273.28 0 274.24 0.83 274.71 48.49 247.2 94.5 220.63"
          id="polygon64" />
       <polygon
-         class="cls-5"
+         fill="#fcc"
          points="96.16 326.88 96.16 219.68 96.16 217.76 94.5 218.72 94.5 220.63 94.5 326.88 94.5 328.8 95.33 329.27 96.16 328.8 96.16 326.88"
          id="polygon65" />
       <polygon
-         class="cls-10"
+         fill="url(#linear-gradient-2)"
          points="567.83 273.64 473.33 328.2 473.33 0.96 567.83 55.52 567.83 273.64"
          id="polygon66" />
       <polygon
-         class="cls-7"
+         fill="none"
          points="96.16 326.88 472.5 109.6 472.5 2.4 96.16 219.68 96.16 326.88"
          id="polygon67" />
       <polygon
-         class="cls-7"
+         fill="none"
          points="474.16 110.56 474.16 326.76 567 273.16 567 56 474.16 2.4 474.16 110.56 474.16 110.56"
          id="polygon68" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="474.16 110.56 474.16 110.56 474.16 2.4 474.16 2.4 474.16 110.56"
          id="polygon69" />
       <polygon
-         class="cls-7"
+         fill="none"
          points="96.16 109.6 472.5 326.88 472.5 219.67 96.16 2.4 96.16 109.6"
          id="polygon70" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="474.16 326.76 474.16 218.72 474.16 218.72 474.16 326.76 474.16 326.76"
          id="polygon71" />
       <polygon
-         class="cls-7"
+         fill="none"
          points="96.16 2.4 96.16 109.6 189.83 163.68 282.67 110.08 96.16 2.4"
          id="polygon72" />
       <polygon
-         class="cls-7"
+         fill="none"
          points="284.33 218.24 377.17 164.64 284.33 111.04 191.49 164.64 284.33 218.24"
          id="polygon73" />
       <polygon
-         class="cls-7"
+         fill="none"
          points="96.16 219.68 96.16 326.88 282.67 219.2 189.83 165.59 96.16 219.68"
          id="polygon74" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="284.33 218.24 285.99 219.2 378.83 165.59 377.17 164.64 284.33 218.24"
          id="polygon75" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="189.83 163.68 191.49 164.64 284.33 111.04 282.67 110.08 189.83 163.68"
          id="polygon76" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="472.5 2.4 472.5 0.48 284.33 109.12 285.99 110.08 472.5 2.4"
          id="polygon77" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="472.5 111.52 472.5 109.6 378.83 163.68 380.49 164.64 472.5 111.52"
          id="polygon78" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="472.5 328.79 472.5 326.88 285.99 219.2 284.33 220.16 472.5 328.79"
          id="polygon79" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="472.5 219.67 472.5 217.76 380.49 164.64 378.83 165.59 472.5 219.67"
          id="polygon80" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="378.83 165.59 380.49 164.64 378.83 163.68 377.17 164.64 378.83 165.59"
          id="polygon81" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="191.49 164.64 189.83 163.68 188.17 164.64 189.83 165.59 191.49 164.64"
          id="polygon82" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="282.67 219.2 284.33 220.16 285.99 219.2 284.33 218.24 282.67 219.2"
          id="polygon83" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="284.33 111.04 285.99 110.08 284.33 109.12 282.67 110.08 284.33 111.04"
          id="polygon84" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="472.5 326.88 472.5 219.68 472.5 219.67 472.5 326.88 472.5 326.88"
          id="polygon85" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="474.16 0.48 474.16 2.4 567 56 567 273.16 474.16 326.76 474.16 328.68 568.25 274.36 568.66 274.12 568.66 55.04 474.16 0.48"
          id="polygon86" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="474.16 110.56 473.75 110.8 472.5 111.52 472.5 217.76 474.16 218.72 474.16 110.56"
          id="polygon87" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="474.16 326.76 474.16 218.72 472.5 217.76 472.5 219.67 472.5 219.68 472.5 326.88 472.5 326.88 472.5 328.79 473.23 329.21 474.16 328.68 474.16 326.76 474.16 326.76"
          id="polygon88" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="472.5 109.6 472.5 2.4 472.5 2.4 472.5 109.6 472.5 109.6"
          id="polygon89" />
       <polygon
-         class="cls-9"
+         fill="#b3e0df"
          points="474.16 110.56 474.16 2.4 474.16 2.4 474.16 0.48 473.33 0 472.5 0.48 472.5 2.4 472.5 2.4 472.5 109.6 472.5 109.6 472.5 111.52 473.75 110.8 474.16 110.56"
          id="polygon90" />
     </g>
