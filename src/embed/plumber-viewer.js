@@ -128,7 +128,10 @@ export class PlumberViewer {
   }
 
   handleNodeClick(nodeName) {
-    this.selectedNodeName = nodeName;
+    this.selectedNodeName = nodeName || null;
+    if (this.viewerCanvas) {
+      this.viewerCanvas.setSelectedNode(this.selectedNodeName);
+    }
     this.emit('node:click', nodeName);
 
     if (this.options.documentation && this.sidebar) {
@@ -180,12 +183,40 @@ export class PlumberViewer {
 
   focusNode(nodeName) {
     if (this.viewerCanvas) {
-      this.viewerCanvas.focusNode(nodeName);
-      this.handleNodeClick(nodeName);
+      if (nodeName) {
+        this.viewerCanvas.focusNode(nodeName);
+        this.handleNodeClick(nodeName);
+      } else {
+        this.selectedNodeName = null;
+        this.viewerCanvas.fitToView();
+        if (this.options.documentation && this.sidebar) {
+          const docsContent = this.sidebar.querySelector('.plumber-docs-content');
+          if (docsContent) {
+            docsContent.innerHTML = '<div class="plumber-docs-empty">Click a node to inspect its pipeline documentation.</div>';
+          }
+        }
+      }
     }
   }
 
   showIsolation(nodeName) {
+    // Remove existing isolation overlay if present
+    const existingOverlay = this.root.querySelector('.plumber-iso-overlay');
+    if (existingOverlay) {
+      existingOverlay.remove();
+    }
+
+    if (!nodeName) {
+      this.emit('isolation:close', null);
+      return;
+    }
+
+    const mainNode = this.graph.nodes.get(nodeName);
+    if (!mainNode) {
+      console.warn(`Cannot isolate unknown node: ${nodeName}`);
+      return;
+    }
+
     // Render an isolated overlay inside the Shadow DOM
     const overlay = document.createElement('div');
     overlay.className = 'plumber-iso-overlay';
@@ -220,7 +251,6 @@ export class PlumberViewer {
     const isoG = new GraphModel();
     // Reconstruct isolated nodes
     const isoData = this.graph.getIsolatedData(nodeName);
-    const mainNode = this.graph.nodes.get(nodeName);
     isoG.createNode(nodeName, { x: 200, y: 200 }, mainNode.preset);
     mainNode.attributes.forEach(attr => isoG.createAttribute(nodeName, attr));
 

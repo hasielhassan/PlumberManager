@@ -1,4 +1,4 @@
-/* Layout & Form/List Panes */
+/* Format Type Manager Layout */
 .ds-type-manager-layout {
   display: flex;
   gap: var(--ds-spacing-6);
@@ -19,7 +19,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--ds-spacing-3);
-  height: 100%;
+  min-height: 0;
 }
 
 .ds-type-manager-section-title {
@@ -29,10 +29,12 @@
   margin: 0 0 var(--ds-spacing-2) 0;
 }
 
+/* Bounded Scroll Area strictly matching left form bottom */
 .ds-type-manager-scroll-area {
   flex: 1;
-  height: 485px !important;
-  max-height: 485px !important;
+  max-height: 510px !important;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 .ds-type-manager-list {
@@ -47,7 +49,7 @@
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
-  padding-top: 4px;
+  padding-top: 2px;
 }
 
 .ds-color-swatch {
@@ -84,7 +86,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--ds-spacing-3) var(--ds-spacing-4);
+  padding: var(--ds-spacing-2) var(--ds-spacing-3);
   background-color: var(--ds-bg-sidebar);
   border: 1px dashed var(--ds-border-color);
   border-radius: var(--ds-radius-md);
@@ -101,20 +103,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
 }
 
 .ds-badge-preview-img {
-  width: 76px;
-  height: 76px;
+  width: 56px;
+  height: 56px;
   object-fit: contain;
 }
 
 /* Custom Textarea for SVG path entry */
 .ds-textarea {
   width: 100%;
-  height: 60px;
+  height: 52px;
   background-color: var(--ds-bg-sidebar);
   border: 1px solid var(--ds-border-color);
   border-radius: var(--ds-radius-md);
@@ -132,12 +134,12 @@
   box-shadow: 0 0 0 2px var(--ds-color-accent-alpha);
 }
 
-/* Format Row elements matching Socket dialog options */
+/* Format Row elements with prominent 48px icons */
 .ds-format-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--ds-spacing-2) var(--ds-spacing-3);
+  padding: 10px var(--ds-spacing-3);
   border-radius: var(--ds-radius-md);
   border: 1px solid var(--ds-border-color);
   background-color: var(--ds-bg-sidebar);
@@ -153,14 +155,14 @@
 .ds-format-row-info-wrap {
   display: flex;
   align-items: center;
-  gap: var(--ds-spacing-2);
+  gap: var(--ds-spacing-3);
   flex: 1;
   min-width: 0;
 }
 
 .ds-format-row-icon {
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -168,7 +170,7 @@
 .ds-format-info {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
   flex: 1;
   min-width: 0;
 }
@@ -177,18 +179,19 @@
   display: flex;
   align-items: baseline;
   gap: var(--ds-spacing-2);
+  flex-wrap: wrap;
 }
 
 .ds-format-code {
   font-weight: 700;
-  font-size: var(--ds-font-size-xs);
+  font-size: var(--ds-font-size-sm);
   color: var(--ds-text-primary);
   flex-shrink: 0;
 }
 
 .ds-format-name {
-  font-weight: 400;
-  font-size: 11px;
+  font-weight: 500;
+  font-size: 12px;
   color: var(--ds-text-secondary);
   text-overflow: ellipsis;
   overflow: hidden;
@@ -196,7 +199,7 @@
 }
 
 .ds-format-desc {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--ds-text-muted);
   line-height: 1.3;
   text-overflow: ellipsis;

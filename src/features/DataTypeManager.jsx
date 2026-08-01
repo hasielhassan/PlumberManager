@@ -23,6 +23,7 @@ export function DataTypeManager({ isOpen, onClose, onUpdate }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
+  const [extensionsStr, setExtensionsStr] = useState('');
   const [description, setDescription] = useState('');
   const [color, setColor] = useState('#38BDF8');
   const [svgIcon, setSvgIcon] = useState('');
@@ -38,6 +39,7 @@ export function DataTypeManager({ isOpen, onClose, onUpdate }) {
       setSearchQuery('');
       setCode('');
       setName('');
+      setExtensionsStr('');
       setDescription('');
       setColor('#38BDF8');
       setSvgIcon('');
@@ -68,7 +70,8 @@ export function DataTypeManager({ isOpen, onClose, onUpdate }) {
       const codeMatch = dt.code.toLowerCase().includes(q);
       const typeMatch = (dt.type || '').toLowerCase().includes(q);
       const descMatch = (dt.description || '').toLowerCase().includes(q);
-      return codeMatch || typeMatch || descMatch;
+      const extMatch = (dt.extensions || []).some(ext => ext.toLowerCase().includes(q));
+      return codeMatch || typeMatch || descMatch || extMatch;
     });
   }, [types, searchQuery]);
 
@@ -77,6 +80,11 @@ export function DataTypeManager({ isOpen, onClose, onUpdate }) {
     if (!code.trim() || !name.trim()) return;
 
     const formatCode = code.trim().toLowerCase();
+    const extList = extensionsStr
+      .split(',')
+      .map(s => s.trim().toLowerCase().replace(/^\./, ''))
+      .filter(Boolean);
+
     const finalSvg = generateHexagonBadgeSvg({
       code: formatCode,
       label: formatCode.toUpperCase(),
@@ -89,6 +97,7 @@ export function DataTypeManager({ isOpen, onClose, onUpdate }) {
     dataTypeRegistry.addCustomType({
       code: formatCode,
       type: name.trim(),
+      extensions: extList,
       description: description.trim(),
       icon: finalSvg,
       iconPath: iconDataUri
@@ -97,6 +106,7 @@ export function DataTypeManager({ isOpen, onClose, onUpdate }) {
     refreshList();
     setCode('');
     setName('');
+    setExtensionsStr('');
     setDescription('');
     setColor('#38BDF8');
     setSvgIcon('');
@@ -146,6 +156,13 @@ export function DataTypeManager({ isOpen, onClose, onUpdate }) {
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. OpenEXR Image Sequence"
               required
+            />
+
+            <TextInput
+              label="File Extensions (comma-separated, e.g. exr, sxr)"
+              value={extensionsStr}
+              onChange={(e) => setExtensionsStr(e.target.value)}
+              placeholder="e.g. exr, sxr"
             />
 
             <TextInput
@@ -213,7 +230,7 @@ export function DataTypeManager({ isOpen, onClose, onUpdate }) {
 
             <div className="mb-2">
               <TextInput
-                placeholder="Search format code, name, description..."
+                placeholder="Search format code, name, extensions, description..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -227,7 +244,7 @@ export function DataTypeManager({ isOpen, onClose, onUpdate }) {
                   </div>
                 ) : (
                   filteredTypes.map((dt) => {
-                    const iconSrc = getAssetUrl(`/data_type_icons/${dt.code}.svg`);
+                    const iconSrc = dt.iconPath || dataTypeRegistry.getDataUrl(dt.code) || getAssetUrl(`/data_type_icons/${dt.code}.svg`);
                     return (
                       <div key={dt.code} className="ds-format-row">
                         <div className="ds-format-row-info-wrap">
@@ -243,6 +260,11 @@ export function DataTypeManager({ isOpen, onClose, onUpdate }) {
                             <div className="ds-format-header">
                               <span className="ds-format-code">{dt.code.toUpperCase()}</span>
                               <span className="ds-format-name">{dt.type}</span>
+                              {dt.extensions && dt.extensions.length > 0 && (
+                                <span className="ds-format-exts" style={{ fontSize: '11px', color: 'var(--ds-text-secondary)', marginLeft: '6px', opacity: 0.8 }}>
+                                  ({dt.extensions.map(ext => `.${ext}`).join(', ')})
+                                </span>
+                              )}
                             </div>
                             {dt.description && (
                               <span className="ds-format-desc">{dt.description}</span>

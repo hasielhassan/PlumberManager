@@ -96,7 +96,7 @@ This generates `dist/widget/plumber-viewer.umd.js` and `dist/widget/plumber-view
 
 Once built, you can embed Plumber diagrams inside any HTML page, wiki, or pipeline dashboard.
 
-An interactive showcase of the widget embedding features, control APIs, and event handling is available in [public/embed-example.html](public/embed-example.html). To preview it, start the local development server and navigate to `http://localhost:5173/embed-example.html`.
+An interactive showcase of the widget embedding features, control APIs, and event handling is available in [public/embed-example.html](public/embed-example.html). To preview it, start the local development server and navigate to `http://localhost:5173/PlumberManager/embed-example.html`.
 
 Here is a quick example showing how to embed the widget in any page:
 

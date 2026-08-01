@@ -2,252 +2,397 @@
   {
     "code": "aaf",
     "type": "AAF",
+    "extensions": [
+      "aaf"
+    ],
     "description": "Avid Advanced Authoring Format edit decision list",
     "path": "/data_type_icons/aaf.svg"
   },
   {
     "code": "alembic",
     "type": "Alembic",
+    "extensions": [
+      "abc"
+    ],
     "description": "Alembic computer graphics interchange framework",
     "path": "/data_type_icons/alembic.svg"
   },
   {
     "code": "ale",
     "type": "ALE",
+    "extensions": [
+      "ale"
+    ],
     "description": "Avid Log Exchange metadata format",
     "path": "/data_type_icons/ale.svg"
   },
   {
     "code": "atom",
     "type": "Atom",
+    "extensions": [
+      "atom"
+    ],
     "description": "Atom parameter mapping format",
     "path": "/data_type_icons/atom.svg"
   },
   {
     "code": "blend",
     "type": "BLEND",
+    "extensions": [
+      "blend"
+    ],
     "description": "Blender project file",
     "path": "/data_type_icons/blend.svg"
   },
   {
     "code": "bvh",
     "type": "BVH",
+    "extensions": [
+      "bvh"
+    ],
     "description": "Biovision Hierarchy character animation format",
     "path": "/data_type_icons/bvh.svg"
   },
   {
     "code": "csv",
     "type": "CSV",
+    "extensions": [
+      "csv"
+    ],
     "description": "Comma-Separated Values",
     "path": "/data_type_icons/csv.svg"
   },
   {
     "code": "exr",
     "type": "EXR",
+    "extensions": [
+      "exr"
+    ],
     "description": "OpenEXR high dynamic-range image file format",
     "path": "/data_type_icons/exr.svg"
   },
   {
     "code": "fbx",
     "type": "FBX",
+    "extensions": [
+      "fbx"
+    ],
     "description": "Autodesk Filmbox interchange format",
     "path": "/data_type_icons/fbx.svg"
   },
   {
     "code": "fdx",
     "type": "FDX",
+    "extensions": [
+      "fdx"
+    ],
     "description": "Final Draft XML screenplay document",
     "path": "/data_type_icons/fdx.svg"
   },
   {
     "code": "fountain",
     "type": "FOUNTAIN",
+    "extensions": [
+      "fountain"
+    ],
     "description": "Fountain plain text screenplay markup format",
     "path": "/data_type_icons/fountain.svg"
   },
   {
     "code": "gizmo",
     "type": "GIZMO",
+    "extensions": [
+      "gizmo",
+      "nk"
+    ],
     "description": "Foundry Nuke Gizmo node script macro",
     "path": "/data_type_icons/gizmo.svg"
   },
   {
     "code": "gltf",
     "type": "GLTF",
+    "extensions": [
+      "gltf",
+      "glb"
+    ],
     "description": "GL Transmission Format",
     "path": "/data_type_icons/gltf.svg"
   },
   {
     "code": "grm",
     "type": "GRM",
+    "extensions": [
+      "grm"
+    ],
     "description": "Yeti Groom hair and fur description file",
     "path": "/data_type_icons/grm.svg"
   },
   {
     "code": "gto",
     "type": "GTO",
+    "extensions": [
+      "gto"
+    ],
     "description": "Production Kitchen Sink Computer Graphics File Format, OpenGTO",
     "path": "/data_type_icons/gto.svg"
   },
   {
     "code": "hda",
     "type": "HDA",
+    "extensions": [
+      "hda",
+      "hdanc",
+      "otl"
+    ],
     "description": "SideFX Houdini Digital Asset",
     "path": "/data_type_icons/hda.svg"
   },
   {
     "code": "hdr",
     "type": "HDR",
+    "extensions": [
+      "hdr",
+      "pic"
+    ],
     "description": "Radiance High Dynamic Range image format",
     "path": "/data_type_icons/hdr.svg"
   },
   {
     "code": "jpg",
     "type": "JPG",
+    "extensions": [
+      "jpg",
+      "jpeg"
+    ],
     "description": "Joint Photographic Experts Group image format",
     "path": "/data_type_icons/jpg.svg"
   },
   {
     "code": "json",
     "type": "JSON",
+    "extensions": [
+      "json"
+    ],
     "description": "JavaScript Object Notation",
     "path": "/data_type_icons/json.svg"
   },
   {
     "code": "kiko",
     "type": "KIKO",
+    "extensions": [
+      "kiko"
+    ],
     "description": "Kiko animation curves format",
     "path": "/data_type_icons/kiko.svg"
   },
   {
     "code": "materialx",
     "type": "MaterialX",
+    "extensions": [
+      "mtlx"
+    ],
     "description": "Open standard for transfer of rich material and look-development content",
     "path": "/data_type_icons/materialx.svg"
   },
   {
     "code": "mayaascii",
     "type": "MAYAASCII",
+    "extensions": [
+      "ma"
+    ],
     "description": "Autodesk Maya ASCII file format",
     "path": "/data_type_icons/mayaascii.svg"
   },
   {
     "code": "mayabin",
     "type": "MAYABIN",
+    "extensions": [
+      "mb"
+    ],
     "description": "Autodesk Maya Binary file format",
     "path": "/data_type_icons/mayabin.svg"
   },
   {
     "code": "obj",
     "type": "OBJ",
+    "extensions": [
+      "obj"
+    ],
     "description": "Wavefront 3D geometry definition file",
     "path": "/data_type_icons/obj.svg"
   },
   {
     "code": "openvdb",
     "type": "OpenVDB",
+    "extensions": [
+      "vdb"
+    ],
     "description": "Sparse volume data representation",
     "path": "/data_type_icons/openvdb.svg"
   },
   {
     "code": "osl",
     "type": "OSL",
+    "extensions": [
+      "osl",
+      "oso"
+    ],
     "description": "Open Shading Language shader specification format",
     "path": "/data_type_icons/osl.svg"
   },
   {
     "code": "otio",
     "type": "OTIO",
+    "extensions": [
+      "otio",
+      "otioz",
+      "otiod"
+    ],
     "description": "OpenTimelineIO API and interchange format",
     "path": "/data_type_icons/otio.svg"
   },
   {
     "code": "partio",
     "type": "PARTIO",
+    "extensions": [
+      "ptc",
+      "pdg",
+      "bgeo",
+      "pda",
+      "partio"
+    ],
     "description": "Disney Partio particle cache format",
     "path": "/data_type_icons/partio.svg"
   },
   {
     "code": "pdf",
     "type": "PDF",
+    "extensions": [
+      "pdf"
+    ],
     "description": "Portable Document Format",
     "path": "/data_type_icons/pdf.svg"
   },
   {
     "code": "ply",
     "type": "PLY",
+    "extensions": [
+      "ply"
+    ],
     "description": "Polygon File Format 3D mesh and point cloud",
     "path": "/data_type_icons/ply.svg"
   },
   {
     "code": "psd",
     "type": "PSD",
+    "extensions": [
+      "psd",
+      "psb"
+    ],
     "description": "Adobe Photoshop Document",
     "path": "/data_type_icons/psd.svg"
   },
   {
     "code": "ptex",
     "type": "PTEX",
+    "extensions": [
+      "ptx",
+      "ptex"
+    ],
     "description": "Per-Face Texture Mapping format",
     "path": "/data_type_icons/ptex.svg"
   },
   {
     "code": "review",
     "type": "REVIEW",
+    "extensions": [
+      "mov",
+      "mp4"
+    ],
     "description": "Pipeline movie review file",
     "path": "/data_type_icons/review.svg"
   },
   {
     "code": "rumba",
     "type": "RUMBA",
+    "extensions": [
+      "rumba"
+    ],
     "description": "Rumba animation tool format",
     "path": "/data_type_icons/rumba.svg"
   },
   {
     "code": "screenjson",
     "type": "SCREENJSON",
+    "extensions": [
+      "screenjson"
+    ],
     "description": "ScreenJson screenplay data format (screenjson.com)",
     "path": "/data_type_icons/screenjson.svg"
   },
   {
     "code": "splat",
     "type": "SPLAT",
+    "extensions": [
+      "splat"
+    ],
     "description": "3D Gaussian Splatting point cloud format",
     "path": "/data_type_icons/splat.svg"
   },
   {
     "code": "uasset",
     "type": "UASSET",
+    "extensions": [
+      "uasset"
+    ],
     "description": "Unreal Engine Asset binary package",
     "path": "/data_type_icons/uasset.svg"
   },
   {
     "code": "umap",
     "type": "UMAP",
+    "extensions": [
+      "umap"
+    ],
     "description": "Unreal Engine Map level package",
     "path": "/data_type_icons/umap.svg"
   },
   {
     "code": "usd",
     "type": "USD",
+    "extensions": [
+      "usd",
+      "usda",
+      "usdc",
+      "usdz"
+    ],
     "description": "Universal Scene Description",
     "path": "/data_type_icons/usd.svg"
   },
   {
     "code": "wav",
     "type": "WAV",
+    "extensions": [
+      "wav"
+    ],
     "description": "Waveform Audio File Format",
     "path": "/data_type_icons/wav.svg"
   },
   {
     "code": "xgen",
     "type": "XGEN",
+    "extensions": [
+      "xgen"
+    ],
     "description": "Autodesk Maya XGen description file",
     "path": "/data_type_icons/xgen.svg"
   },
   {
     "code": "xml",
     "type": "XML",
+    "extensions": [
+      "xml"
+    ],
     "description": "Extensible Markup Language",
     "path": "/data_type_icons/xml.svg"
   }
