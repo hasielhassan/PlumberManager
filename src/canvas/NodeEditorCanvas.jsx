@@ -40,10 +40,15 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
 
   const panRef = useRef(pan);
   const zoomRef = useRef(zoom);
+  const selectionRef = useRef(selection);
   useEffect(() => {
     panRef.current = pan;
     zoomRef.current = zoom;
   }, [pan, zoom]);
+
+  useEffect(() => {
+    selectionRef.current = selection;
+  }, [selection]);
 
   // Interaction State Machine
   const [interaction, setInteraction] = useState({
@@ -55,6 +60,11 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
     activeSlot: null, // Slot config currently being connected from
     rubberBandRect: null // { p1, p2 } in world space
   });
+
+  const interactionRef = useRef(interaction);
+  useEffect(() => {
+    interactionRef.current = interaction;
+  }, [interaction]);
 
   // Handle container resizing
   useEffect(() => {
@@ -773,14 +783,15 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
     return () => canvas.removeEventListener('wheel', handleWheelEvent);
   }, []);
 
-  // Touch event handlers for pan (1 finger) and pinch-to-zoom (2 fingers)
+  // Touch event handlers supporting note selection, node dragging, resize, connection, pan, and pinch-zoom
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // Track touch state in a local mutable ref-like object to avoid stale closures
     const touchState = {
-      lastTouch: null,      // { x, y } for single-finger pan
+      startPos: null,       // { x, y } screen-space
+      startWorld: null,     // { x, y } world-space
+      hasMoved: false,
       pinchStartDist: null, // initial distance between two fingers
       pinchStartZoom: null, // zoom at start of pinch
       pinchMidpoint: null   // { x, y } screen-space midpoint of two fingers
@@ -798,56 +809,249 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
     };
 
     const handleTouchStart = (e) => {
+      setContextMenu(null);
+      const rect = canvas.getBoundingClientRect();
+
       if (e.touches.length === 1) {
-        // Single finger — start panning
         e.preventDefault();
-        touchState.lastTouch = {
-          x: e.touches[0].clientX,
-          y: e.touches[0].clientY
+        const touch = e.touches[0];
+        const screenX = touch.clientX - rect.left;
+        const screenY = touch.clientY - rect.top;
+        
+        const currentPan = panRef.current;
+        const currentZoom = zoomRef.current;
+        const worldPoint = {
+          x: (screenX - currentPan.x) / currentZoom,
+          y: (screenY - currentPan.y) / currentZoom
         };
+
+        touchState.startPos = { x: screenX, y: screenY };
+        touchState.startWorld = worldPoint;
+        touchState.hasMoved = false;
         touchState.pinchStartDist = null;
+
+        actionStartSnapshotRef.current = serializeGraph(graph);
+
+        // 1. Check for backdrop or note resize handle corner touches (using 24px radius for finger accuracy)
+        const currentSelection = selectionRef.current;
+        for (const [name, node] of graph.nodes.entries()) {
+          if ((node.preset === 'node_preset_backdrop' || node.preset === 'node_preset_note') && currentSelection.includes(name)) {
+            const { width, height } = getNodeDimensions(node);
+            const rx = node.position.x + width;
+            const ry = node.position.y + height;
+            const dist = Math.hypot(worldPoint.x - rx, worldPoint.y - ry);
+            if (dist < 24) {
+              setInteraction({
+                state: 'DRAG_RESIZE_BACKDROP',
+                startPoint: { x: screenX, y: screenY },
+                currentPoint: { x: screenX, y: screenY },
+                backdropName: name,
+                startWidth: width,
+                startHeight: height
+              });
+              return;
+            }
+          }
+        }
+
+        // 2. Check for slot hit
+        for (const node of graph.nodes.values()) {
+          if (node.preset === 'node_preset_backdrop') continue;
+          const slot = hitTestSlot(worldPoint, node);
+          if (slot) {
+            setInteraction({
+              state: 'DRAW_CONNECTION',
+              startPoint: { x: screenX, y: screenY },
+              currentPoint: { x: screenX, y: screenY },
+              activeSlot: slot
+            });
+            return;
+          }
+        }
+
+        // 3. Check for node hit (processes and notes have priority over backdrops)
+        let clickedNode = null;
+        const nonBackdrops = Array.from(graph.nodes.values()).filter(n => n.preset !== 'node_preset_backdrop');
+        clickedNode = hitTestNode(worldPoint, new Map(nonBackdrops.map(n => [n.name, n])));
+
+        if (!clickedNode) {
+          const backdrops = Array.from(graph.nodes.values()).filter(n => n.preset === 'node_preset_backdrop');
+          clickedNode = hitTestNode(worldPoint, new Map(backdrops.map(n => [n.name, n])));
+        }
+
+        if (clickedNode) {
+          let newSelection = [...currentSelection];
+          if (!currentSelection.includes(clickedNode.name)) {
+            newSelection = [clickedNode.name];
+          }
+          setSelection(newSelection);
+
+          // Determine dragged nodes (if backdrop group, include inner nodes)
+          let draggedNodes = [...newSelection];
+          if (clickedNode.preset === 'node_preset_backdrop') {
+            const bW = clickedNode.metadata?.width || 320;
+            const bH = clickedNode.metadata?.height || 220;
+            const innerNodes = [];
+
+            graph.nodes.forEach((n, name) => {
+              if (name !== clickedNode.name && n.preset !== 'node_preset_backdrop') {
+                const dim = getNodeDimensions(n);
+                const cx = n.position.x + dim.width / 2;
+                const cy = n.position.y + dim.height / 2;
+
+                if (cx >= clickedNode.position.x && cx <= clickedNode.position.x + bW &&
+                    cy >= clickedNode.position.y && cy <= clickedNode.position.y + bH) {
+                  innerNodes.push(name);
+                }
+              }
+            });
+            draggedNodes = [clickedNode.name, ...innerNodes];
+          }
+
+          const nodeOffsets = draggedNodes.map(name => {
+            const node = graph.nodes.get(name);
+            return {
+              x: worldPoint.x - (node ? node.position.x : 0),
+              y: worldPoint.y - (node ? node.position.y : 0)
+            };
+          });
+
+          setInteraction({
+            state: 'DRAG_NODE',
+            startPoint: { x: screenX, y: screenY },
+            currentPoint: { x: screenX, y: screenY },
+            draggedNodes,
+            nodeOffsets
+          });
+          return;
+        }
+
+        // 4. Check for connection hit
+        const clickedConn = hitTestConnection(worldPoint, graph.connections, graph.nodes);
+        if (clickedConn) {
+          setConfirmData({
+            title: 'Delete Connection',
+            message: 'Are you sure you want to remove this connection line?',
+            onConfirm: () => {
+              const before = serializeGraph(graph);
+              graph.deleteConnection(
+                clickedConn.sourceNode,
+                clickedConn.sourceAttr,
+                clickedConn.targetNode,
+                clickedConn.targetAttr
+              );
+              const after = serializeGraph(graph);
+              const cmd = new SnapshotCommand(graph, 'Delete Connection');
+              cmd.beforeState = before;
+              cmd.afterState = after;
+              commandHistory.execute(cmd);
+              graph.emit('node:moved', {}); 
+            }
+          });
+          actionStartSnapshotRef.current = null;
+          return;
+        }
+
+        // 5. Empty space hit: view panning (or tap deselect on release)
+        setInteraction({
+          state: 'DRAG_VIEW',
+          startPoint: { x: screenX, y: screenY },
+          currentPoint: { x: screenX, y: screenY }
+        });
       } else if (e.touches.length === 2) {
-        // Two fingers — start pinch-to-zoom
+        // Two fingers — Pinch-to-zoom
         e.preventDefault();
         const rect = canvas.getBoundingClientRect();
         touchState.pinchStartDist = getTouchDistance(e.touches[0], e.touches[1]);
         touchState.pinchStartZoom = zoomRef.current;
         touchState.pinchMidpoint = getTouchMidpoint(e.touches[0], e.touches[1], rect);
-        touchState.lastTouch = null;
+
+        setInteraction({
+          state: 'DEFAULT',
+          startPoint: null,
+          currentPoint: null,
+          draggedNodes: [],
+          nodeOffsets: [],
+          activeSlot: null,
+          rubberBandRect: null
+        });
       }
     };
 
     const handleTouchMove = (e) => {
-      if (e.touches.length === 1 && touchState.lastTouch && touchState.pinchStartDist === null) {
-        // Single finger pan
+      const rect = canvas.getBoundingClientRect();
+
+      if (e.touches.length === 1) {
         e.preventDefault();
-        const dx = e.touches[0].clientX - touchState.lastTouch.x;
-        const dy = e.touches[0].clientY - touchState.lastTouch.y;
+        const touch = e.touches[0];
+        const screenX = touch.clientX - rect.left;
+        const screenY = touch.clientY - rect.top;
 
-        setPan(prev => ({ x: prev.x + dx, y: prev.y + dy }));
-
-        touchState.lastTouch = {
-          x: e.touches[0].clientX,
-          y: e.touches[0].clientY
+        const currentPan = panRef.current;
+        const currentZoom = zoomRef.current;
+        const worldPoint = {
+          x: (screenX - currentPan.x) / currentZoom,
+          y: (screenY - currentPan.y) / currentZoom
         };
+
+        const startPos = touchState.startPos || { x: screenX, y: screenY };
+        const distMoved = Math.hypot(screenX - startPos.x, screenY - startPos.y);
+        if (distMoved > 5) {
+          touchState.hasMoved = true;
+        }
+
+        const currentInteraction = interactionRef.current;
+        if (currentInteraction.state === 'DRAG_VIEW') {
+          const dx = screenX - (currentInteraction.startPoint?.x ?? screenX);
+          const dy = screenY - (currentInteraction.startPoint?.y ?? screenY);
+          setPan(prev => ({ x: prev.x + dx, y: prev.y + dy }));
+          setInteraction(prev => ({
+            ...prev,
+            startPoint: { x: screenX, y: screenY },
+            currentPoint: { x: screenX, y: screenY }
+          }));
+        } else if (currentInteraction.state === 'DRAG_NODE') {
+          currentInteraction.draggedNodes.forEach((name, idx) => {
+            const offset = currentInteraction.nodeOffsets[idx];
+            if (!offset) return;
+            let newX = worldPoint.x - offset.x;
+            let newY = worldPoint.y - offset.y;
+            graph.moveNode(name, { x: newX, y: newY });
+          });
+          setInteraction(prev => ({ ...prev, currentPoint: { x: screenX, y: screenY } }));
+        } else if (currentInteraction.state === 'DRAG_RESIZE_BACKDROP') {
+          const startWorld = touchState.startWorld || worldPoint;
+          const dx = worldPoint.x - startWorld.x;
+          const dy = worldPoint.y - startWorld.y;
+
+          const node = graph.nodes.get(currentInteraction.backdropName);
+          if (node) {
+            node.metadata = {
+              ...node.metadata,
+              width: Math.max(160, currentInteraction.startWidth + dx),
+              height: Math.max(100, currentInteraction.startHeight + dy)
+            };
+            graph.emit('node:moved', {});
+          }
+          setInteraction(prev => ({ ...prev, currentPoint: { x: screenX, y: screenY } }));
+        } else if (currentInteraction.state === 'DRAW_CONNECTION') {
+          setInteraction(prev => ({ ...prev, currentPoint: { x: screenX, y: screenY } }));
+        }
       } else if (e.touches.length === 2 && touchState.pinchStartDist !== null) {
-        // Two finger pinch-to-zoom
         e.preventDefault();
-        const rect = canvas.getBoundingClientRect();
         const currentDist = getTouchDistance(e.touches[0], e.touches[1]);
         const scale = currentDist / touchState.pinchStartDist;
         const newZoom = Math.max(0.1, Math.min(4.0, touchState.pinchStartZoom * scale));
 
         const midpoint = getTouchMidpoint(e.touches[0], e.touches[1], rect);
         const currentPan = panRef.current;
+        const startMid = touchState.pinchMidpoint || midpoint;
 
-        // Compute world point at the original midpoint, then re-derive pan so that point stays fixed
-        const worldX = (touchState.pinchMidpoint.x - currentPan.x) / zoomRef.current;
-        const worldY = (touchState.pinchMidpoint.y - currentPan.y) / zoomRef.current;
+        const worldX = (startMid.x - currentPan.x) / zoomRef.current;
+        const worldY = (startMid.y - currentPan.y) / zoomRef.current;
 
-        // Also account for the midpoint moving (two-finger drag)
-        const midDx = midpoint.x - touchState.pinchMidpoint.x;
-        const midDy = midpoint.y - touchState.pinchMidpoint.y;
+        const midDx = midpoint.x - startMid.x;
+        const midDy = midpoint.y - startMid.y;
 
         setZoom(newZoom);
         setPan({
@@ -855,27 +1059,91 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
           y: midpoint.y - worldY * newZoom + midDy
         });
 
-        // Update pinch midpoint for continuous drag tracking
         touchState.pinchMidpoint = midpoint;
       }
     };
 
     const handleTouchEnd = (e) => {
       if (e.touches.length === 0) {
-        // All fingers lifted — reset state
-        touchState.lastTouch = null;
+        const currentInteraction = interactionRef.current;
+        const hasMoved = touchState.hasMoved;
+
+        // If tap on empty canvas (DRAG_VIEW without significant move), deselect nodes!
+        if (currentInteraction.state === 'DRAG_VIEW' && !hasMoved) {
+          setSelection([]);
+        }
+
+        // Finalize drawing connection if active
+        if (currentInteraction.state === 'DRAW_CONNECTION' && currentInteraction.currentPoint) {
+          const currentPan = panRef.current;
+          const currentZoom = zoomRef.current;
+          const worldPoint = {
+            x: (currentInteraction.currentPoint.x - currentPan.x) / currentZoom,
+            y: (currentInteraction.currentPoint.y - currentPan.y) / currentZoom
+          };
+
+          let targetSlot = null;
+          for (const node of graph.nodes.values()) {
+            if (node.preset === 'node_preset_backdrop') continue;
+            const slot = hitTestSlot(worldPoint, node);
+            if (slot && slot.nodeName !== currentInteraction.activeSlot.nodeName) {
+              const isCompatible = (currentInteraction.activeSlot.type === 'plug' && slot.type === 'socket') ||
+                                   (currentInteraction.activeSlot.type === 'socket' && slot.type === 'plug');
+              const isSameType = dataTypeRegistry.acceptsConnection(currentInteraction.activeSlot.dataType, slot.dataType);
+              
+              if (isCompatible && isSameType) {
+                targetSlot = slot;
+                break;
+              }
+            }
+          }
+
+          if (targetSlot) {
+            const isSourcePlug = currentInteraction.activeSlot.type === 'plug';
+            const srcNode = isSourcePlug ? currentInteraction.activeSlot.nodeName : targetSlot.nodeName;
+            const srcAttr = isSourcePlug ? currentInteraction.activeSlot.attributeName : targetSlot.attributeName;
+            const tgtNode = isSourcePlug ? targetSlot.nodeName : currentInteraction.activeSlot.nodeName;
+            const tgtAttr = isSourcePlug ? targetSlot.attributeName : currentInteraction.activeSlot.attributeName;
+
+            graph.createConnection(srcNode, srcAttr, tgtNode, tgtAttr);
+          }
+        }
+
+        // Capture Undo action if graph state mutated
+        const beforeState = actionStartSnapshotRef.current;
+        const afterState = serializeGraph(graph);
+        if (beforeState && beforeState !== afterState) {
+          const cmdDescription = currentInteraction.state === 'DRAG_RESIZE_BACKDROP' 
+            ? 'Resize Node' 
+            : 'Canvas Action';
+          const cmd = new SnapshotCommand(graph, cmdDescription);
+          cmd.beforeState = beforeState;
+          cmd.afterState = afterState;
+          commandHistory.execute(cmd);
+          graph.emit('node:moved', {}); 
+        }
+        actionStartSnapshotRef.current = null;
+
+        setInteraction({
+          state: 'DEFAULT',
+          startPoint: null,
+          currentPoint: null,
+          draggedNodes: [],
+          nodeOffsets: [],
+          activeSlot: null,
+          rubberBandRect: null
+        });
+
+        touchState.startPos = null;
+        touchState.startWorld = null;
+        touchState.hasMoved = false;
         touchState.pinchStartDist = null;
         touchState.pinchStartZoom = null;
         touchState.pinchMidpoint = null;
       } else if (e.touches.length === 1) {
-        // Went from 2 fingers to 1: transition to single-finger pan
         touchState.pinchStartDist = null;
         touchState.pinchStartZoom = null;
         touchState.pinchMidpoint = null;
-        touchState.lastTouch = {
-          x: e.touches[0].clientX,
-          y: e.touches[0].clientY
-        };
       }
     };
 
@@ -888,7 +1156,7 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
       canvas.removeEventListener('touchmove', handleTouchMove);
       canvas.removeEventListener('touchend', handleTouchEnd);
     };
-  }, []);
+  }, [graph, setSelection]);
 
   const handleContextMenu = (e) => {
     e.preventDefault();

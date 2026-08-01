@@ -209,8 +209,87 @@ export function IsolatedView({ isOpen, onClose, nodeName, mainGraph }) {
       });
     };
 
+    const touchState = { lastPos: null, pinchDist: null, pinchZoom: null, midpoint: null };
+
+    const handleTouchStart = (e) => {
+      if (e.touches.length === 1) {
+        e.preventDefault();
+        touchState.lastPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        touchState.pinchDist = null;
+      } else if (e.touches.length === 2) {
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const t1 = e.touches[0];
+        const t2 = e.touches[1];
+        touchState.pinchDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        touchState.pinchZoom = zoomRef.current;
+        touchState.midpoint = {
+          x: ((t1.clientX + t2.clientX) / 2) - rect.left,
+          y: ((t1.clientY + t2.clientY) / 2) - rect.top
+        };
+        touchState.lastPos = null;
+      }
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches.length === 1 && touchState.lastPos) {
+        e.preventDefault();
+        const dx = e.touches[0].clientX - touchState.lastPos.x;
+        const dy = e.touches[0].clientY - touchState.lastPos.y;
+        setPan(prev => ({ x: prev.x + dx, y: prev.y + dy }));
+        touchState.lastPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      } else if (e.touches.length === 2 && touchState.pinchDist !== null) {
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const t1 = e.touches[0];
+        const t2 = e.touches[1];
+        const currentDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        const scale = currentDist / touchState.pinchDist;
+        const newZoom = Math.max(0.1, Math.min(3.0, touchState.pinchZoom * scale));
+
+        const midpoint = {
+          x: ((t1.clientX + t2.clientX) / 2) - rect.left,
+          y: ((t1.clientY + t2.clientY) / 2) - rect.top
+        };
+        const currentPan = panRef.current;
+        const startMid = touchState.midpoint || midpoint;
+
+        const worldX = (startMid.x - currentPan.x) / zoomRef.current;
+        const worldY = (startMid.y - currentPan.y) / zoomRef.current;
+
+        const midDx = midpoint.x - startMid.x;
+        const midDy = midpoint.y - startMid.y;
+
+        setZoom(newZoom);
+        setPan({
+          x: midpoint.x - worldX * newZoom + midDx,
+          y: midpoint.y - worldY * newZoom + midDy
+        });
+
+        touchState.midpoint = midpoint;
+      }
+    };
+
+    const handleTouchEnd = (e) => {
+      if (e.touches.length === 0) {
+        touchState.lastPos = null;
+        touchState.pinchDist = null;
+        touchState.pinchZoom = null;
+        touchState.midpoint = null;
+      }
+    };
+
     canvas.addEventListener('wheel', handleWheelEvent, { passive: false });
-    return () => canvas.removeEventListener('wheel', handleWheelEvent);
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+    canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+    canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+    return () => {
+      canvas.removeEventListener('wheel', handleWheelEvent);
+      canvas.removeEventListener('touchstart', handleTouchStart);
+      canvas.removeEventListener('touchmove', handleTouchMove);
+      canvas.removeEventListener('touchend', handleTouchEnd);
+    };
   }, [isOpen, isoGraph]);
 
   return (

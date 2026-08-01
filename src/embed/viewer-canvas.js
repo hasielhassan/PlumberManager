@@ -32,6 +32,119 @@ export class ViewerCanvas {
     this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
     this.canvas.addEventListener('mouseleave', this.handleMouseUp.bind(this));
     this.canvas.addEventListener('wheel', this.handleWheel.bind(this));
+
+    // Touch event support
+    this.touchState = {
+      startPos: null,
+      lastPan: null,
+      hasMoved: false,
+      pinchStartDist: null,
+      pinchStartZoom: null,
+      pinchMidpoint: null
+    };
+
+    this.canvas.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: false });
+    this.canvas.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
+    this.canvas.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: false });
+  }
+
+  handleTouchStart(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    if (e.touches.length === 1) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const screenX = touch.clientX - rect.left;
+      const screenY = touch.clientY - rect.top;
+
+      this.isPanning = true;
+      this.panStart = { x: touch.clientX - this.pan.x, y: touch.clientY - this.pan.y };
+      this.touchState.startPos = { x: screenX, y: screenY };
+      this.touchState.hasMoved = false;
+      this.touchState.pinchStartDist = null;
+    } else if (e.touches.length === 2) {
+      e.preventDefault();
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      this.touchState.pinchStartDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+      this.touchState.pinchStartZoom = this.zoom;
+      this.touchState.pinchMidpoint = {
+        x: ((t1.clientX + t2.clientX) / 2) - rect.left,
+        y: ((t1.clientY + t2.clientY) / 2) - rect.top
+      };
+      this.isPanning = false;
+    }
+  }
+
+  handleTouchMove(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    if (e.touches.length === 1 && this.isPanning) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const screenX = touch.clientX - rect.left;
+      const screenY = touch.clientY - rect.top;
+
+      const startPos = this.touchState.startPos || { x: screenX, y: screenY };
+      if (Math.hypot(screenX - startPos.x, screenY - startPos.y) > 5) {
+        this.touchState.hasMoved = true;
+      }
+
+      this.pan = {
+        x: touch.clientX - this.panStart.x,
+        y: touch.clientY - this.panStart.y
+      };
+      this.render();
+    } else if (e.touches.length === 2 && this.touchState.pinchStartDist !== null) {
+      e.preventDefault();
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      const currentDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+      const scale = currentDist / this.touchState.pinchStartDist;
+      const newZoom = Math.max(0.1, Math.min(3.0, this.touchState.pinchStartZoom * scale));
+
+      const midpoint = {
+        x: ((t1.clientX + t2.clientX) / 2) - rect.left,
+        y: ((t1.clientY + t2.clientY) / 2) - rect.top
+      };
+      const startMid = this.touchState.pinchMidpoint || midpoint;
+
+      const worldX = (startMid.x - this.pan.x) / this.zoom;
+      const worldY = (startMid.y - this.pan.y) / this.zoom;
+
+      const midDx = midpoint.x - startMid.x;
+      const midDy = midpoint.y - startMid.y;
+
+      this.zoom = newZoom;
+      this.pan = {
+        x: midpoint.x - worldX * newZoom + midDx,
+        y: midpoint.y - worldY * newZoom + midDy
+      };
+      this.touchState.pinchMidpoint = midpoint;
+      this.render();
+    }
+  }
+
+  handleTouchEnd(e) {
+    if (e.touches.length === 0) {
+      if (this.isPanning && !this.touchState.hasMoved && this.touchState.startPos) {
+        const worldPoint = this.screenToWorld(this.touchState.startPos.x, this.touchState.startPos.y);
+        const clickedNode = hitTestNode(worldPoint, this.graph.nodes);
+        if (clickedNode) {
+          this.setSelectedNode(clickedNode.name);
+          this.onNodeClick(clickedNode.name);
+        } else {
+          this.setSelectedNode(null);
+          this.onNodeClick(null);
+        }
+      }
+      this.isPanning = false;
+      this.touchState.startPos = null;
+      this.touchState.hasMoved = false;
+      this.touchState.pinchStartDist = null;
+      this.touchState.pinchStartZoom = null;
+      this.touchState.pinchMidpoint = null;
+    } else if (e.touches.length === 1) {
+      this.touchState.pinchStartDist = null;
+    }
   }
 
   screenToWorld(screenX, screenY) {
