@@ -10,6 +10,7 @@ export function TourTooltip({
   skipProps,
   primaryProps,
   tooltipProps,
+  controls,
   size,
   isLastStep
 }) {

@@ -1,11 +1,15 @@
 import React from 'react';
 
+/** Minimum sidebar width guaranteed during tour sidebar steps. */
+const TOUR_SIDEBAR_MIN_WIDTH = 480;
+
 export const getTourSteps = ({
   onLoadSample,
   setIsSidebarCollapsed,
   setSidebarTab,
   setSelection,
   setActiveModal,
+  setPanelWidth,
   graph
 }) => [
   {
@@ -18,7 +22,7 @@ export const getTourSteps = ({
           <strong>Plumber Manager</strong> is a modern CG Pipeline visualization tool designed to map, document, and manage DCC data flows and asset handoffs.
         </p>
         <p className="text-xs text-muted">
-          Let’s take a quick guided tour of all UI options, features, and dialog options!
+          Let's take a quick guided tour of all UI options, features, and dialog options!
         </p>
       </div>
     )
@@ -96,6 +100,9 @@ export const getTourSteps = ({
       if (graph && graph.nodes.size === 0 && onLoadSample) {
         await onLoadSample('minimal', true);
       }
+      if (setIsSidebarCollapsed) setIsSidebarCollapsed(false);
+      if (setPanelWidth) setPanelWidth(TOUR_SIDEBAR_MIN_WIDTH);
+      await new Promise(resolve => setTimeout(resolve, 200));
     }
   },
   {
@@ -120,11 +127,12 @@ export const getTourSteps = ({
       }
       if (setIsSidebarCollapsed) setIsSidebarCollapsed(false);
       if (setSidebarTab) setSidebarTab('properties');
+      if (setPanelWidth) setPanelWidth(TOUR_SIDEBAR_MIN_WIDTH);
       if (graph && graph.nodes.size > 0 && setSelection) {
         const firstNode = Array.from(graph.nodes.keys())[0];
         setSelection([firstNode]);
       }
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 200));
     }
   },
   {
@@ -148,11 +156,12 @@ export const getTourSteps = ({
       }
       if (setIsSidebarCollapsed) setIsSidebarCollapsed(false);
       if (setSidebarTab) setSidebarTab('details');
+      if (setPanelWidth) setPanelWidth(TOUR_SIDEBAR_MIN_WIDTH);
       if (graph && graph.nodes.size > 0 && setSelection) {
         const firstNode = Array.from(graph.nodes.keys())[0];
         setSelection([firstNode]);
       }
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 200));
     }
   },
   {
@@ -165,7 +174,7 @@ export const getTourSteps = ({
           Clicking <strong>Formats</strong> in the main menu opens the custom CG extension registry.
         </p>
         <p className="text-xs text-muted">
-          Let’s take a look inside the Format Type Manager dialog on the next step!
+          Let's take a look inside the Format Type Manager dialog on the next step!
         </p>
       </div>
     ),
@@ -204,7 +213,7 @@ export const getTourSteps = ({
           Clicking <strong>Export...</strong> opens high-resolution diagram export options.
         </p>
         <p className="text-xs text-muted">
-          Let’s inspect the SVG, PNG, and PDF rendering options on the next step!
+          Let's inspect the SVG, PNG, and PDF rendering options on the next step!
         </p>
       </div>
     ),

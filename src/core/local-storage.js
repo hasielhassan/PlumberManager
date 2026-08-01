@@ -79,7 +79,7 @@ export const localStorageManager = {
       const stored = localStorage.getItem(PREFS_KEY);
       const defaults = {
         theme: 'dark',
-        panelWidth: 360,
+        panelWidth: 420,
         minimapEnabled: true,
         autoRelayout: true,
         hasCompletedTour: false
@@ -88,7 +88,7 @@ export const localStorageManager = {
     } catch {
       return {
         theme: 'dark',
-        panelWidth: 360,
+        panelWidth: 420,
         minimapEnabled: true,
         autoRelayout: true,
         hasCompletedTour: false
