@@ -13,10 +13,18 @@ export class ViewerCanvas {
     this.pan = { x: 0, y: 0 };
     this.zoom = 1.0;
     this.selectedNodeName = null;
-    
-    // Simple state
+
+    // Viewport panning state
     this.isPanning = false;
     this.panStart = { x: 0, y: 0 };
+
+    // Node dragging state
+    this.isDraggingNode = false;
+    this.dragNode = null;
+    this.dragStartWorld = { x: 0, y: 0 };
+    this.dragStartNodePos = { x: 0, y: 0 };
+    this.childNodeStarts = [];
+    this.hasDragged = false;
 
     this.initEvents();
   }
@@ -55,9 +63,41 @@ export class ViewerCanvas {
       const touch = e.touches[0];
       const screenX = touch.clientX - rect.left;
       const screenY = touch.clientY - rect.top;
+      const worldPoint = this.screenToWorld(screenX, screenY);
 
-      this.isPanning = true;
-      this.panStart = { x: touch.clientX - this.pan.x, y: touch.clientY - this.pan.y };
+      const clickedNode = hitTestNode(worldPoint, this.graph.nodes);
+      if (clickedNode) {
+        this.isDraggingNode = true;
+        this.dragNode = clickedNode;
+        this.dragStartWorld = { ...worldPoint };
+        this.dragStartNodePos = { x: clickedNode.position.x, y: clickedNode.position.y };
+        this.hasDragged = false;
+
+        this.setSelectedNode(clickedNode.name);
+        this.onNodeClick(clickedNode.name);
+
+        if (clickedNode.preset === 'node_preset_backdrop') {
+          const { width, height } = getNodeDimensions(clickedNode);
+          const bX = clickedNode.position.x;
+          const bY = clickedNode.position.y;
+          this.childNodeStarts = [];
+          for (const node of this.graph.nodes.values()) {
+            if (node.name === clickedNode.name || node.preset === 'node_preset_backdrop') continue;
+            const { width: nW, height: nH } = getNodeDimensions(node);
+            const nX = node.position.x;
+            const nY = node.position.y;
+            if (nX >= bX && nX + nW <= bX + width && nY >= bY && nY + nH <= bY + height) {
+              this.childNodeStarts.push({ node, startX: nX, startY: nY });
+            }
+          }
+        } else {
+          this.childNodeStarts = [];
+        }
+      } else {
+        this.isPanning = true;
+        this.panStart = { x: touch.clientX - this.pan.x, y: touch.clientY - this.pan.y };
+      }
+
       this.touchState.startPos = { x: screenX, y: screenY };
       this.touchState.hasMoved = false;
       this.touchState.pinchStartDist = null;
@@ -72,27 +112,53 @@ export class ViewerCanvas {
         y: ((t1.clientY + t2.clientY) / 2) - rect.top
       };
       this.isPanning = false;
+      this.isDraggingNode = false;
     }
   }
 
   handleTouchMove(e) {
     const rect = this.canvas.getBoundingClientRect();
-    if (e.touches.length === 1 && this.isPanning) {
-      e.preventDefault();
+    if (e.touches.length === 1) {
       const touch = e.touches[0];
       const screenX = touch.clientX - rect.left;
       const screenY = touch.clientY - rect.top;
+      const worldPoint = this.screenToWorld(screenX, screenY);
 
-      const startPos = this.touchState.startPos || { x: screenX, y: screenY };
-      if (Math.hypot(screenX - startPos.x, screenY - startPos.y) > 5) {
-        this.touchState.hasMoved = true;
+      if (this.isDraggingNode && this.dragNode) {
+        e.preventDefault();
+        const dx = worldPoint.x - this.dragStartWorld.x;
+        const dy = worldPoint.y - this.dragStartWorld.y;
+
+        if (Math.hypot(dx, dy) > 2) {
+          this.touchState.hasMoved = true;
+          this.hasDragged = true;
+        }
+
+        this.dragNode.position.x = this.dragStartNodePos.x + dx;
+        this.dragNode.position.y = this.dragStartNodePos.y + dy;
+
+        if (this.childNodeStarts.length > 0) {
+          for (const item of this.childNodeStarts) {
+            item.node.position.x = item.startX + dx;
+            item.node.position.y = item.startY + dy;
+          }
+        }
+        this.render();
+        return;
       }
 
-      this.pan = {
-        x: touch.clientX - this.panStart.x,
-        y: touch.clientY - this.panStart.y
-      };
-      this.render();
+      if (this.isPanning) {
+        e.preventDefault();
+        const startPos = this.touchState.startPos || { x: screenX, y: screenY };
+        if (Math.hypot(screenX - startPos.x, screenY - startPos.y) > 5) {
+          this.touchState.hasMoved = true;
+        }
+        this.pan = {
+          x: touch.clientX - this.panStart.x,
+          y: touch.clientY - this.panStart.y
+        };
+        this.render();
+      }
     } else if (e.touches.length === 2 && this.touchState.pinchStartDist !== null) {
       e.preventDefault();
       const t1 = e.touches[0];
@@ -125,7 +191,11 @@ export class ViewerCanvas {
 
   handleTouchEnd(e) {
     if (e.touches.length === 0) {
-      if (this.isPanning && !this.touchState.hasMoved && this.touchState.startPos) {
+      if (this.isDraggingNode) {
+        this.isDraggingNode = false;
+        this.dragNode = null;
+        this.childNodeStarts = [];
+      } else if (this.isPanning && !this.touchState.hasMoved && this.touchState.startPos) {
         const worldPoint = this.screenToWorld(this.touchState.startPos.x, this.touchState.startPos.y);
         const clickedNode = hitTestNode(worldPoint, this.graph.nodes);
         if (clickedNode) {
@@ -155,12 +225,79 @@ export class ViewerCanvas {
   }
 
   handleMouseDown(e) {
-    // Start pan
-    this.isPanning = true;
-    this.panStart = { x: e.clientX - this.pan.x, y: e.clientY - this.pan.y };
+    const rect = this.canvas.getBoundingClientRect();
+    const screenX = e.clientX - rect.left;
+    const screenY = e.clientY - rect.top;
+    const worldPoint = this.screenToWorld(screenX, screenY);
+
+    const clickedNode = hitTestNode(worldPoint, this.graph.nodes);
+
+    if (clickedNode) {
+      this.isDraggingNode = true;
+      this.dragNode = clickedNode;
+      this.dragStartWorld = { ...worldPoint };
+      this.dragStartNodePos = { x: clickedNode.position.x, y: clickedNode.position.y };
+      this.hasDragged = false;
+
+      // Select node on click
+      this.setSelectedNode(clickedNode.name);
+      this.onNodeClick(clickedNode.name);
+
+      // Track child nodes if backdrop is dragged (Rule #4)
+      if (clickedNode.preset === 'node_preset_backdrop') {
+        const { width, height } = getNodeDimensions(clickedNode);
+        const bX = clickedNode.position.x;
+        const bY = clickedNode.position.y;
+
+        this.childNodeStarts = [];
+        for (const node of this.graph.nodes.values()) {
+          if (node.name === clickedNode.name || node.preset === 'node_preset_backdrop') continue;
+          const { width: nW, height: nH } = getNodeDimensions(node);
+          const nX = node.position.x;
+          const nY = node.position.y;
+
+          if (nX >= bX && nX + nW <= bX + width && nY >= bY && nY + nH <= bY + height) {
+            this.childNodeStarts.push({ node, startX: nX, startY: nY });
+          }
+        }
+      } else {
+        this.childNodeStarts = [];
+      }
+    } else {
+      // Start pan
+      this.isPanning = true;
+      this.panStart = { x: e.clientX - this.pan.x, y: e.clientY - this.pan.y };
+    }
   }
 
   handleMouseMove(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    const screenX = e.clientX - rect.left;
+    const screenY = e.clientY - rect.top;
+    const worldPoint = this.screenToWorld(screenX, screenY);
+
+    if (this.isDraggingNode && this.dragNode) {
+      const dx = worldPoint.x - this.dragStartWorld.x;
+      const dy = worldPoint.y - this.dragStartWorld.y;
+
+      if (Math.hypot(dx, dy) > 2) {
+        this.hasDragged = true;
+      }
+
+      this.dragNode.position.x = this.dragStartNodePos.x + dx;
+      this.dragNode.position.y = this.dragStartNodePos.y + dy;
+
+      if (this.childNodeStarts.length > 0) {
+        for (const item of this.childNodeStarts) {
+          item.node.position.x = item.startX + dx;
+          item.node.position.y = item.startY + dy;
+        }
+      }
+
+      this.render();
+      return;
+    }
+
     if (this.isPanning) {
       this.pan = {
         x: e.clientX - this.panStart.x,
@@ -171,23 +308,27 @@ export class ViewerCanvas {
   }
 
   handleMouseUp(e) {
-    if (!this.isPanning) return;
-    this.isPanning = false;
+    if (this.isDraggingNode) {
+      this.isDraggingNode = false;
+      this.dragNode = null;
+      this.childNodeStarts = [];
+      return;
+    }
 
-    // Check click distance to see if it's a click vs drag
-    const rect = this.canvas.getBoundingClientRect();
-    const screenX = e.clientX - rect.left;
-    const screenY = e.clientY - rect.top;
-    
-    const worldPoint = this.screenToWorld(screenX, screenY);
-    const clickedNode = hitTestNode(worldPoint, this.graph.nodes);
+    if (this.isPanning) {
+      this.isPanning = false;
 
-    if (clickedNode) {
-      this.setSelectedNode(clickedNode.name);
-      this.onNodeClick(clickedNode.name);
-    } else {
-      this.setSelectedNode(null);
-      this.onNodeClick(null);
+      // Clear selection if clicking background without dragging
+      const rect = this.canvas.getBoundingClientRect();
+      const screenX = e.clientX - rect.left;
+      const screenY = e.clientY - rect.top;
+      const worldPoint = this.screenToWorld(screenX, screenY);
+      const clickedNode = hitTestNode(worldPoint, this.graph.nodes);
+
+      if (!clickedNode) {
+        this.setSelectedNode(null);
+        this.onNodeClick(null);
+      }
     }
   }
 
@@ -246,10 +387,16 @@ export class ViewerCanvas {
     const node = this.graph.nodes.get(nodeName);
     if (!node) return;
 
+    const targetZoom = 1.15;
+    this.zoom = targetZoom;
+
     const { width, height } = getNodeDimensions(node);
+    const centerX = node.position.x + width / 2;
+    const centerY = node.position.y + height / 2;
+
     this.pan = {
-      x: this.canvas.width / 2 - (node.position.x + width / 2) * this.zoom,
-      y: this.canvas.height / 2 - (node.position.y + height / 2) * this.zoom
+      x: this.canvas.width / 2 - centerX * targetZoom,
+      y: this.canvas.height / 2 - centerY * targetZoom
     };
     this.setSelectedNode(nodeName);
   }
@@ -273,13 +420,28 @@ export class ViewerCanvas {
 
       const pSource = getSlotCenter(srcNode, conn.sourceAttr, 'plug');
       const pTarget = getSlotCenter(tgtNode, conn.targetAttr, 'socket');
-      
+
       const attr = srcNode.attributes.find(a => a.name === conn.sourceAttr);
       drawConnection(ctx, pSource, pTarget, conn, attr?.dataType, true, this.graph);
     });
 
-    // 3. Nodes with selection highlighting
+    // 3. Nodes (Rule #3: Backdrops drawn FIRST, normal nodes drawn SECOND)
+    const backdrops = [];
+    const normalNodes = [];
     this.graph.nodes.forEach(node => {
+      if (node.preset === 'node_preset_backdrop') {
+        backdrops.push(node);
+      } else {
+        normalNodes.push(node);
+      }
+    });
+
+    backdrops.forEach(node => {
+      const isSelected = this.selectedNodeName === node.name;
+      drawNode(ctx, node, isSelected);
+    });
+
+    normalNodes.forEach(node => {
       const isSelected = this.selectedNodeName === node.name;
       drawNode(ctx, node, isSelected);
     });

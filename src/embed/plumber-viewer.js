@@ -1,6 +1,10 @@
+import { ensureGlobals } from './widget-polyfills';
+ensureGlobals();
+
 import { GraphModel } from '../core/graph-model';
 import { deserializeGraph } from '../core/graph-serializer';
 import { layoutGraph } from '../core/graph-layout';
+import { buildIsolatedGraph } from '../core/isolation-builder';
 import { ViewerCanvas } from './viewer-canvas';
 import { marked } from 'marked';
 import styles from './viewer-styles.css?raw';
@@ -23,6 +27,7 @@ export class PlumberViewer {
       fitOnLoad: true,
       isolation: true,
       documentation: true,
+      selectNode: null,
       ...options
     };
 
@@ -164,10 +169,30 @@ export class PlumberViewer {
         layoutGraph(this.graph, { animate: false });
       }
       this.resize();
+      if (this.options.selectNode) {
+        this.selectNode(this.options.selectNode);
+      }
       if (this.options.fitOnLoad) {
         setTimeout(() => this.viewerCanvas.fitToView(), 50);
       }
       this.emit('graph:loaded', data);
+    }
+  }
+
+  selectNode(nodeName) {
+    if (nodeName) {
+      this.handleNodeClick(nodeName);
+    } else {
+      this.selectedNodeName = null;
+      if (this.viewerCanvas) {
+        this.viewerCanvas.setSelectedNode(null);
+      }
+      if (this.options.documentation && this.sidebar) {
+        const docsContent = this.sidebar.querySelector('.plumber-docs-content');
+        if (docsContent) {
+          docsContent.innerHTML = '<div class="plumber-docs-empty">Click a node to inspect its pipeline documentation.</div>';
+        }
+      }
     }
   }
 
@@ -248,37 +273,11 @@ export class PlumberViewer {
     isoCanvas.width = container.clientWidth;
     isoCanvas.height = container.clientHeight;
 
-    const isoG = new GraphModel();
-    // Reconstruct isolated nodes
-    const isoData = this.graph.getIsolatedData(nodeName);
-    isoG.createNode(nodeName, { x: 200, y: 200 }, mainNode.preset);
-    mainNode.attributes.forEach(attr => isoG.createAttribute(nodeName, attr));
-
-    Object.entries(isoData.inputs).forEach(([attrName, data]) => {
-      data.connections.forEach(([srcNodeName, srcAttrName]) => {
-        if (!isoG.nodes.has(srcNodeName)) {
-          const srcNode = this.graph.nodes.get(srcNodeName);
-          isoG.createNode(srcNodeName, { x: 50, y: 100 }, srcNode?.preset);
-          srcNode?.attributes.forEach(attr => isoG.createAttribute(srcNodeName, attr));
-        }
-        isoG.createConnection(srcNodeName, srcAttrName, nodeName, attrName);
-      });
-    });
-
-    Object.entries(isoData.outputs).forEach(([attrName, data]) => {
-      data.connections.forEach(([tgtNodeName, tgtAttrName]) => {
-        if (!isoG.nodes.has(tgtNodeName)) {
-          const tgtNode = this.graph.nodes.get(tgtNodeName);
-          isoG.createNode(tgtNodeName, { x: 400, y: 100 }, tgtNode?.preset);
-          tgtNode?.attributes.forEach(attr => isoG.createAttribute(tgtNodeName, attr));
-        }
-        isoG.createConnection(nodeName, attrName, tgtNodeName, tgtAttrName);
-      });
-    });
-
-    layoutGraph(isoG, { animate: false, nodesep: 35, ranksep: 220, centralNodeName: nodeName });
-    const canvasController = new ViewerCanvas(isoCanvas, isoG, () => {});
-    canvasController.fitToView();
+    const isoG = buildIsolatedGraph(this.graph, nodeName);
+    if (isoG) {
+      const canvasController = new ViewerCanvas(isoCanvas, isoG, () => {});
+      canvasController.fitToView();
+    }
 
     this.emit('isolation:open', nodeName);
   }
@@ -310,7 +309,62 @@ export class PlumberViewer {
   }
 }
 
-// Attach to window for UMD script usage
+// HTML Web Component Custom Element Registration
+export class PlumberViewerElement extends HTMLElement {
+  connectedCallback() {
+    if (this._initialized) return;
+    this._initialized = true;
+
+    const src = this.getAttribute('src');
+    const theme = this.getAttribute('theme') || 'dark';
+    const autoLayout = this.getAttribute('auto-layout') !== 'false';
+    const fitOnLoad = this.getAttribute('fit-on-load') !== 'false';
+    const isolation = this.getAttribute('isolation') !== 'false';
+    const documentation = this.getAttribute('documentation') !== 'false';
+    const selectNode = this.getAttribute('select-node');
+
+    this.viewer = new PlumberViewer(this, {
+      src,
+      theme,
+      autoLayout,
+      fitOnLoad,
+      isolation,
+      documentation,
+      selectNode
+    });
+  }
+
+  disconnectedCallback() {
+    if (this.viewer) {
+      this.viewer.destroy();
+    }
+  }
+
+  selectNode(nodeName) {
+    if (this.viewer) this.viewer.selectNode(nodeName);
+  }
+
+  focusNode(nodeName) {
+    if (this.viewer) this.viewer.focusNode(nodeName);
+  }
+
+  showIsolation(nodeName) {
+    if (this.viewer) this.viewer.showIsolation(nodeName);
+  }
+
+  loadGraph(data) {
+    if (this.viewer) this.viewer.loadGraph(data);
+  }
+
+  loadFromUrl(url) {
+    if (this.viewer) this.viewer.loadFromUrl(url);
+  }
+}
+
 if (typeof window !== 'undefined') {
   window.PlumberViewer = PlumberViewer;
+  if (typeof customElements !== 'undefined' && !customElements.get('plumber-viewer')) {
+    customElements.define('plumber-viewer', PlumberViewerElement);
+  }
 }
+

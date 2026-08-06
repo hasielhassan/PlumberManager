@@ -1,6 +1,8 @@
 import builtInConfig from '../../config/data-types.json';
 import { customTypeStore } from './custom-type-store';
 import { getAssetUrl } from '../utils/asset-path';
+import { generateHexagonBadgeSvg } from '../utils/hexagon-badge-generator';
+import inlineIcons from '../embed/inline-icons';
 
 export class DataTypeRegistry {
   constructor() {
@@ -9,11 +11,43 @@ export class DataTypeRegistry {
     this.imageCaches = new Map();
     this.dataUrlCaches = new Map();
     this.svgTextCaches = new Map();
+    this.inlineIcons = inlineIcons || null; // Pre-bundled inline SVG map
     this.initialized = false;
     this.onLoadedListeners = new Set();
 
     // Populate default types & dynamic extensions from config on construction
     this.registerDefaults();
+
+    if (this.inlineIcons) {
+      this.registerInlineIcons(this.inlineIcons);
+    }
+  }
+
+  /**
+   * Register pre-bundled SVG icon strings so the icon loader can use them
+   * instead of fetching over the network.  Called by the widget entry point
+   * with the auto-generated inline-icons map.
+   * @param {Record<string, string>} iconMap  { code: svgText }
+   */
+  registerInlineIcons(iconMap) {
+    this.inlineIcons = iconMap;
+
+    // Pre-populate caches for every icon we already have type info for.
+    for (const [code, svgText] of Object.entries(iconMap)) {
+      const cleanCode = code.toLowerCase();
+      if (this.svgTextCaches.has(cleanCode)) continue; // already loaded
+      this.svgTextCaches.set(cleanCode, svgText);
+      const encoded = btoa(unescape(encodeURIComponent(svgText)));
+      const dataUrl = `data:image/svg+xml;base64,${encoded}`;
+      this.dataUrlCaches.set(cleanCode, dataUrl);
+
+      const img = new Image();
+      img.src = dataUrl;
+      img.onload = () => {
+        this.imageCaches.set(cleanCode, img);
+        this.notifyLoaded();
+      };
+    }
   }
 
   resolveCode(code) {
@@ -138,6 +172,21 @@ export class DataTypeRegistry {
         return;
       }
 
+      // Detect contexts where fetch() will always fail (file:// protocol,
+      // non-HTTP icon paths, embedded widget on external domains).
+      // Skip straight to the generated vector fallback to avoid flooding
+      // the console with expected CORS / network errors.
+      const isFileProtocol = typeof window !== 'undefined'
+        && window.location && window.location.protocol === 'file:';
+      const isHttpPath = path.startsWith('http://') || path.startsWith('https://');
+      const canFetch = !isFileProtocol && (isHttpPath || path.startsWith('/'));
+
+      if (!canFetch) {
+        // Go directly to generated vector badge — no fetch attempt.
+        this._applyVectorFallback(cleanCode, resolve);
+        return;
+      }
+
       // Otherwise fetch path to create standalone Base64 Data URL for SVG export & cache HTMLImageElement
       fetch(path)
         .then(res => {
@@ -169,18 +218,34 @@ export class DataTypeRegistry {
             fallbackImg.onerror = () => resolve(null);
           };
         })
-        .catch(err => {
-          console.warn(`Failed to fetch SVG content for ${cleanCode}:`, err);
-          const fallbackImg = new Image();
-          fallbackImg.src = path;
-          fallbackImg.onload = () => {
-            this.imageCaches.set(cleanCode, fallbackImg);
-            this.notifyLoaded();
-            resolve(fallbackImg);
-          };
-          fallbackImg.onerror = () => resolve(null);
+        .catch(() => {
+          // Network/CORS failure — silently fall back to generated vector icon.
+          this._applyVectorFallback(cleanCode, resolve);
         });
+
     });
+  }
+
+  /** Uses pre-bundled inline SVG icon or generates a hexagon badge SVG for the given code and caches it. */
+  _applyVectorFallback(cleanCode, resolve) {
+    const inlineSvg = this.inlineIcons ? this.inlineIcons[cleanCode] : null;
+    const svgText = inlineSvg || generateHexagonBadgeSvg({
+      code: cleanCode,
+      label: cleanCode.toUpperCase(),
+      color: '#38BDF8'
+    });
+    this.svgTextCaches.set(cleanCode, svgText);
+    const dataUrl = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgText)))}`;
+    this.dataUrlCaches.set(cleanCode, dataUrl);
+
+    const fallbackImg = new Image();
+    fallbackImg.src = dataUrl;
+    fallbackImg.onload = () => {
+      this.imageCaches.set(cleanCode, fallbackImg);
+      this.notifyLoaded();
+      resolve(fallbackImg);
+    };
+    fallbackImg.onerror = () => resolve(null);
   }
 
   getImage(code) {

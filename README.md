@@ -99,6 +99,8 @@ This generates `dist/widget/plumber-viewer.umd.js` and `dist/widget/plumber-view
 
 Once built, you can embed Plumber diagrams inside any HTML page, wiki, or pipeline dashboard using the hosted CDN script or local build asset.
 
+For full widget configuration options, programmatic API methods (`selectNode`, `focusNode`, `showIsolation`), and CSS variables, refer to the dedicated **[Embed Widget Documentation](src/embed/README.md)**.
+
 An interactive showcase of the widget embedding features, control APIs, and event handling is available in [public/embed-example.html](public/embed-example.html). To preview it, start the local development server and navigate to `http://localhost:5173/PlumberManager/embed-example.html`.
 
 Here is a quick example showing how to embed the widget in any page:
@@ -110,14 +112,15 @@ Here is a quick example showing how to embed the widget in any page:
   <meta charset="UTF-8">
   <title>Pipeline Docs</title>
   <!-- Load the Widget Script from CDN -->
-  <script src="https://www.hasielhassan.com/PlumberManager/widget/plumber-viewer.umd.js"></script>
+  <script src=https://www.hasielhassan.com/PlumberManager/widget/plumber-viewer.umd.js"></script>
 </head>
 <body>
   <h1>Asset Publish Flow</h1>
 
-  <!-- Embedded Custom Element Viewer -->
+  <!-- Embedded Custom Element Viewer with Pre-selected Node -->
   <plumber-viewer 
     src="/path/to/my_pipeline.gph" 
+    select-node="Pipeline Overview"
     style="width: 100%; height: 600px; border: 1px solid #2d3748; display: block;"
   ></plumber-viewer>
 </body>

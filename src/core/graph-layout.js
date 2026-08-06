@@ -1,4 +1,14 @@
-import dagre from 'dagre';
+import { ensureGlobals } from '../embed/widget-polyfills';
+const { _, graphlib } = ensureGlobals();
+import dagreModule from 'dagre';
+
+const dagre = dagreModule?.graphlib ? dagreModule : (dagreModule?.default || dagreModule || {});
+if (dagre && !dagre.graphlib) {
+  dagre.graphlib = (typeof window !== 'undefined' && window.graphlib) ? window.graphlib : graphlib;
+}
+
+
+
 import { getNodeDimensions } from '../canvas/node-renderer';
 
 function getParentBackdropName(nodeName, graphModel) {

@@ -2,15 +2,28 @@ import { getNodeDimensions } from './node-renderer';
 import { getBezierPoint } from './connection-renderer';
 
 export function hitTestNode(point, nodes) {
-  // Check in reverse order so nodes drawn on top (latest) are hit first
-  const nodeArray = Array.from(nodes.values()).reverse();
-  for (const node of nodeArray) {
+  const nodeArray = Array.from(nodes.values());
+  const nonBackdrops = nodeArray.filter(n => n.preset !== 'node_preset_backdrop').reverse();
+  const backdrops = nodeArray.filter(n => n.preset === 'node_preset_backdrop').reverse();
+
+  // Check process/normal nodes first
+  for (const node of nonBackdrops) {
     const { width, height } = getNodeDimensions(node);
     const { x, y } = node.position;
     if (point.x >= x && point.x <= x + width && point.y >= y && point.y <= y + height) {
       return node;
     }
   }
+
+  // Check backdrop nodes second
+  for (const node of backdrops) {
+    const { width, height } = getNodeDimensions(node);
+    const { x, y } = node.position;
+    if (point.x >= x && point.x <= x + width && point.y >= y && point.y <= y + height) {
+      return node;
+    }
+  }
+
   return null;
 }
 

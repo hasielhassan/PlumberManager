@@ -4,9 +4,13 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "predev": "node scripts/generate-inline-icons.cjs",
     "dev": "vite",
+    "prebuild": "node scripts/generate-inline-icons.cjs",
     "build": "vite build",
+    "prebuild:widget": "node scripts/generate-inline-icons.cjs",
     "build:widget": "vite build --mode widget",
+    "generate:icons": "node scripts/generate-inline-icons.cjs",
     "lint": "oxlint",
     "preview": "vite preview"
   },

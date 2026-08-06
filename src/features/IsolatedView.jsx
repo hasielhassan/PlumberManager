@@ -6,6 +6,7 @@ import { drawConnection } from '../canvas/connection-renderer';
 import { drawGrid } from '../canvas/grid-renderer';
 import { getSlotCenter } from '../canvas/hit-testing';
 import { layoutGraph } from '../core/graph-layout';
+import { buildIsolatedGraph } from '../core/isolation-builder';
 import './IsolatedView.css';
 
 export function IsolatedView({ isOpen, onClose, nodeName, mainGraph }) {
@@ -22,53 +23,9 @@ export function IsolatedView({ isOpen, onClose, nodeName, mainGraph }) {
   useEffect(() => {
     if (!isOpen || !nodeName || !mainGraph) return;
 
-    const isoData = mainGraph.getIsolatedData(nodeName);
-    if (!isoData) return;
+    const g = buildIsolatedGraph(mainGraph, nodeName);
+    if (!g) return;
 
-    const g = new GraphModel();
-    // 1. Create main node
-    const mainNode = mainGraph.nodes.get(nodeName);
-    g.createNode(nodeName, { x: 200, y: 200 }, mainNode.preset);
-    
-    // Copy main node attributes
-    mainNode.attributes.forEach(attr => {
-      g.createAttribute(nodeName, attr);
-    });
-
-    // 2. Create connected inputs nodes
-    Object.entries(isoData.inputs).forEach(([attrName, data]) => {
-      data.connections.forEach(([srcNodeName, srcAttrName]) => {
-        // Create source node if not exist
-        if (!g.nodes.has(srcNodeName)) {
-          const srcNode = mainGraph.nodes.get(srcNodeName);
-          g.createNode(srcNodeName, { x: 50, y: 100 }, srcNode?.preset);
-          const connectedAttr = srcNode?.attributes.find(a => a.name === srcAttrName);
-          if (connectedAttr) {
-            g.createAttribute(srcNodeName, connectedAttr);
-          }
-        }
-        g.createConnection(srcNodeName, srcAttrName, nodeName, attrName);
-      });
-    });
-
-    // 3. Create connected outputs nodes
-    Object.entries(isoData.outputs).forEach(([attrName, data]) => {
-      data.connections.forEach(([tgtNodeName, tgtAttrName]) => {
-        // Create target node if not exist
-        if (!g.nodes.has(tgtNodeName)) {
-          const tgtNode = mainGraph.nodes.get(tgtNodeName);
-          g.createNode(tgtNodeName, { x: 400, y: 100 }, tgtNode?.preset);
-          const connectedAttr = tgtNode?.attributes.find(a => a.name === tgtAttrName);
-          if (connectedAttr) {
-            g.createAttribute(tgtNodeName, connectedAttr);
-          }
-        }
-        g.createConnection(nodeName, attrName, tgtNodeName, tgtAttrName);
-      });
-    });
-
-    // 4. Compute layout synchronously (no animation to prevent overlapping on first draw)
-    layoutGraph(g, { animate: false, nodesep: 35, ranksep: 220, centralNodeName: nodeName });
     setIsoGraph(g);
     setUpdateKey(prev => prev + 1);
 
