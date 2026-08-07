@@ -8621,7 +8621,7 @@ B.options = B.setOptions = function(e) {
 }, B.parseInline = Nn.parseInline, B.Parser = jn, B.parser = jn.parse, B.Renderer = kn, B.TextRenderer = An, B.Lexer = On, B.lexer = On.lex, B.Tokenizer = Dn, B.Hooks = Mn, B.parse = B, B.options, B.setOptions, B.use, B.walkTokens, B.parseInline, jn.parse, On.lex;
 //#endregion
 //#region src/embed/viewer-styles.css?raw
-var Pn = ":host {\n  display: block;\n  width: 100%;\n  height: 100%;\n  --plumber-bg: #1a1f25;\n  --plumber-bg-sidebar: #20262e;\n  --plumber-border: #2d3748;\n  --plumber-accent: #6cc188;\n  --plumber-text: #e2e8f0;\n  --plumber-text-muted: #718096;\n  --plumber-font: system-ui, -apple-system, sans-serif;\n}\n\n.plumber-viewer-root {\n  display: flex;\n  flex-direction: row;\n  width: 100%;\n  height: 100%;\n  background-color: var(--plumber-bg);\n  color: var(--plumber-text);\n  font-family: var(--plumber-font);\n  font-size: 14px;\n  overflow: hidden;\n  position: relative;\n}\n\n.plumber-canvas-container {\n  flex-grow: 1;\n  height: 100%;\n  position: relative;\n  overflow: hidden;\n  cursor: grab;\n}\n\n.plumber-canvas-container:active {\n  cursor: grabbing;\n}\n\n.plumber-canvas {\n  display: block;\n}\n\n/* Toolbar overlay */\n.plumber-toolbar {\n  position: absolute;\n  top: 12px;\n  left: 12px;\n  display: flex;\n  gap: 6px;\n  background-color: rgba(32, 38, 46, 0.9);\n  border: 1px solid var(--plumber-border);\n  padding: 4px;\n  border-radius: 6px;\n  z-index: 10;\n  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);\n}\n\n.plumber-btn {\n  background: none;\n  border: none;\n  color: var(--plumber-text);\n  font-size: 12px;\n  padding: 6px 10px;\n  border-radius: 4px;\n  cursor: pointer;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  transition: background-color 150ms;\n}\n\n.plumber-btn:hover {\n  background-color: var(--plumber-border);\n}\n\n/* Documentation panel */\n.plumber-docs-panel {\n  width: 280px;\n  height: 100%;\n  background-color: var(--plumber-bg-sidebar);\n  border-left: 1px solid var(--plumber-border);\n  display: flex;\n  flex-direction: column;\n  shrink-0: true;\n  transition: transform 250ms ease-in-out;\n  overflow-y: auto;\n  padding: 16px;\n}\n\n.plumber-docs-panel h3 {\n  margin: 0 0 12px 0;\n  font-size: 16px;\n  font-weight: 600;\n  text-transform: uppercase;\n  color: var(--plumber-accent);\n}\n\n.plumber-docs-content {\n  line-height: 1.5;\n  font-size: 13px;\n}\n\n.plumber-docs-empty {\n  color: var(--plumber-text-muted);\n  text-align: center;\n  margin-top: 40px;\n}\n\n/* Modal Isolation View overlay */\n.plumber-iso-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(10, 12, 16, 0.85);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 100;\n  backdrop-filter: blur(2px);\n}\n\n.plumber-iso-modal {\n  width: 90%;\n  height: 80%;\n  background-color: var(--plumber-bg-sidebar);\n  border: 1px solid var(--plumber-border);\n  border-radius: 8px;\n  position: relative;\n  display: flex;\n  flex-direction: column;\n}\n\n.plumber-iso-header {\n  padding: 12px 16px;\n  border-bottom: 1px solid var(--plumber-border);\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n\n.plumber-iso-title {\n  font-weight: bold;\n  margin: 0;\n}\n\n.plumber-iso-canvas-container {\n  flex-grow: 1;\n  position: relative;\n  overflow: hidden;\n}\n";
+var Pn = ":host {\n  display: block;\n  width: 100%;\n  height: 100%;\n  --plumber-bg: #1a1f25;\n  --plumber-bg-sidebar: #20262e;\n  --plumber-border: #2d3748;\n  --plumber-accent: #6cc188;\n  --plumber-text: #e2e8f0;\n  --plumber-text-muted: #718096;\n  --plumber-font: system-ui, -apple-system, sans-serif;\n}\n\n:host(.plumber-is-fullscreen),\n.plumber-viewer.plumber-is-fullscreen {\n  position: fixed !important;\n  top: 0 !important;\n  left: 0 !important;\n  width: 100vw !important;\n  height: 100vh !important;\n  z-index: 999999 !important;\n  margin: 0 !important;\n  border-radius: 0 !important;\n}\n\n.plumber-viewer-root {\n  display: flex;\n  flex-direction: row;\n  width: 100%;\n  height: 100%;\n  background-color: var(--plumber-bg);\n  color: var(--plumber-text);\n  font-family: var(--plumber-font);\n  font-size: 14px;\n  overflow: hidden;\n  position: relative;\n}\n\n.plumber-canvas-container {\n  flex-grow: 1;\n  height: 100%;\n  position: relative;\n  overflow: hidden;\n  cursor: grab;\n}\n\n.plumber-canvas-container:active {\n  cursor: grabbing;\n}\n\n.plumber-canvas {\n  display: block;\n}\n\n/* Toolbar overlay */\n.plumber-toolbar {\n  position: absolute;\n  top: 12px;\n  left: 12px;\n  display: flex;\n  gap: 6px;\n  background-color: rgba(32, 38, 46, 0.9);\n  border: 1px solid var(--plumber-border);\n  padding: 4px;\n  border-radius: 6px;\n  z-index: 10;\n  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);\n}\n\n.plumber-btn {\n  background: none;\n  border: none;\n  color: var(--plumber-text);\n  font-size: 12px;\n  padding: 6px 10px;\n  border-radius: 4px;\n  cursor: pointer;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  transition: background-color 150ms;\n}\n\n.plumber-btn:hover {\n  background-color: var(--plumber-border);\n}\n\n/* Documentation panel */\n.plumber-docs-panel {\n  width: 280px;\n  height: 100%;\n  background-color: var(--plumber-bg-sidebar);\n  border-left: 1px solid var(--plumber-border);\n  display: flex;\n  flex-direction: column;\n  shrink-0: true;\n  transition: transform 250ms ease-in-out;\n  overflow-y: auto;\n  padding: 16px;\n}\n\n.plumber-docs-panel h3 {\n  margin: 0 0 12px 0;\n  font-size: 16px;\n  font-weight: 600;\n  text-transform: uppercase;\n  color: var(--plumber-accent);\n}\n\n.plumber-docs-content {\n  line-height: 1.5;\n  font-size: 13px;\n}\n\n.plumber-docs-empty {\n  color: var(--plumber-text-muted);\n  text-align: center;\n  margin-top: 40px;\n}\n\n/* Modal Isolation View overlay */\n.plumber-iso-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(10, 12, 16, 0.85);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 100;\n  backdrop-filter: blur(2px);\n}\n\n.plumber-iso-modal {\n  width: 90%;\n  height: 80%;\n  background-color: var(--plumber-bg-sidebar);\n  border: 1px solid var(--plumber-border);\n  border-radius: 8px;\n  position: relative;\n  display: flex;\n  flex-direction: column;\n}\n\n.plumber-iso-header {\n  padding: 12px 16px;\n  border-bottom: 1px solid var(--plumber-border);\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n\n.plumber-iso-title {\n  font-weight: bold;\n  margin: 0;\n}\n\n.plumber-iso-canvas-container {\n  flex-grow: 1;\n  position: relative;\n  overflow: hidden;\n}\n";
 //#endregion
 //#region src/embed/plumber-viewer.js
 de();
@@ -8637,9 +8637,10 @@ var Fn = class e {
 			fitOnLoad: !0,
 			isolation: !0,
 			documentation: !0,
+			fullscreen: !0,
 			selectNode: null,
 			...t
-		}, this.listeners = /* @__PURE__ */ new Map(), this.graph = new pe(), this.selectedNodeName = null, this.initShadow(), this.initDom(), this.initCanvas(), this.options.src ? this.loadFromUrl(this.options.src) : this.options.data && this.loadGraph(this.options.data);
+		}, this.listeners = /* @__PURE__ */ new Map(), this.graph = new pe(), this.selectedNodeName = null, this.isFullscreen = !1, this.initShadow(), this.initDom(), this.initCanvas(), this.options.src ? this.loadFromUrl(this.options.src) : this.options.data && this.loadGraph(this.options.data);
 	}
 	initShadow() {
 		this.shadow = this.container.attachShadow({ mode: "open" });
@@ -8655,7 +8656,9 @@ var Fn = class e {
 				this.selectedNodeName ? this.showIsolation(this.selectedNodeName) : alert("Click a node first to isolate.");
 			}, this.toolbar.appendChild(e);
 		}
-		this.canvasContainer.appendChild(this.toolbar), this.root.appendChild(this.canvasContainer), this.options.documentation && (this.sidebar = document.createElement("aside"), this.sidebar.className = "plumber-docs-panel", this.sidebar.innerHTML = "\n        <h3>Process Details</h3>\n        <div class=\"plumber-docs-content\">\n          <div class=\"plumber-docs-empty\">Click a node to inspect its pipeline documentation.</div>\n        </div>\n      ", this.root.appendChild(this.sidebar)), this.shadow.appendChild(this.root), new ResizeObserver(() => this.resize()).observe(this.container);
+		this.options.fullscreen && (this.fullScreenBtn = document.createElement("button"), this.fullScreenBtn.className = "plumber-btn", this.fullScreenBtn.innerHTML = "⛶ Full Screen", this.fullScreenBtn.onclick = () => this.toggleFullScreen(), this.toolbar.appendChild(this.fullScreenBtn)), this.canvasContainer.appendChild(this.toolbar), this.root.appendChild(this.canvasContainer), this.options.documentation && (this.sidebar = document.createElement("aside"), this.sidebar.className = "plumber-docs-panel", this.sidebar.innerHTML = "\n        <h3>Process Details</h3>\n        <div class=\"plumber-docs-content\">\n          <div class=\"plumber-docs-empty\">Click a node to inspect its pipeline documentation.</div>\n        </div>\n      ", this.root.appendChild(this.sidebar)), this.shadow.appendChild(this.root), new ResizeObserver(() => this.resize()).observe(this.container), this.fullscreenChangeHandler = () => {
+			!document.fullscreenElement && this.isFullscreen && this.toggleFullScreen(!1);
+		}, document.addEventListener("fullscreenchange", this.fullscreenChangeHandler);
 	}
 	initCanvas() {
 		this.viewerCanvas = new dt(this.canvasEl, this.graph, (e) => {
@@ -8742,6 +8745,12 @@ var Fn = class e {
 		let o = ot(this.graph, e);
 		o && new dt(i, o, () => {}).fitToView(), this.emit("isolation:open", e);
 	}
+	toggleFullScreen(e) {
+		let t = e === void 0 ? !this.isFullscreen : e;
+		this.isFullscreen = t, this.isFullscreen ? (this.container.classList.add("plumber-is-fullscreen"), this.container.requestFullscreen && !document.fullscreenElement && this.container.requestFullscreen().catch(() => {}), this.fullScreenBtn && (this.fullScreenBtn.innerHTML = "🗗 Exit Full Screen"), this.emit("fullscreen:change", !0)) : (this.container.classList.remove("plumber-is-fullscreen"), document.fullscreenElement && document.exitFullscreen && document.exitFullscreen().catch(() => {}), this.fullScreenBtn && (this.fullScreenBtn.innerHTML = "⛶ Full Screen"), this.emit("fullscreen:change", !1)), setTimeout(() => {
+			this.resize(), this.viewerCanvas && this.viewerCanvas.fitToView();
+		}, 100);
+	}
 	on(e, t) {
 		return this.listeners.has(e) || this.listeners.set(e, /* @__PURE__ */ new Set()), this.listeners.get(e).add(t), () => this.off(e, t);
 	}
@@ -8752,13 +8761,13 @@ var Fn = class e {
 		this.listeners.has(e) && this.listeners.get(e).forEach((e) => e(t));
 	}
 	destroy() {
-		this.container.innerHTML = "", this.listeners.clear();
+		this.fullscreenChangeHandler && document.removeEventListener("fullscreenchange", this.fullscreenChangeHandler), this.isFullscreen && this.toggleFullScreen(!1), this.container.innerHTML = "", this.listeners.clear();
 	}
 }, In = class extends HTMLElement {
 	connectedCallback() {
 		if (this._initialized) return;
 		this._initialized = !0;
-		let e = this.getAttribute("src"), t = this.getAttribute("theme") || "dark", n = this.getAttribute("auto-layout") !== "false", r = this.getAttribute("fit-on-load") !== "false", i = this.getAttribute("isolation") !== "false", a = this.getAttribute("documentation") !== "false", o = this.getAttribute("select-node");
+		let e = this.getAttribute("src"), t = this.getAttribute("theme") || "dark", n = this.getAttribute("auto-layout") !== "false", r = this.getAttribute("fit-on-load") !== "false", i = this.getAttribute("isolation") !== "false", a = this.getAttribute("documentation") !== "false", o = this.getAttribute("fullscreen") !== "false", s = this.getAttribute("select-node");
 		this.viewer = new Fn(this, {
 			src: e,
 			theme: t,
@@ -8766,7 +8775,8 @@ var Fn = class e {
 			fitOnLoad: r,
 			isolation: i,
 			documentation: a,
-			selectNode: o
+			fullscreen: o,
+			selectNode: s
 		});
 	}
 	disconnectedCallback() {
@@ -8780,6 +8790,9 @@ var Fn = class e {
 	}
 	showIsolation(e) {
 		this.viewer && this.viewer.showIsolation(e);
+	}
+	toggleFullScreen(e) {
+		this.viewer && this.viewer.toggleFullScreen(e);
 	}
 	loadGraph(e) {
 		this.viewer && this.viewer.loadGraph(e);
