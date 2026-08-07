@@ -10,10 +10,10 @@ import { marked } from 'marked';
 import styles from './viewer-styles.css?raw';
 
 export class PlumberViewer {
-  static create(selector, options) {
-    const container = document.querySelector(selector);
+  static create(target, options) {
+    const container = typeof target === 'string' ? document.querySelector(target) : target;
     if (!container) {
-      console.error(`Container not found for selector: ${selector}`);
+      console.error(`Container not found: ${target}`);
       return null;
     }
     return new PlumberViewer(container, options);
