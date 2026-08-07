@@ -8627,8 +8627,8 @@ var Pn = ":host {\n  display: block;\n  width: 100%;\n  height: 100%;\n  --plumb
 de();
 var Fn = class e {
 	static create(t, n) {
-		let r = document.querySelector(t);
-		return r ? new e(r, n) : (console.error(`Container not found for selector: ${t}`), null);
+		let r = typeof t == "string" ? document.querySelector(t) : t;
+		return r ? new e(r, n) : (console.error(`Container not found: ${t}`), null);
 	}
 	constructor(e, t = {}) {
 		this.container = e, this.options = {
