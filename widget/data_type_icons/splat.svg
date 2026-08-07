@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg-grad-splat" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95"/>
+    </linearGradient>
+    <filter id="shadow-splat" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Perfect 6-Sided Symmetric Hexagonal Badge Frame -->
+  <polygon 
+    points="32,4 56,18 56,46 32,60 8,46 8,18" 
+    fill="url(#bg-grad-splat)" 
+    stroke="#F43F5E" 
+    stroke-width="2.5" 
+    stroke-linejoin="round"
+    filter="url(#shadow-splat)"
+  />
+
+  <!-- Perfectly Centered Vector Logo (centered around y=25.5) -->
+  <g fill="#F43F5E">
+  <ellipse cx="32" cy="25" rx="10" ry="6" fill-opacity="0.85" transform="rotate(-15 32 25)"/>
+  <ellipse cx="26" cy="21" rx="6" ry="4" fill-opacity="0.6" transform="rotate(25 26 21)"/>
+  <ellipse cx="38" cy="28" rx="7" ry="4.5" fill-opacity="0.75" transform="rotate(40 38 28)"/>
+  <circle cx="23" cy="30" r="2.5" fill-opacity="0.9"/>
+  <circle cx="41" cy="19" r="2.2" fill-opacity="0.8"/>
+  <circle cx="32" cy="16" r="1.8" fill-opacity="0.7"/>
+</g>
+
+  <!-- Optimal Positioned & Sized Format Title (y=46.5) -->
+  <text 
+    x="32" 
+    y="46.5" 
+    text-anchor="middle" 
+    fill="#F8FAFC" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+    font-size="7.2" 
+    font-weight="700" 
+    letter-spacing="0.5"
+  >SPLAT</text>
+</svg>

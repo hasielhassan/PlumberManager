@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg-grad-mayabin" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95"/>
+    </linearGradient>
+    <filter id="shadow-mayabin" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Perfect 6-Sided Symmetric Hexagonal Badge Frame -->
+  <polygon 
+    points="32,4 56,18 56,46 32,60 8,46 8,18" 
+    fill="url(#bg-grad-mayabin)" 
+    stroke="#00A896" 
+    stroke-width="2.5" 
+    stroke-linejoin="round"
+    filter="url(#shadow-mayabin)"
+  />
+
+  <!-- Perfectly Centered Vector Logo (centered around y=25.5) -->
+  <path fill="#00A896" d="M 18.5 35.5 V 15.5 H 24.5 L 32 25.5 L 39.5 15.5 H 45.5 V 35.5 H 40 V 20.5 L 34.5 29.5 H 29.5 L 24 20.5 V 35.5 Z" />
+
+  <!-- Optimal Positioned & Sized Format Title (y=46.5) -->
+  <text 
+    x="32" 
+    y="46.5" 
+    text-anchor="middle" 
+    fill="#F8FAFC" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+    font-size="9.0" 
+    font-weight="700" 
+    letter-spacing="0.4"
+  >MB</text>
+</svg>

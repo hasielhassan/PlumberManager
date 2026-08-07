@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg-grad-gltf" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95"/>
+    </linearGradient>
+    <filter id="shadow-gltf" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Perfect 6-Sided Symmetric Hexagonal Badge Frame -->
+  <polygon 
+    points="32,4 56,18 56,46 32,60 8,46 8,18" 
+    fill="url(#bg-grad-gltf)" 
+    stroke="#FF0055" 
+    stroke-width="2.5" 
+    stroke-linejoin="round"
+    filter="url(#shadow-gltf)"
+  />
+
+  <!-- Perfectly Centered Vector Logo (centered around y=25.5) -->
+  <g fill="#FF0055">
+  <path d="M 19.5 14 H 44.5 V 19 H 26.5 V 36 H 19.5 Z" />
+  <path d="M 31.5 23 H 44.5 V 36 H 37.5 V 29 H 31.5 Z" />
+  <polygon points="37.5,23 44.5,19 44.5,23" fill="#E11D48"/>
+</g>
+
+  <!-- Optimal Positioned & Sized Format Title (y=46.5) -->
+  <text 
+    x="32" 
+    y="46.5" 
+    text-anchor="middle" 
+    fill="#F8FAFC" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+    font-size="8.2" 
+    font-weight="700" 
+    letter-spacing="0.5"
+  >GLTF</text>
+</svg>

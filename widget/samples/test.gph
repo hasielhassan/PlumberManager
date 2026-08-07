@@ -1,0 +1,277 @@
+{
+    "NODES": {
+        "Animatic": {
+            "preset": "node_preset_1",
+            "position": [
+                950,
+                240
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "Panels",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "jpg",
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "Scratch Voices",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "wav",
+                    "connectionIcon": "./review.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Concept": {
+            "preset": "node_preset_1",
+            "position": [
+                960.6476868327402,
+                465.48754448398574
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "Script",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "fdx",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "Breakdown",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "csv",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Producion": {
+            "preset": "node_preset_1",
+            "position": [
+                606.4483985765124,
+                600.1049822064057
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "Script",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "fdx",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "Breakdown",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "csv",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Scratch Voices": {
+            "preset": "node_preset_1",
+            "position": [
+                620,
+                250
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "Script",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "fdx",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "Scratch Voices",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "wav",
+                    "connectionIcon": "./review.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Script": {
+            "preset": "node_preset_1",
+            "position": [
+                135,
+                320.5
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "script",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "fdx",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "StoryBoard": {
+            "preset": "node_preset_1",
+            "position": [
+                595.8007117437722,
+                -67.12455516014234
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "Script",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "fdx",
+                    "connectionIcon": "./xml.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "Panels",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "jpg",
+                    "connectionIcon": "./jpg.png",
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Development Phase": {
+            "preset": "node_preset_backdrop",
+            "position": [
+                50,
+                55
+            ],
+            "alternate": true,
+            "attributes": [],
+            "metadata": {
+                "process_details": "",
+                "width": 360,
+                "height": 507.5,
+                "custom_color": "#8B5CF6"
+            }
+        },
+        "Editorial Phase": {
+            "preset": "node_preset_backdrop",
+            "position": [
+                550,
+                190
+            ],
+            "alternate": true,
+            "attributes": [],
+            "metadata": {
+                "process_details": "",
+                "width": 660,
+                "height": 200,
+                "custom_color": "#F97316"
+            }
+        },
+        "Workflow Tip": {
+            "preset": "node_preset_note",
+            "position": [
+                120,
+                612.5
+            ],
+            "alternate": true,
+            "attributes": [],
+            "metadata": {
+                "process_details": "Pre-Production Flow\n\n* Script drives all downstream processes\n* StoryBoard panels feed into Animatic\n* Scratch Voices recorded from script\n\n",
+                "custom_color": "#06B6D4"
+            }
+        }
+    },
+    "CONNECTIONS": [
+        [
+            "Script.script",
+            "StoryBoard.Script"
+        ],
+        [
+            "Script.script",
+            "Concept.Script"
+        ],
+        [
+            "Script.script",
+            "Producion.Script"
+        ],
+        [
+            "Producion.Breakdown",
+            "Concept.Breakdown"
+        ],
+        [
+            "StoryBoard.Panels",
+            "Animatic.Panels"
+        ],
+        [
+            "Scratch Voices.Scratch Voices",
+            "Animatic.Scratch Voices"
+        ],
+        [
+            "Script.script",
+            "Scratch Voices.Script"
+        ]
+    ],
+    "CUSTOM_TYPES": []
+}

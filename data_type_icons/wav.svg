@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg-grad-wav" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95"/>
+    </linearGradient>
+    <filter id="shadow-wav" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Perfect 6-Sided Symmetric Hexagonal Badge Frame -->
+  <polygon 
+    points="32,4 56,18 56,46 32,60 8,46 8,18" 
+    fill="url(#bg-grad-wav)" 
+    stroke="#8B5CF6" 
+    stroke-width="2.5" 
+    stroke-linejoin="round"
+    filter="url(#shadow-wav)"
+  />
+
+  <!-- Perfectly Centered Vector Logo (centered around y=25.5) -->
+  <g fill="#8B5CF6"><rect x="17.5" y="22.5" width="2.8" height="6" rx="1.4"/><rect x="22.5" y="17.5" width="2.8" height="16" rx="1.4"/><rect x="27.5" y="13.5" width="2.8" height="24" rx="1.4"/><rect x="32.5" y="15.5" width="2.8" height="20" rx="1.4"/><rect x="37.5" y="19.5" width="2.8" height="12" rx="1.4"/><rect x="42.5" y="23.5" width="2.8" height="4" rx="1.4"/></g>
+
+  <!-- Optimal Positioned & Sized Format Title (y=46.5) -->
+  <text 
+    x="32" 
+    y="46.5" 
+    text-anchor="middle" 
+    fill="#F8FAFC" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+    font-size="9.0" 
+    font-weight="700" 
+    letter-spacing="0.4"
+  >WAV</text>
+</svg>

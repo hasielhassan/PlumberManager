@@ -1,0 +1,20 @@
+[
+  {
+    "id": "animation",
+    "name": "Animation Pipeline",
+    "file": "animation.gph",
+    "description": "Complete production pipeline with backdrop groups and annotated notes"
+  },
+  {
+    "id": "minimal",
+    "name": "Minimal Diagram",
+    "file": "minimal.gph",
+    "description": "Basic structure example with a backdrop group and a note block"
+  },
+  {
+    "id": "test",
+    "name": "Test Diagram",
+    "file": "test.gph",
+    "description": "Multi-node pre-production layout with backdrops and workflow notes"
+  }
+]

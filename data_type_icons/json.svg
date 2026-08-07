@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg-grad-json" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95"/>
+    </linearGradient>
+    <filter id="shadow-json" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Perfect 6-Sided Symmetric Hexagonal Badge Frame -->
+  <polygon 
+    points="32,4 56,18 56,46 32,60 8,46 8,18" 
+    fill="url(#bg-grad-json)" 
+    stroke="#F59E0B" 
+    stroke-width="2.5" 
+    stroke-linejoin="round"
+    filter="url(#shadow-json)"
+  />
+
+  <!-- Perfectly Centered Vector Logo (centered around y=25.5) -->
+  <g fill="none" stroke="#F59E0B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M 25 15 C 21 15 21 18.5 21 21.5 C 21 23.5 19 24.5 17 24.5 C 19 24.5 21 25.5 21 27.5 C 21 30.5 21 34 25 34" /><path d="M 39 15 C 43 15 43 18.5 43 21.5 C 43 23.5 45 24.5 47 24.5 C 45 24.5 43 25.5 43 27.5 C 43 30.5 43 34 39 34" /></g>
+
+  <!-- Optimal Positioned & Sized Format Title (y=46.5) -->
+  <text 
+    x="32" 
+    y="46.5" 
+    text-anchor="middle" 
+    fill="#F8FAFC" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+    font-size="8.2" 
+    font-weight="700" 
+    letter-spacing="0.5"
+  >JSON</text>
+</svg>

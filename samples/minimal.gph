@@ -1,0 +1,194 @@
+{
+    "NODES": {
+        "Animation": {
+            "preset": "node_preset_1",
+            "position": [
+                135,
+                270
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "rigging",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "rumba",
+                    "connectionIcon": null,
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "environ",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "usd",
+                    "connectionIcon": null,
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "cache",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "usd",
+                    "connectionIcon": null,
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "curves",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "json",
+                    "connectionIcon": null,
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "constrains",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "json",
+                    "connectionIcon": null,
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "LookDev": {
+            "preset": "node_preset_1",
+            "position": [
+                135,
+                100
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "geometry",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "alembic",
+                    "connectionIcon": null,
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "surfacing",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "materialx",
+                    "connectionIcon": null,
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Lighting": {
+            "preset": "node_preset_1",
+            "position": [
+                650.2952029520296,
+                94.52583025830258
+            ],
+            "alternate": true,
+            "attributes": [
+                {
+                    "name": "surfacing",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "materialx",
+                    "connectionIcon": null,
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "cache",
+                    "plug": false,
+                    "socket": true,
+                    "preset": "attr_preset_1",
+                    "dataType": "usd",
+                    "connectionIcon": null,
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                },
+                {
+                    "name": "render passes",
+                    "plug": true,
+                    "socket": false,
+                    "preset": "attr_preset_2",
+                    "dataType": "exr",
+                    "connectionIcon": null,
+                    "connectionLabel": null,
+                    "plugMaxConnections": -1,
+                    "socketMaxConnections": 1
+                }
+            ],
+            "metadata": {
+                "process_details": ""
+            }
+        },
+        "Shot Assembly": {
+            "preset": "node_preset_backdrop",
+            "position": [
+                50,
+                50
+            ],
+            "alternate": true,
+            "attributes": [],
+            "metadata": {
+                "process_details": "",
+                "width": 360,
+                "height": 438,
+                "custom_color": "#3B82F6"
+            }
+        },
+        "Pipeline Notes": {
+            "preset": "node_preset_note",
+            "position": [
+                585.6088560885609,
+                314.82656826568257
+            ],
+            "alternate": true,
+            "attributes": [],
+            "metadata": {
+                "process_details": "# Quick Start\n\n* Connect **LookDev** outputs to **Lighting** inputs\n\n* USD caches flow from Animation\n\n* EXR render passes are the final output\n\n",
+                "custom_color": "#F59E0B",
+                "width": 269.81549815498147,
+                "height": 145.27675276752768
+            }
+        }
+    },
+    "CONNECTIONS": [
+        [
+            "LookDev.surfacing",
+            "Lighting.surfacing"
+        ],
+        [
+            "Animation.cache",
+            "Lighting.cache"
+        ]
+    ],
+    "CUSTOM_TYPES": []
+}

@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg-grad-otio" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95"/>
+    </linearGradient>
+    <filter id="shadow-otio" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Perfect 6-Sided Symmetric Hexagonal Badge Frame -->
+  <polygon 
+    points="32,4 56,18 56,46 32,60 8,46 8,18" 
+    fill="url(#bg-grad-otio)" 
+    stroke="#059669" 
+    stroke-width="2.5" 
+    stroke-linejoin="round"
+    filter="url(#shadow-otio)"
+  />
+
+  <!-- Perfectly Centered Vector Logo (centered around y=25.5) -->
+  <g transform="translate(18.88, 15.03) scale(0.0767)"><defs
+   id="defs276">
+        
+        
+    </defs>
+    <g
+   transform="matrix(4.16667,0,0,4.16667,-3301.2817,-2160.8642)"
+   id="g210">
+            <g
+   transform="translate(831.921,519.023)"
+   id="g184">
+                <path
+   d="M 0,10.642 -9.435,1.481 c -0.711,-0.692 -0.222,-1.897 0.769,-1.897 h 18.869 c 0.991,0 1.481,1.205 0.77,1.897 l -9.435,9.161 c -0.429,0.416 -1.11,0.416 -1.538,0"
+   style="fill:#f2a521;fill-rule:nonzero"
+   id="path182" />
+            </g>
+            <g
+   transform="translate(0,283.798)"
+   id="g188">
+                <rect
+   x="814.30701"
+   y="249.508"
+   width="16.507"
+   height="9.1859999"
+   style="fill:#007f4b"
+   id="rect186" />
+            </g>
+            <g
+   transform="translate(0,283.798)"
+   id="g192">
+                <rect
+   x="834.71899"
+   y="249.508"
+   width="39.758999"
+   height="9.1859999"
+   style="fill:#007f4b"
+   id="rect190" />
+            </g>
+            <g
+   transform="translate(0,354.924)"
+   id="g196">
+                <rect
+   x="834.71899"
+   y="214.11099"
+   width="16.951"
+   height="8.8540001"
+   style="fill:#007f4b"
+   id="rect194" />
+            </g>
+            <g
+   transform="matrix(-1,0,0,1,1623.12,354.924)"
+   id="g200">
+                <rect
+   x="792.30902"
+   y="214.11099"
+   width="38.504002"
+   height="8.8540001"
+   style="fill:#007f4b"
+   id="rect198" />
+            </g>
+            <g
+   transform="translate(0,319.528)"
+   id="g204">
+                <rect
+   x="834.71899"
+   y="226.87"
+   width="39.758999"
+   height="18.732"
+   style="fill:#91c753"
+   id="rect202" />
+            </g>
+            <g
+   transform="matrix(-1,0,0,1,1623.31,319.526)"
+   id="g208">
+                <rect
+   x="792.49298"
+   y="226.871"
+   width="38.32"
+   height="18.732"
+   style="fill:#91c753"
+   id="rect206" />
+            </g>
+        </g>
+</g>
+
+  <!-- Optimal Positioned & Sized Format Title (y=46.5) -->
+  <text 
+    x="32" 
+    y="46.5" 
+    text-anchor="middle" 
+    fill="#F8FAFC" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+    font-size="8.2" 
+    font-weight="700" 
+    letter-spacing="0.5"
+  >OTIO</text>
+</svg>
