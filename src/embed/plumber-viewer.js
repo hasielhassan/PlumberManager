@@ -27,6 +27,7 @@ export class PlumberViewer {
       fitOnLoad: true,
       isolation: true,
       documentation: true,
+      fullscreen: true,
       selectNode: null,
       ...options
     };
@@ -34,6 +35,7 @@ export class PlumberViewer {
     this.listeners = new Map();
     this.graph = new GraphModel();
     this.selectedNodeName = null;
+    this.isFullscreen = false;
 
     this.initShadow();
     this.initDom();
@@ -92,6 +94,14 @@ export class PlumberViewer {
       this.toolbar.appendChild(isoBtn);
     }
 
+    if (this.options.fullscreen) {
+      this.fullScreenBtn = document.createElement('button');
+      this.fullScreenBtn.className = 'plumber-btn';
+      this.fullScreenBtn.innerHTML = '⛶ Full Screen';
+      this.fullScreenBtn.onclick = () => this.toggleFullScreen();
+      this.toolbar.appendChild(this.fullScreenBtn);
+    }
+
     this.canvasContainer.appendChild(this.toolbar);
     this.root.appendChild(this.canvasContainer);
 
@@ -113,6 +123,15 @@ export class PlumberViewer {
     // Handle auto-resizing
     const resizeObserver = new ResizeObserver(() => this.resize());
     resizeObserver.observe(this.container);
+
+    // Handle native fullscreen change
+    this.fullscreenChangeHandler = () => {
+      const isNativeFS = !!document.fullscreenElement;
+      if (!isNativeFS && this.isFullscreen) {
+        this.toggleFullScreen(false);
+      }
+    };
+    document.addEventListener('fullscreenchange', this.fullscreenChangeHandler);
   }
 
   initCanvas() {
@@ -282,6 +301,38 @@ export class PlumberViewer {
     this.emit('isolation:open', nodeName);
   }
 
+  toggleFullScreen(enable) {
+    const shouldBeFullscreen = enable !== undefined ? enable : !this.isFullscreen;
+    this.isFullscreen = shouldBeFullscreen;
+
+    if (this.isFullscreen) {
+      this.container.classList.add('plumber-is-fullscreen');
+      if (this.container.requestFullscreen && !document.fullscreenElement) {
+        this.container.requestFullscreen().catch(() => {});
+      }
+      if (this.fullScreenBtn) {
+        this.fullScreenBtn.innerHTML = '🗗 Exit Full Screen';
+      }
+      this.emit('fullscreen:change', true);
+    } else {
+      this.container.classList.remove('plumber-is-fullscreen');
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      }
+      if (this.fullScreenBtn) {
+        this.fullScreenBtn.innerHTML = '⛶ Full Screen';
+      }
+      this.emit('fullscreen:change', false);
+    }
+
+    setTimeout(() => {
+      this.resize();
+      if (this.viewerCanvas) {
+        this.viewerCanvas.fitToView();
+      }
+    }, 100);
+  }
+
   // Event Emitter
   on(event, handler) {
     if (!this.listeners.has(event)) {
@@ -304,6 +355,12 @@ export class PlumberViewer {
   }
 
   destroy() {
+    if (this.fullscreenChangeHandler) {
+      document.removeEventListener('fullscreenchange', this.fullscreenChangeHandler);
+    }
+    if (this.isFullscreen) {
+      this.toggleFullScreen(false);
+    }
     this.container.innerHTML = '';
     this.listeners.clear();
   }
@@ -321,6 +378,7 @@ export class PlumberViewerElement extends HTMLElement {
     const fitOnLoad = this.getAttribute('fit-on-load') !== 'false';
     const isolation = this.getAttribute('isolation') !== 'false';
     const documentation = this.getAttribute('documentation') !== 'false';
+    const fullscreen = this.getAttribute('fullscreen') !== 'false';
     const selectNode = this.getAttribute('select-node');
 
     this.viewer = new PlumberViewer(this, {
@@ -330,6 +388,7 @@ export class PlumberViewerElement extends HTMLElement {
       fitOnLoad,
       isolation,
       documentation,
+      fullscreen,
       selectNode
     });
   }
@@ -350,6 +409,10 @@ export class PlumberViewerElement extends HTMLElement {
 
   showIsolation(nodeName) {
     if (this.viewer) this.viewer.showIsolation(nodeName);
+  }
+
+  toggleFullScreen(enable) {
+    if (this.viewer) this.viewer.toggleFullScreen(enable);
   }
 
   loadGraph(data) {

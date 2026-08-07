@@ -11,6 +11,18 @@
   --plumber-font: system-ui, -apple-system, sans-serif;
 }
 
+:host(.plumber-is-fullscreen),
+.plumber-viewer.plumber-is-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 999999 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
 .plumber-viewer-root {
   display: flex;
   flex-direction: row;

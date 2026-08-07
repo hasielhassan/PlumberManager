@@ -65,6 +65,7 @@ const viewer = PlumberViewer.create('#container', {
 | `selectNode` | `select-node` | `String` | `null` | Name of the node to pre-select on load (highlights node and opens documentation). |
 | `theme` | `theme` | `String` | `'dark'` | The color palette theme (`'dark'` or `'light'`). |
 | `isolation` | `isolation` | `Boolean` | `true` | Allows users to open a modal view isolating single nodes or backdrop groups. |
+| `fullscreen` | `fullscreen` | `Boolean` | `true` | Displays a Full Screen toggle button in the toolbar overlay. |
 | `documentation` | `documentation` | `Boolean` | `true` | Renders a sidebar with markdown descriptions and socket/plug attributes. |
 | `autoLayout` | `auto-layout` | `Boolean` | `true` | Runs hierarchy layout calculation on startup. |
 | `fitOnLoad` | `fit-on-load` | `Boolean` | `true` | Fits all nodes into the canvas boundaries on startup. |
@@ -82,6 +83,9 @@ viewer.focusNode('Lighting');
 
 // Open isolated modal for a node or backdrop group
 viewer.showIsolation('Assets & Animation');
+
+// Toggle full screen mode programmatically
+viewer.toggleFullScreen();
 
 // Re-scale canvas to container bounding box
 viewer.resize();
