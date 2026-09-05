@@ -86,7 +86,8 @@ export function generateSvgString(graphModel, includeBackground = true) {
     svg += `    <path d="${pathD}" fill="none" stroke="${color}" stroke-width="${editorConfig.connection.width}" />\n`;
 
     // Draw format badge at midpoint
-    const attr = srcNode.attributes.find(a => a.name === conn.sourceAttr);
+    const attr = srcNode.attributes.find(a => a.name === conn.sourceAttr && a.plug) ||
+                 srcNode.attributes.find(a => a.name === conn.sourceAttr);
     const dataTypeCode = attr ? attr.dataType : null;
 
     if (dataTypeCode) {

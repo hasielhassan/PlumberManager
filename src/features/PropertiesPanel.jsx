@@ -87,10 +87,30 @@ export function PropertiesPanel({
     }
   };
 
-  const handleRenameAttribute = (index, newName) => {
+  const handleRenameAttribute = (index, newName, type) => {
     if (!newName) return;
+    const attr = node.attributes[index];
+    if (!attr || attr.name === newName.trim()) return;
+
+    const trimmed = newName.trim();
+    const isSocket = type ? (type === 'input' || type === 'socket') : attr.socket;
+    const isPlug = type ? (type === 'output' || type === 'plug') : attr.plug;
+
+    const duplicate = node.attributes.some((a, idx) => {
+      if (idx === index) return false;
+      if (a.name.toLowerCase() !== trimmed.toLowerCase()) return false;
+      if (isSocket && a.socket) return true;
+      if (isPlug && a.plug) return true;
+      return false;
+    });
+
+    if (duplicate) return;
+
     executeAction(() => {
-      graph.editAttribute(node.name, index, { name: newName });
+      const res = graph.editAttribute(node.name, index, { name: trimmed });
+      if (res) {
+        graph.emit('node:moved', {});
+      }
     }, 'Rename Slot Attribute');
   };
 
@@ -98,10 +118,10 @@ export function PropertiesPanel({
     const attr = node.attributes[index];
     if (!attr || attr.dataType?.toLowerCase() === newType?.toLowerCase()) return;
 
-    // Find all active connections attached to this attribute
+    // Find all active connections attached to this attribute on its matching side
     const affectedConns = graph.connections.filter(c =>
-      (c.sourceNode === node.name && c.sourceAttr === attr.name) ||
-      (c.targetNode === node.name && c.targetAttr === attr.name)
+      (attr.plug && c.sourceNode === node.name && c.sourceAttr === attr.name) ||
+      (attr.socket && c.targetNode === node.name && c.targetAttr === attr.name)
     );
 
     const incompatibleConns = affectedConns.map(c => {
@@ -109,7 +129,9 @@ export function PropertiesPanel({
       const oppNodeName = isSource ? c.targetNode : c.sourceNode;
       const oppAttrName = isSource ? c.targetAttr : c.sourceAttr;
       const oppNode = graph.nodes.get(oppNodeName);
-      const oppAttr = oppNode?.attributes.find(a => a.name === oppAttrName);
+      const oppAttr = isSource
+        ? oppNode?.attributes.find(a => a.name === oppAttrName && a.socket)
+        : oppNode?.attributes.find(a => a.name === oppAttrName && a.plug);
 
       return {
         sourceNode: c.sourceNode,
@@ -152,33 +174,35 @@ export function PropertiesPanel({
       graph.editAttribute(targetNodeName, attrIndex, { dataType: newType });
 
       // 2. Cascade across connected network
-      const queue = [{ nodeName: targetNodeName, attrName }];
-      const visited = new Set([`${targetNodeName}:${attrName}`]);
+      const queue = [{ nodeName: targetNodeName, attrName, type: attr?.socket ? 'socket' : 'plug' }];
+      const visited = new Set([`${targetNodeName}:${attrName}:${attr?.socket ? 'socket' : 'plug'}`]);
 
       while (queue.length > 0) {
         const current = queue.shift();
         const conns = graph.connections.filter(c =>
-          (c.sourceNode === current.nodeName && c.sourceAttr === current.attrName) ||
-          (c.targetNode === current.nodeName && c.targetAttr === current.attrName)
+          (current.type === 'plug' && c.sourceNode === current.nodeName && c.sourceAttr === current.attrName) ||
+          (current.type === 'socket' && c.targetNode === current.nodeName && c.targetAttr === current.attrName)
         );
 
         for (const c of conns) {
-          const oppNName = c.sourceNode === current.nodeName ? c.targetNode : c.sourceNode;
-          const oppAName = c.sourceNode === current.nodeName ? c.targetAttr : c.sourceAttr;
-          const key = `${oppNName}:${oppAName}`;
+          const isSource = c.sourceNode === current.nodeName;
+          const oppNName = isSource ? c.targetNode : c.sourceNode;
+          const oppAName = isSource ? c.targetAttr : c.sourceAttr;
+          const oppType = isSource ? 'socket' : 'plug';
+          const key = `${oppNName}:${oppAName}:${oppType}`;
 
           if (!visited.has(key)) {
             visited.add(key);
-            queue.push({ nodeName: oppNName, attrName: oppAName });
+            queue.push({ nodeName: oppNName, attrName: oppAName, type: oppType });
           }
         }
       }
 
       visited.forEach(key => {
-        const [nName, aName] = key.split(':');
+        const [nName, aName, aType] = key.split(':');
         const n = graph.nodes.get(nName);
         if (n) {
-          const aIdx = n.attributes.findIndex(a => a.name === aName);
+          const aIdx = n.attributes.findIndex(a => a.name === aName && (aType === 'socket' ? a.socket : a.plug));
           if (aIdx !== -1) {
             graph.editAttribute(nName, aIdx, { dataType: newType });
           }
@@ -216,9 +240,9 @@ export function PropertiesPanel({
     }, 'Reorder Attributes');
   };
 
-  const handleDeleteAttribute = (attrName) => {
+  const handleDeleteAttribute = (attrName, type) => {
     executeAction(() => {
-      graph.deleteAttribute(node.name, attrName);
+      graph.deleteAttribute(node.name, attrName, type);
     }, 'Delete Slot Attribute');
   };
 
