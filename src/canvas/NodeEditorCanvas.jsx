@@ -233,50 +233,202 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
       }
 
       // 2. Copy (Ctrl+C)
-      if (e.ctrlKey && e.key.toLowerCase() === 'c' && selection.length === 1) {
+      if (e.ctrlKey && e.key.toLowerCase() === 'c' && selection.length > 0) {
         e.preventDefault();
-        const node = graph.nodes.get(selection[0]);
-        if (node) {
-          clipboardRef.current = {
-            name: node.name,
-            preset: node.preset,
-            alternate: node.alternate,
-            attributes: node.attributes.map(a => ({ ...a })),
-            metadata: { ...node.metadata }
+        const selectedNodes = selection
+          .map(name => graph.nodes.get(name))
+          .filter(Boolean);
+
+        if (selectedNodes.length > 0) {
+          const selectedNamesSet = new Set(selectedNodes.map(n => n.name));
+
+          // Copy internal connections (both endpoints reside in the selection)
+          const internalConnections = graph.connections.filter(c =>
+            selectedNamesSet.has(c.sourceNode) && selectedNamesSet.has(c.targetNode)
+          ).map(c => ({
+            sourceNode: c.sourceNode,
+            sourceAttr: c.sourceAttr,
+            targetNode: c.targetNode,
+            targetAttr: c.targetAttr
+          }));
+
+          const customTypes = dataTypeRegistry.getAllTypes()
+            .filter(t => t.isCustom)
+            .map(ct => ({
+              code: ct.code,
+              type: ct.type,
+              description: ct.description,
+              iconPath: ct.iconPath,
+              hash: ct.hash
+            }));
+
+          const clipboardPayload = {
+            version: 1,
+            type: 'PLUMBER_CLIPBOARD',
+            nodes: selectedNodes.map(node => ({
+              name: node.name,
+              preset: node.preset,
+              position: { ...node.position },
+              alternate: node.alternate,
+              attributes: node.attributes.map(a => ({ ...a })),
+              metadata: JSON.parse(JSON.stringify(node.metadata || {}))
+            })),
+            connections: internalConnections,
+            customTypes
           };
+
+          clipboardRef.current = clipboardPayload;
+
+          // Save to localStorage for instant synchronous cross-tab persistence
+          try {
+            localStorage.setItem('plumber_clipboard', JSON.stringify(clipboardPayload));
+          } catch {
+            // ignore localStorage quota/disabled errors
+          }
+
+          // Also write to system clipboard if available
+          if (navigator?.clipboard?.writeText) {
+            navigator.clipboard.writeText(JSON.stringify(clipboardPayload)).catch(() => {});
+          }
         }
       }
 
       // 3. Paste (Ctrl+V)
-      if (e.ctrlKey && e.key.toLowerCase() === 'v' && clipboardRef.current) {
+      if (e.ctrlKey && e.key.toLowerCase() === 'v') {
         e.preventDefault();
-        const clip = clipboardRef.current;
-        let pasteName = `${clip.name}_copy`;
-        let counter = 1;
-        while (graph.nodes.has(pasteName)) {
-          pasteName = `${clip.name}_copy${counter}`;
-          counter++;
-        }
 
-        const before = serializeGraph(graph);
-        const mousePos = mousePosRef.current || { x: 100, y: 100 };
-        const newNode = graph.createNode(pasteName, { x: mousePos.x, y: mousePos.y }, clip.preset);
-        if (newNode) {
-          newNode.alternate = clip.alternate;
-          newNode.metadata = { ...clip.metadata };
-          clip.attributes.forEach(attr => {
-            graph.createAttribute(pasteName, attr);
-          });
-          
-          setSelection([pasteName]);
+        const doPaste = (clip) => {
+          if (!clip) return;
+          const nodesToPaste = clip.nodes || (clip.name ? [clip] : []);
+          const connectionsToPaste = clip.connections || [];
 
-          const after = serializeGraph(graph);
-          const cmd = new SnapshotCommand(graph, 'Paste Node');
-          cmd.beforeState = before;
-          cmd.afterState = after;
-          commandHistory.execute(cmd);
-          graph.emit('node:moved', {});
-        }
+          if (nodesToPaste.length === 0) return;
+
+          // Register any custom data types bundled with the clipboard payload
+          if (clip.customTypes && Array.isArray(clip.customTypes)) {
+            clip.customTypes.forEach(ct => {
+              dataTypeRegistry.addCustomType(ct);
+            });
+          }
+
+          const before = serializeGraph(graph);
+
+          // 1. Calculate offset relative to mouse or canvas
+          let minX = Infinity;
+          let minY = Infinity;
+          for (const n of nodesToPaste) {
+            const px = n.position?.x ?? 0;
+            const py = n.position?.y ?? 0;
+            if (px < minX) minX = px;
+            if (py < minY) minY = py;
+          }
+
+          const mousePos = mousePosRef.current;
+          const isAtOrigin = (!mousePos || (mousePos.x === 0 && mousePos.y === 0));
+          const targetOriginX = isAtOrigin ? (minX + 40) : mousePos.x;
+          const targetOriginY = isAtOrigin ? (minY + 40) : mousePos.y;
+          const dx = targetOriginX - minX;
+          const dy = targetOriginY - minY;
+
+          // 2. Map old node names to new unique names
+          const oldNameToNewName = new Map();
+          const existingNames = new Set(Array.from(graph.nodes.keys()));
+
+          for (const nodeData of nodesToPaste) {
+            let pasteName = existingNames.has(nodeData.name) ? `${nodeData.name}_copy` : nodeData.name;
+            let counter = 1;
+            while (existingNames.has(pasteName)) {
+              pasteName = `${nodeData.name}_copy${counter}`;
+              counter++;
+            }
+            existingNames.add(pasteName);
+            oldNameToNewName.set(nodeData.name, pasteName);
+          }
+
+          const newlyCreatedNames = [];
+
+          // 3. Create nodes and attributes
+          for (const nodeData of nodesToPaste) {
+            const pasteName = oldNameToNewName.get(nodeData.name);
+            const posX = (nodeData.position?.x ?? 100) + dx;
+            const posY = (nodeData.position?.y ?? 100) + dy;
+            const newNode = graph.createNode(pasteName, { x: posX, y: posY }, nodeData.preset);
+            if (newNode) {
+              newNode.alternate = nodeData.alternate;
+              newNode.metadata = { ...nodeData.metadata };
+
+              // If this node links to another node (e.g. note linked_process), remap if linked node was also copied
+              if (newNode.metadata?.linked_process && oldNameToNewName.has(newNode.metadata.linked_process)) {
+                newNode.metadata.linked_process = oldNameToNewName.get(newNode.metadata.linked_process);
+              }
+
+              nodeData.attributes.forEach(attr => {
+                graph.createAttribute(pasteName, attr);
+              });
+              newlyCreatedNames.push(pasteName);
+            }
+          }
+
+          // 4. Re-create internal connections between the newly pasted nodes
+          for (const conn of connectionsToPaste) {
+            const newSourceNode = oldNameToNewName.get(conn.sourceNode);
+            const newTargetNode = oldNameToNewName.get(conn.targetNode);
+            if (newSourceNode && newTargetNode) {
+              graph.createConnection(newSourceNode, conn.sourceAttr, newTargetNode, conn.targetAttr);
+            }
+          }
+
+          if (newlyCreatedNames.length > 0) {
+            setSelection(newlyCreatedNames);
+
+            const after = serializeGraph(graph);
+            const cmd = new SnapshotCommand(graph, newlyCreatedNames.length > 1 ? 'Paste Nodes' : 'Paste Node');
+            cmd.beforeState = before;
+            cmd.afterState = after;
+            commandHistory.execute(cmd);
+            graph.emit('node:moved', {});
+          }
+        };
+
+        const readAndPaste = async () => {
+          let clip = null;
+
+          // Try system clipboard first
+          if (navigator?.clipboard?.readText) {
+            try {
+              const text = await navigator.clipboard.readText();
+              if (text) {
+                const parsed = JSON.parse(text);
+                if (parsed && (parsed.type === 'PLUMBER_CLIPBOARD' || parsed.nodes || parsed.name)) {
+                  clip = parsed;
+                }
+              }
+            } catch {
+              // Permission denied or not active window; fallback
+            }
+          }
+
+          // Fallback to localStorage (cross-tab)
+          if (!clip) {
+            try {
+              const local = localStorage.getItem('plumber_clipboard');
+              if (local) {
+                clip = JSON.parse(local);
+              }
+            } catch {
+              // Ignore
+            }
+          }
+
+          // Fallback to in-memory ref
+          if (!clip) {
+            clip = clipboardRef.current;
+          }
+
+          doPaste(clip);
+        };
+
+        readAndPaste();
       }
 
       // 4. Quick connected node creation (Ctrl+ArrowRight / Ctrl+ArrowLeft)
