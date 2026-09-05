@@ -169,14 +169,14 @@ export function HelpDialog({ isOpen, onClose, onStartTour }) {
             </div>
 
             <div className="ds-shortcut-row">
-              <span className="ds-shortcut-name">Copy Selected Node</span>
+              <span className="ds-shortcut-name">Copy Selected Nodes</span>
               <div className="ds-shortcut-keys-container">
                 <Kbd>Ctrl</Kbd> + <Kbd>C</Kbd>
               </div>
             </div>
 
             <div className="ds-shortcut-row">
-              <span className="ds-shortcut-name">Paste Node under Mouse</span>
+              <span className="ds-shortcut-name">Paste Nodes under Mouse</span>
               <div className="ds-shortcut-keys-container">
                 <Kbd>Ctrl</Kbd> + <Kbd>V</Kbd>
               </div>
