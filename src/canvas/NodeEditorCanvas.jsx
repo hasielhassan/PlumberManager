@@ -2,7 +2,8 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useGraph } from '../hooks/useGraph';
 import { drawGrid } from './grid-renderer';
 import { drawNode, getNodeDimensions } from './node-renderer';
-import { drawConnection } from './connection-renderer';
+import { drawConnectionCurve, drawConnectionBadge } from './connection-renderer';
+import { computeConnectionBundles, getBadgeSeedT } from './connection-badge-layout';
 import {
   hitTestNode,
   hitTestSlot,
@@ -556,7 +557,15 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
     // 1. Draw Grid
     drawGrid(ctx, dimensions.width, dimensions.height, pan, zoom);
 
-    // 2. Draw Connections
+    // 2. Backdrops first, so they sit behind connections and nodes.
+    graph.nodes.forEach(node => {
+      if (node.preset === 'node_preset_backdrop') {
+        drawNode(ctx, node, selection.includes(node.name));
+      }
+    });
+
+    // 3. Connection curves - all of them - before any badge is drawn.
+    const geometries = [];
     graph.connections.forEach(conn => {
       const srcNode = graph.nodes.get(conn.sourceNode);
       const tgtNode = graph.nodes.get(conn.targetNode);
@@ -564,40 +573,58 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
 
       const pSource = getSlotCenter(srcNode, conn.sourceAttr, 'plug');
       const pTarget = getSlotCenter(tgtNode, conn.targetAttr, 'socket');
-      
+
       const attr = srcNode.attributes.find(a => a.name === conn.sourceAttr && a.plug) ||
                    srcNode.attributes.find(a => a.name === conn.sourceAttr);
 
-      drawConnection(ctx, pSource, pTarget, conn, attr?.dataType, true, graph);
+      const { ctrl1, ctrl2 } = drawConnectionCurve(ctx, pSource, pTarget, true);
+      geometries.push({ conn, pSource, pTarget, ctrl1, ctrl2, dataTypeCode: attr?.dataType });
     });
 
-    // 3. Draw Active Temporary Connection (during drag connection)
+    // Active Temporary Connection (during drag connection) - drawn with the
+    // real curves so it never sits under a badge placed afterward.
+    let tempGeometry = null;
     if (interaction.state === 'DRAW_CONNECTION' && interaction.startPoint && interaction.currentPoint) {
       const startWorld = screenToWorld(interaction.startPoint.x, interaction.startPoint.y);
       const currentWorld = screenToWorld(interaction.currentPoint.x, interaction.currentPoint.y);
-      
+
       const isPlug = interaction.activeSlot.type === 'plug';
       const pSource = isPlug ? startWorld : currentWorld;
       const pTarget = isPlug ? currentWorld : startWorld;
 
-      drawConnection(ctx, pSource, pTarget, null, interaction.activeSlot.dataType, true, graph);
+      const { ctrl1, ctrl2 } = drawConnectionCurve(ctx, pSource, pTarget, true);
+      tempGeometry = { pSource, pTarget, ctrl1, ctrl2, dataTypeCode: interaction.activeSlot.dataType };
     }
 
-    // 4. Draw Nodes (Backdrops drawn first so they lay in the background behind other nodes)
-    const sortedNodes = Array.from(graph.nodes.values()).sort((a, b) => {
-      const aIsBackdrop = a.preset === 'node_preset_backdrop';
-      const bIsBackdrop = b.preset === 'node_preset_backdrop';
-      if (aIsBackdrop && !bIsBackdrop) return -1;
-      if (!aIsBackdrop && bIsBackdrop) return 1;
-      return 0;
+    // 4. Connection badges - placed against both nodes and each other.
+    const bundleInfo = computeConnectionBundles(graph.connections);
+    const placedBadges = [];
+    geometries.forEach(({ conn, pSource, pTarget, ctrl1, ctrl2, dataTypeCode }) => {
+      const { index, count } = bundleInfo.get(conn) || { index: 0, count: 1 };
+      const pos = drawConnectionBadge(ctx, pSource, ctrl1, ctrl2, pTarget, dataTypeCode, {
+        graph,
+        seedT: getBadgeSeedT(index, count),
+        placedBadges,
+        active: true
+      });
+      if (pos) placedBadges.push(pos);
+    });
+    if (tempGeometry) {
+      drawConnectionBadge(ctx, tempGeometry.pSource, tempGeometry.ctrl1, tempGeometry.ctrl2, tempGeometry.pTarget, tempGeometry.dataTypeCode, {
+        graph,
+        placedBadges,
+        active: true
+      });
+    }
+
+    // 5. Non-backdrop nodes on top of everything else.
+    graph.nodes.forEach(node => {
+      if (node.preset !== 'node_preset_backdrop') {
+        drawNode(ctx, node, selection.includes(node.name));
+      }
     });
 
-    sortedNodes.forEach(node => {
-      const isSelected = selection.includes(node.name);
-      drawNode(ctx, node, isSelected);
-    });
-
-    // 5. Draw Rubber Band Selection Rect
+    // 6. Draw Rubber Band Selection Rect
     if (interaction.state === 'SELECTION' && interaction.rubberBandRect) {
       const { p1, p2 } = interaction.rubberBandRect;
       ctx.strokeStyle = convertArrayToRgba(editorConfig.connection.color, 0.5);
@@ -1468,7 +1495,14 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
             className="ds-context-item"
             onClick={() => {
               setContextMenu(null);
+              const before = serializeGraph(graph);
               layoutGraph(graph);
+              const after = serializeGraph(graph);
+              const cmd = new SnapshotCommand(graph, 'Auto Layout Graph');
+              cmd.beforeState = before;
+              cmd.afterState = after;
+              commandHistory.execute(cmd);
+              graph.emit('node:moved', {});
             }}
           >
             ⚡ Auto Layout Graph

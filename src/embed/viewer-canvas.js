@@ -1,6 +1,7 @@
 import { drawGrid } from '../canvas/grid-renderer';
 import { drawNode, getNodeDimensions } from '../canvas/node-renderer';
-import { drawConnection } from '../canvas/connection-renderer';
+import { drawConnectionCurve, drawConnectionBadge } from '../canvas/connection-renderer';
+import { computeConnectionBundles, getBadgeSeedT } from '../canvas/connection-badge-layout';
 import { hitTestNode, getSlotCenter } from '../canvas/hit-testing';
 
 export class ViewerCanvas {
@@ -412,7 +413,15 @@ export class ViewerCanvas {
     // 1. Grid
     drawGrid(ctx, this.canvas.width, this.canvas.height, this.pan, this.zoom);
 
-    // 2. Connections
+    // 2. Backdrops first, so they sit behind connections and nodes.
+    this.graph.nodes.forEach(node => {
+      if (node.preset === 'node_preset_backdrop') {
+        drawNode(ctx, node, this.selectedNodeName === node.name);
+      }
+    });
+
+    // 3. Connection curves - all of them - before any badge is drawn.
+    const geometries = [];
     this.graph.connections.forEach(conn => {
       const srcNode = this.graph.nodes.get(conn.sourceNode);
       const tgtNode = this.graph.nodes.get(conn.targetNode);
@@ -423,28 +432,29 @@ export class ViewerCanvas {
 
       const attr = srcNode.attributes.find(a => a.name === conn.sourceAttr && a.plug) ||
                    srcNode.attributes.find(a => a.name === conn.sourceAttr);
-      drawConnection(ctx, pSource, pTarget, conn, attr?.dataType, true, this.graph);
+      const { ctrl1, ctrl2 } = drawConnectionCurve(ctx, pSource, pTarget, true);
+      geometries.push({ conn, pSource, pTarget, ctrl1, ctrl2, dataTypeCode: attr?.dataType });
     });
 
-    // 3. Nodes (Rule #3: Backdrops drawn FIRST, normal nodes drawn SECOND)
-    const backdrops = [];
-    const normalNodes = [];
+    // 4. Connection badges - placed against both nodes and each other.
+    const bundleInfo = computeConnectionBundles(this.graph.connections);
+    const placedBadges = [];
+    geometries.forEach(({ conn, pSource, pTarget, ctrl1, ctrl2, dataTypeCode }) => {
+      const { index, count } = bundleInfo.get(conn) || { index: 0, count: 1 };
+      const pos = drawConnectionBadge(ctx, pSource, ctrl1, ctrl2, pTarget, dataTypeCode, {
+        graph: this.graph,
+        seedT: getBadgeSeedT(index, count),
+        placedBadges,
+        active: true
+      });
+      if (pos) placedBadges.push(pos);
+    });
+
+    // 5. Non-backdrop nodes on top of everything else.
     this.graph.nodes.forEach(node => {
-      if (node.preset === 'node_preset_backdrop') {
-        backdrops.push(node);
-      } else {
-        normalNodes.push(node);
+      if (node.preset !== 'node_preset_backdrop') {
+        drawNode(ctx, node, this.selectedNodeName === node.name);
       }
-    });
-
-    backdrops.forEach(node => {
-      const isSelected = this.selectedNodeName === node.name;
-      drawNode(ctx, node, isSelected);
-    });
-
-    normalNodes.forEach(node => {
-      const isSelected = this.selectedNodeName === node.name;
-      drawNode(ctx, node, isSelected);
     });
 
     ctx.restore();

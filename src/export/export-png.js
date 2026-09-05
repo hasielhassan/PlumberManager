@@ -1,6 +1,7 @@
 import { getNodeDimensions, drawNode } from '../canvas/node-renderer';
-import { drawConnection } from '../canvas/connection-renderer';
+import { drawConnectionCurve, drawConnectionBadge } from '../canvas/connection-renderer';
 import { getSlotCenter } from '../canvas/hit-testing';
+import { computeConnectionBundles, getBadgeSeedT } from '../canvas/connection-badge-layout';
 
 export function renderGraphToCanvas(graphModel, scale = 2, bgFill = '#1e222b') {
   if (graphModel.nodes.size === 0) return null;
@@ -35,7 +36,7 @@ export function renderGraphToCanvas(graphModel, scale = 2, bgFill = '#1e222b') {
   canvas.height = height * scale;
 
   const ctx = canvas.getContext('2d');
-  
+
   if (bgFill) {
     ctx.fillStyle = bgFill;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -45,7 +46,13 @@ export function renderGraphToCanvas(graphModel, scale = 2, bgFill = '#1e222b') {
   ctx.scale(scale, scale);
   ctx.translate(-minX, -minY);
 
-  // 3. Draw connections
+  // 3. Backdrops first, so they sit behind connections and nodes.
+  graphModel.nodes.forEach(node => {
+    if (node.preset === 'node_preset_backdrop') drawNode(ctx, node, false);
+  });
+
+  // 4. Connection curves - all of them - before any badge is drawn.
+  const geometries = [];
   graphModel.connections.forEach(conn => {
     const srcNode = graphModel.nodes.get(conn.sourceNode);
     const tgtNode = graphModel.nodes.get(conn.targetNode);
@@ -53,15 +60,31 @@ export function renderGraphToCanvas(graphModel, scale = 2, bgFill = '#1e222b') {
 
     const pSource = getSlotCenter(srcNode, conn.sourceAttr, 'plug');
     const pTarget = getSlotCenter(tgtNode, conn.targetAttr, 'socket');
-    
+
     const attr = srcNode.attributes.find(a => a.name === conn.sourceAttr && a.plug) ||
                  srcNode.attributes.find(a => a.name === conn.sourceAttr);
-    drawConnection(ctx, pSource, pTarget, conn, attr?.dataType, true, graphModel);
+
+    const { ctrl1, ctrl2 } = drawConnectionCurve(ctx, pSource, pTarget, true);
+    geometries.push({ conn, pSource, pTarget, ctrl1, ctrl2, dataTypeCode: attr?.dataType });
   });
 
-  // 4. Draw nodes
+  // 5. Connection badges - placed against both nodes and each other.
+  const bundleInfo = computeConnectionBundles(graphModel.connections);
+  const placedBadges = [];
+  geometries.forEach(({ conn, pSource, pTarget, ctrl1, ctrl2, dataTypeCode }) => {
+    const { index, count } = bundleInfo.get(conn) || { index: 0, count: 1 };
+    const pos = drawConnectionBadge(ctx, pSource, ctrl1, ctrl2, pTarget, dataTypeCode, {
+      graph: graphModel,
+      seedT: getBadgeSeedT(index, count),
+      placedBadges,
+      active: true
+    });
+    if (pos) placedBadges.push(pos);
+  });
+
+  // 6. Non-backdrop nodes on top of everything else.
   graphModel.nodes.forEach(node => {
-    drawNode(ctx, node, false);
+    if (node.preset !== 'node_preset_backdrop') drawNode(ctx, node, false);
   });
 
   ctx.restore();

@@ -1,17 +1,71 @@
 import { GraphModel } from './graph-model';
 import { layoutGraph } from './graph-layout';
-import { getNodeDimensions } from '../canvas/node-renderer';
+import { getParentBackdropName } from './graph-topology';
+import editorConfig from '../../config/editor-config.json';
+
+function cloneMetadata(node) {
+  return JSON.parse(JSON.stringify(node.metadata || {}));
+}
+
+function addNodeWithMetadata(isoG, mainNode, name, position) {
+  const created = isoG.createNode(name, position, mainNode.preset);
+  if (created) created.metadata = cloneMetadata(mainNode);
+  mainNode.attributes.forEach(attr => isoG.createAttribute(name, attr));
+  return created;
+}
+
+/**
+ * Pulls a linked note/process counterpart into the isolated graph. When
+ * `includeItsConnections` is set (used when isolating a Note itself), the
+ * counterpart's own direct inputs/outputs are pulled in too, so isolating a
+ * note shows both the note and the process it documents.
+ */
+function addLinkedCounterpart(isoG, mainGraph, counterpartName, includeItsConnections) {
+  if (!counterpartName || isoG.nodes.has(counterpartName)) return;
+  const counterpart = mainGraph.nodes.get(counterpartName);
+  if (!counterpart) return;
+
+  addNodeWithMetadata(isoG, counterpart, counterpartName, { x: 200, y: 40 });
+  if (!includeItsConnections) return;
+
+  const isoData = mainGraph.getIsolatedData(counterpartName);
+  if (!isoData) return;
+
+  Object.entries(isoData.inputs).forEach(([attrName, data]) => {
+    data.connections.forEach(([srcNodeName, srcAttrName]) => {
+      if (!isoG.nodes.has(srcNodeName)) {
+        const srcNode = mainGraph.nodes.get(srcNodeName);
+        if (srcNode) addNodeWithMetadata(isoG, srcNode, srcNodeName, { x: 50, y: 40 });
+      }
+      isoG.createConnection(srcNodeName, srcAttrName, counterpartName, attrName);
+    });
+  });
+
+  Object.entries(isoData.outputs).forEach(([attrName, data]) => {
+    data.connections.forEach(([tgtNodeName, tgtAttrName]) => {
+      if (!isoG.nodes.has(tgtNodeName)) {
+        const tgtNode = mainGraph.nodes.get(tgtNodeName);
+        if (tgtNode) addNodeWithMetadata(isoG, tgtNode, tgtNodeName, { x: 350, y: 40 });
+      }
+      isoG.createConnection(counterpartName, attrName, tgtNodeName, tgtAttrName);
+    });
+  });
+}
 
 /**
  * Builds an isolated subgraph model for a given node name.
- * 
+ *
  * - For Backdrop groups: Isolates the backdrop and all process nodes inside its
- *   bounds, preserving internal connections and stripping external ones.
+ *   bounds (same center-point containment test used by the layout engine and
+ *   PDF export), preserving internal connections and stripping external ones.
  * - For Note & Process nodes: Isolates the central node along with its direct
- *   inputs and outputs, copying full metadata (colors, descriptions, sizes).
- * 
- * @param {GraphModel} mainGraph 
- * @param {string} nodeName 
+ *   inputs and outputs, copying full metadata (colors, descriptions, sizes),
+ *   plus any linked note/process counterpart - isolating a process pulls in
+ *   a note linked to it, and isolating a note pulls in the process it's
+ *   linked to (with that process's own direct connections).
+ *
+ * @param {GraphModel} mainGraph
+ * @param {string} nodeName
  * @returns {GraphModel|null}
  */
 export function buildIsolatedGraph(mainGraph, nodeName) {
@@ -23,39 +77,22 @@ export function buildIsolatedGraph(mainGraph, nodeName) {
 
   // 1. Backdrop Group Isolation
   if (mainNode.preset === 'node_preset_backdrop') {
-    const { width: bWidth, height: bHeight } = getNodeDimensions(mainNode);
-    const bX = mainNode.position.x;
-    const bY = mainNode.position.y;
-
-    // Find all nodes situated inside backdrop bounds
     const internalNodes = [];
     for (const [name, node] of mainGraph.nodes.entries()) {
-      if (name === mainNode.name) continue;
-      const { width: nW, height: nH } = getNodeDimensions(node);
-      const nX = node.position.x;
-      const nY = node.position.y;
-      if (nX >= bX && nX + nW <= bX + bWidth && nY >= bY && nY + nH <= bY + bHeight) {
+      if (name === nodeName) continue;
+      if (getParentBackdropName(name, mainGraph) === nodeName) {
         internalNodes.push(node);
       }
     }
 
-    // Add backdrop node with full metadata
     const isoBackdrop = isoG.createNode(nodeName, { ...mainNode.position }, mainNode.preset);
-    if (isoBackdrop) {
-      isoBackdrop.metadata = JSON.parse(JSON.stringify(mainNode.metadata || {}));
-    }
+    if (isoBackdrop) isoBackdrop.metadata = cloneMetadata(mainNode);
 
-    // Add internal child nodes with full metadata
     const internalNames = new Set(internalNodes.map(n => n.name));
     for (const node of internalNodes) {
-      const created = isoG.createNode(node.name, { ...node.position }, node.preset);
-      if (created) {
-        created.metadata = JSON.parse(JSON.stringify(node.metadata || {}));
-      }
-      node.attributes.forEach(attr => isoG.createAttribute(node.name, attr));
+      addNodeWithMetadata(isoG, node, node.name, { ...node.position });
     }
 
-    // Add ONLY internal connections
     for (const conn of mainGraph.connections) {
       if (internalNames.has(conn.sourceNode) && internalNames.has(conn.targetNode)) {
         isoG.createConnection(conn.sourceNode, conn.sourceAttr, conn.targetNode, conn.targetAttr);
@@ -69,43 +106,42 @@ export function buildIsolatedGraph(mainGraph, nodeName) {
   const isoData = mainGraph.getIsolatedData(nodeName);
   if (!isoData) return null;
 
-  // Add central node with full metadata (color, body text, custom size)
-  const isoMain = isoG.createNode(nodeName, { x: 200, y: 200 }, mainNode.preset);
-  if (isoMain) {
-    isoMain.metadata = JSON.parse(JSON.stringify(mainNode.metadata || {}));
-  }
-  mainNode.attributes.forEach(attr => isoG.createAttribute(nodeName, attr));
+  addNodeWithMetadata(isoG, mainNode, nodeName, { x: 200, y: 200 });
 
-  // Add connected inputs with metadata
   Object.entries(isoData.inputs).forEach(([attrName, data]) => {
     data.connections.forEach(([srcNodeName, srcAttrName]) => {
       if (!isoG.nodes.has(srcNodeName)) {
         const srcNode = mainGraph.nodes.get(srcNodeName);
-        const createdSrc = isoG.createNode(srcNodeName, { x: 50, y: 100 }, srcNode?.preset);
-        if (createdSrc && srcNode) {
-          createdSrc.metadata = JSON.parse(JSON.stringify(srcNode.metadata || {}));
-        }
-        srcNode?.attributes.forEach(attr => isoG.createAttribute(srcNodeName, attr));
+        if (srcNode) addNodeWithMetadata(isoG, srcNode, srcNodeName, { x: 50, y: 100 });
       }
       isoG.createConnection(srcNodeName, srcAttrName, nodeName, attrName);
     });
   });
 
-  // Add connected outputs with metadata
   Object.entries(isoData.outputs).forEach(([attrName, data]) => {
     data.connections.forEach(([tgtNodeName, tgtAttrName]) => {
       if (!isoG.nodes.has(tgtNodeName)) {
         const tgtNode = mainGraph.nodes.get(tgtNodeName);
-        const createdTgt = isoG.createNode(tgtNodeName, { x: 400, y: 100 }, tgtNode?.preset);
-        if (createdTgt && tgtNode) {
-          createdTgt.metadata = JSON.parse(JSON.stringify(tgtNode.metadata || {}));
-        }
-        tgtNode?.attributes.forEach(attr => isoG.createAttribute(tgtNodeName, attr));
+        if (tgtNode) addNodeWithMetadata(isoG, tgtNode, tgtNodeName, { x: 400, y: 100 });
       }
       isoG.createConnection(nodeName, attrName, tgtNodeName, tgtAttrName);
     });
   });
 
-  layoutGraph(isoG, { animate: false, nodesep: 35, ranksep: 220, centralNodeName: nodeName });
+  if (mainNode.preset === 'node_preset_note') {
+    addLinkedCounterpart(isoG, mainGraph, mainNode.metadata?.linked_process, true);
+  } else {
+    for (const [name, node] of mainGraph.nodes.entries()) {
+      if (node.preset === 'node_preset_note' && node.metadata?.linked_process === nodeName) {
+        addLinkedCounterpart(isoG, mainGraph, name, false);
+      }
+    }
+  }
+
+  layoutGraph(isoG, {
+    animate: false,
+    nodesep: editorConfig.layout.isolation.nodesep,
+    ranksep: editorConfig.layout.isolation.ranksep
+  });
   return isoG;
 }

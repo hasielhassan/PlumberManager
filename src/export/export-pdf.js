@@ -1,88 +1,73 @@
 import { renderGraphToCanvas } from './export-png';
-import { GraphModel } from '../core/graph-model';
 import { layoutGraph } from '../core/graph-layout';
+import { buildIsolatedGraph } from '../core/isolation-builder';
+import { getParentBackdropName } from '../core/graph-topology';
 import { generateSvgString } from './export-svg';
-import { getNodeDimensions } from '../canvas/node-renderer';
+import editorConfig from '../../config/editor-config.json';
 
-function getParentBackdropName(nodeName, graphModel) {
-  const node = graphModel.nodes.get(nodeName);
-  if (!node || node.preset === 'node_preset_backdrop') return null;
-  
-  let parentName = null;
-  let minArea = Infinity;
-  
-  for (const [bName, b] of graphModel.nodes.entries()) {
-    if (b.preset === 'node_preset_backdrop') {
-      const w = b.metadata?.width || 320;
-      const h = b.metadata?.height || 220;
-      
-      const dimensions = getNodeDimensions(node);
-      const cx = node.position.x + dimensions.width / 2;
-      const cy = node.position.y + dimensions.height / 2;
-      
-      if (cx >= b.position.x && cx <= b.position.x + w &&
-          cy >= b.position.y && cy <= b.position.y + h) {
-        const area = w * h;
-        if (area < minArea) {
-          minArea = area;
-          parentName = bName;
-        }
-      }
-    }
-  }
-  return parentName;
-}
-
-function topologicalSort(graphModel) {
-  // Only sort nodes that are process nodes (i.e. not notes and not backdrops)
-  const processNodes = Array.from(graphModel.nodes.values()).filter(node => 
-    node.preset !== 'node_preset_note' && node.preset !== 'node_preset_backdrop'
-  );
-
+/** Kahn's algorithm over one group of nodes, restricted to connections within that group. */
+function sortGroupTopologically(graphModel, nodes) {
+  const names = new Set(nodes.map(n => n.name));
   const adj = {};
   const inDegree = {};
-  processNodes.forEach(node => {
+  nodes.forEach(node => {
     adj[node.name] = [];
     inDegree[node.name] = 0;
   });
 
-  // Calculate in-degrees based on connections between process nodes
   graphModel.connections.forEach(conn => {
-    const src = conn.sourceNode;
-    const tgt = conn.targetNode;
-    if (adj[src] !== undefined && adj[tgt] !== undefined) {
-      adj[src].push(tgt);
-      inDegree[tgt]++;
+    if (names.has(conn.sourceNode) && names.has(conn.targetNode)) {
+      adj[conn.sourceNode].push(conn.targetNode);
+      inDegree[conn.targetNode]++;
     }
   });
 
-  // Kahn's algorithm
-  const queue = [];
-  processNodes.forEach(node => {
-    if (inDegree[node.name] === 0) {
-      queue.push(node.name);
-    }
-  });
-
+  const queue = nodes.filter(n => inDegree[n.name] === 0).map(n => n.name);
   const orderedNames = [];
   while (queue.length > 0) {
     queue.sort(); // stable/deterministic tie-breaker
     const u = queue.shift();
     orderedNames.push(u);
-
     adj[u].forEach(v => {
       inDegree[v]--;
-      if (inDegree[v] === 0) {
-        queue.push(v);
-      }
+      if (inDegree[v] === 0) queue.push(v);
     });
   }
 
   // Append any cycle or disconnected nodes to be safe
-  const remaining = processNodes.filter(n => !orderedNames.includes(n.name)).map(n => n.name);
+  const remaining = nodes.filter(n => !orderedNames.includes(n.name)).map(n => n.name);
   orderedNames.push(...remaining);
 
   return orderedNames.map(name => graphModel.nodes.get(name));
+}
+
+/**
+ * Orders process nodes for the per-node PDF pages, grouped by parent
+ * backdrop first (nodes with no backdrop form a leading, ungrouped section)
+ * so pages read as coherent department-by-department sections instead of a
+ * single flat topological order that ignores backdrop grouping.
+ */
+function topologicalSort(graphModel) {
+  const processNodes = Array.from(graphModel.nodes.values()).filter(node =>
+    node.preset !== 'node_preset_note' && node.preset !== 'node_preset_backdrop'
+  );
+
+  const groups = new Map(); // parent backdrop name, or null for ungrouped -> nodes[]
+  processNodes.forEach(node => {
+    const parent = getParentBackdropName(node.name, graphModel);
+    if (!groups.has(parent)) groups.set(parent, []);
+    groups.get(parent).push(node);
+  });
+
+  const ordered = [];
+  if (groups.has(null)) {
+    ordered.push(...sortGroupTopologically(graphModel, groups.get(null)));
+  }
+  for (const [parent, nodes] of groups.entries()) {
+    if (parent === null) continue;
+    ordered.push(...sortGroupTopologically(graphModel, nodes));
+  }
+  return ordered;
 }
 
 function renderMarkdownToPdf(doc, tokens, startX, startY, maxWidth, pageHeight, addPage) {
@@ -445,33 +430,19 @@ export async function exportPdf(graphModel, fileName = 'pipeline-documentation.p
 
       let currentY = 40;
 
-      // Isolated graph for only nodes inside this backdrop
-      const isoG = new GraphModel();
-      isoG.createNode(bdNode.name, bdNode.position, bdNode.preset);
-      const isoBd = isoG.nodes.get(bdNode.name);
-      isoBd.metadata = { ...bdNode.metadata };
+      // Isolated graph for only nodes inside this backdrop, freshly laid out
+      // for a clean print page (unlike the interactive Isolate View, which
+      // preserves each node's canvas position).
+      const isoG = buildIsolatedGraph(graphModel, bdNode.name);
+      if (isoG) {
+        layoutGraph(isoG, {
+          animate: false,
+          nodesep: editorConfig.layout.isolation.nodesep,
+          ranksep: editorConfig.layout.isolation.ranksep
+        });
+      }
 
-      const childNodes = Array.from(graphModel.nodes.values()).filter(n => {
-        if (n.name === bdNode.name) return false;
-        return getParentBackdropName(n.name, graphModel) === bdNode.name;
-      });
-
-      childNodes.forEach(child => {
-        isoG.createNode(child.name, child.position, child.preset);
-        const isoChild = isoG.nodes.get(child.name);
-        isoChild.metadata = { ...child.metadata };
-        child.attributes.forEach(attr => isoG.createAttribute(child.name, attr));
-      });
-
-      graphModel.connections.forEach(conn => {
-        if (isoG.nodes.has(conn.sourceNode) && isoG.nodes.has(conn.targetNode)) {
-          isoG.createConnection(conn.sourceNode, conn.sourceAttr, conn.targetNode, conn.targetAttr);
-        }
-      });
-
-      layoutGraph(isoG, { animate: false, nodesep: 35, ranksep: 220 });
-
-      if (pdfMode === 'vector') {
+      if (isoG && pdfMode === 'vector') {
         const isoSvgString = generateSvgString(isoG, includeBackground);
         if (isoSvgString) {
           try {
@@ -479,7 +450,7 @@ export async function exportPdf(graphModel, fileName = 'pipeline-documentation.p
             const isoSvgElement = isoSvgDoc.documentElement;
             const isoSvgW = parseFloat(isoSvgElement.getAttribute('width') || 400);
             const isoSvgH = parseFloat(isoSvgElement.getAttribute('height') || 300);
-            
+
             const maxW = pageWidth - 30;
             const maxH = 100;
             const ratio = isoSvgW / isoSvgH;
@@ -489,7 +460,7 @@ export async function exportPdf(graphModel, fileName = 'pipeline-documentation.p
               h = maxH;
               w = h * ratio;
             }
-            
+
             await doc.svg(isoSvgElement, {
               x: (pageWidth - w) / 2,
               y: currentY,
@@ -501,7 +472,7 @@ export async function exportPdf(graphModel, fileName = 'pipeline-documentation.p
             console.warn('Failed to render backdrop SVG subgraph to PDF:', e);
           }
         }
-      } else {
+      } else if (isoG) {
         const bg = includeBackground ? '#2d3748' : '#ffffff';
         const isoResult = renderGraphToCanvas(isoG, 2, bg);
         if (isoResult) {
@@ -576,47 +547,11 @@ export async function exportPdf(graphModel, fileName = 'pipeline-documentation.p
 
     let currentY = 40;
 
-    // Create an isolated graph model for this single node + direct connections
-    const isoData = graphModel.getIsolatedData(node.name);
-    if (isoData) {
-      const isoG = new GraphModel();
-      isoG.createNode(node.name, { x: 200, y: 200 }, node.preset);
-      node.attributes.forEach(attr => isoG.createAttribute(node.name, attr));
-
-      // Connected inputs
-      Object.entries(isoData.inputs).forEach(([attrName, data]) => {
-        data.connections.forEach(([srcNodeName, srcAttrName]) => {
-          if (!isoG.nodes.has(srcNodeName)) {
-            const srcNode = graphModel.nodes.get(srcNodeName);
-            isoG.createNode(srcNodeName, { x: 50, y: 100 }, srcNode?.preset);
-            const connectedAttr = srcNode?.attributes.find(a => a.name === srcAttrName && a.plug) ||
-                                  srcNode?.attributes.find(a => a.name === srcAttrName);
-            if (connectedAttr) {
-              isoG.createAttribute(srcNodeName, connectedAttr);
-            }
-          }
-          isoG.createConnection(srcNodeName, srcAttrName, node.name, attrName);
-        });
-      });
-
-      // Connected outputs
-      Object.entries(isoData.outputs).forEach(([attrName, data]) => {
-        data.connections.forEach(([tgtNodeName, tgtAttrName]) => {
-          if (!isoG.nodes.has(tgtNodeName)) {
-            const tgtNode = graphModel.nodes.get(tgtNodeName);
-            isoG.createNode(tgtNodeName, { x: 400, y: 100 }, tgtNode?.preset);
-            const connectedAttr = tgtNode?.attributes.find(a => a.name === tgtAttrName && a.socket) ||
-                                  tgtNode?.attributes.find(a => a.name === tgtAttrName);
-            if (connectedAttr) {
-              isoG.createAttribute(tgtNodeName, connectedAttr);
-            }
-          }
-          isoG.createConnection(node.name, attrName, tgtNodeName, tgtAttrName);
-        });
-      });
-
-      layoutGraph(isoG, { animate: false, nodesep: 35, ranksep: 220, centralNodeName: node.name });
-      
+    // Isolated graph for this node + its direct connections and any linked
+    // note - metadata (custom colors, note text, sizes) included, matching
+    // the interactive Isolate View exactly.
+    const isoG = buildIsolatedGraph(graphModel, node.name);
+    if (isoG) {
       if (pdfMode === 'vector') {
         const isoSvgString = generateSvgString(isoG, includeBackground);
         if (isoSvgString) {

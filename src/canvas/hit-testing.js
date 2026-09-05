@@ -1,5 +1,5 @@
 import { getNodeDimensions } from './node-renderer';
-import { getBezierPoint } from './connection-renderer';
+import { getBezierPoint, getControlPoints } from './connection-badge-layout';
 
 export function hitTestNode(point, nodes) {
   const nodeArray = Array.from(nodes.values());
@@ -94,12 +94,7 @@ export function hitTestConnection(point, connections, nodes) {
 
     const pSource = getSlotCenter(srcNode, conn.sourceAttr, 'plug');
     const pTarget = getSlotCenter(tgtNode, conn.targetAttr, 'socket');
-
-    const dx = (pTarget.x - pSource.x) * 0.5;
-    const dy = pTarget.y - pSource.y;
-
-    const ctrl1 = { x: pSource.x + dx, y: pSource.y };
-    const ctrl2 = { x: pSource.x + dx, y: pSource.y + dy };
+    const { ctrl1, ctrl2 } = getControlPoints(pSource, pTarget);
 
     // Check distance to bezier curve by sampling t
     for (let t = 0; t <= 1; t += 0.05) {
