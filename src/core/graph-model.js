@@ -131,8 +131,16 @@ export class GraphModel {
       socketMaxConnections = 1
     } = attrConfig;
 
-    if (node.attributes.some(a => a.name === name)) {
-      console.warn(`Attribute "${name}" already exists on node "${nodeName}".`);
+    const isDuplicate = node.attributes.some(a => {
+      if (a.name.toLowerCase() !== name.toLowerCase()) return false;
+      if (socket && a.socket) return true;
+      if (plug && a.plug) return true;
+      if (!socket && !plug && !a.socket && !a.plug) return true;
+      return false;
+    });
+
+    if (isDuplicate) {
+      console.warn(`Attribute "${name}" already exists on node "${nodeName}" on the same side.`);
       return null;
     }
 
@@ -154,50 +162,84 @@ export class GraphModel {
     return attribute;
   }
 
-  deleteAttribute(nodeName, attributeName) {
+  deleteAttribute(nodeName, attributeName, type = null) {
     const node = this.nodes.get(nodeName);
     if (!node) return;
 
-    const index = node.attributes.findIndex(a => a.name === attributeName);
+    let index = -1;
+    if (type === 'socket' || type === 'input') {
+      index = node.attributes.findIndex(a => a.name === attributeName && a.socket);
+    } else if (type === 'plug' || type === 'output') {
+      index = node.attributes.findIndex(a => a.name === attributeName && a.plug);
+    }
+    if (index === -1) {
+      index = node.attributes.findIndex(a => a.name === attributeName);
+    }
     if (index === -1) return;
 
-    // Delete any connections associated with this attribute
+    const attribute = node.attributes[index];
+
+    // Delete any connections associated with this attribute on its specific side
     this.connections = this.connections.filter(conn => {
-      const isMatch = (conn.sourceNode === nodeName && conn.sourceAttr === attributeName) ||
-                      (conn.targetNode === nodeName && conn.targetAttr === attributeName);
+      const isMatch = (attribute.plug && conn.sourceNode === nodeName && conn.sourceAttr === attribute.name) ||
+                      (attribute.socket && conn.targetNode === nodeName && conn.targetAttr === attribute.name);
       if (isMatch) {
         this.emit('connection:deleted', { connection: conn });
       }
       return !isMatch;
     });
 
-    const attribute = node.attributes[index];
     node.attributes.splice(index, 1);
     this.emit('attribute:deleted', { nodeName, attribute, index });
   }
 
   editAttribute(nodeName, index, updatedAttr) {
     const node = this.nodes.get(nodeName);
-    if (!node || !node.attributes[index]) return;
+    if (!node || !node.attributes[index]) return null;
 
     const oldAttr = node.attributes[index];
     const oldName = oldAttr.name;
-    const newName = updatedAttr.name || oldName;
+    const newName = updatedAttr.name !== undefined ? updatedAttr.name.trim() : oldName;
+    const isSocket = updatedAttr.socket !== undefined ? updatedAttr.socket : oldAttr.socket;
+    const isPlug = updatedAttr.plug !== undefined ? updatedAttr.plug : oldAttr.plug;
+
+    // Check if new name conflicts with another attribute on the same side
+    if (newName && newName.toLowerCase() !== oldName.toLowerCase()) {
+      const hasConflict = node.attributes.some((a, i) => {
+        if (i === index) return false;
+        if (a.name.toLowerCase() !== newName.toLowerCase()) return false;
+        if (isSocket && a.socket) return true;
+        if (isPlug && a.plug) return true;
+        if (!isSocket && !isPlug && !a.socket && !a.plug) return true;
+        return false;
+      });
+
+      if (hasConflict) {
+        console.warn(`Attribute "${newName}" already exists on node "${nodeName}" on the same side.`);
+        return null;
+      }
+    }
 
     node.attributes[index] = {
       ...oldAttr,
-      ...updatedAttr
+      ...updatedAttr,
+      name: newName
     };
 
-    // If renamed, update connection references
+    // If renamed, update connection references only for the matching side
     if (newName !== oldName) {
       this.connections.forEach(conn => {
-        if (conn.sourceNode === nodeName && conn.sourceAttr === oldName) conn.sourceAttr = newName;
-        if (conn.targetNode === nodeName && conn.targetAttr === oldName) conn.targetAttr = newName;
+        if (oldAttr.plug && conn.sourceNode === nodeName && conn.sourceAttr === oldName) {
+          conn.sourceAttr = newName;
+        }
+        if (oldAttr.socket && conn.targetNode === nodeName && conn.targetAttr === oldName) {
+          conn.targetAttr = newName;
+        }
       });
     }
 
     this.emit('attribute:edited', { nodeName, index, oldAttr, newAttr: node.attributes[index] });
+    return node.attributes[index];
   }
 
   reorderAttribute(nodeName, index, direction) {

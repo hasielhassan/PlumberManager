@@ -96,7 +96,8 @@ export function IsolatedView({ isOpen, onClose, nodeName, mainGraph }) {
       const pSource = getSlotCenter(srcNode, conn.sourceAttr, 'plug');
       const pTarget = getSlotCenter(tgtNode, conn.targetAttr, 'socket');
       
-      const attr = srcNode.attributes.find(a => a.name === conn.sourceAttr);
+      const attr = srcNode.attributes.find(a => a.name === conn.sourceAttr && a.plug) ||
+                   srcNode.attributes.find(a => a.name === conn.sourceAttr);
       drawConnection(ctx, pSource, pTarget, conn, attr?.dataType, true, isoGraph);
     });
 

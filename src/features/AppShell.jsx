@@ -288,26 +288,34 @@ export function AppShell() {
   const handleCreateInput = (name, dataType) => {
     if (!activeNode) return;
     executeAction(() => {
-      graph.createAttribute(activeNode, {
+      const attr = graph.createAttribute(activeNode, {
         name,
         plug: false,
         socket: true,
         dataType
       });
-      showToast(`Input slot "${name}" created on "${activeNode}".`, 'primary');
+      if (attr) {
+        showToast(`Input slot "${name}" created on "${activeNode}".`, 'primary');
+      } else {
+        showToast(`Failed to create slot: an input named "${name}" already exists on "${activeNode}".`, 'danger');
+      }
     }, 'Create Input Attribute');
   };
 
   const handleCreateOutput = (name, dataType) => {
     if (!activeNode) return;
     executeAction(() => {
-      graph.createAttribute(activeNode, {
+      const attr = graph.createAttribute(activeNode, {
         name,
         plug: true,
         socket: false,
         dataType
       });
-      showToast(`Output slot "${name}" created on "${activeNode}".`, 'primary');
+      if (attr) {
+        showToast(`Output slot "${name}" created on "${activeNode}".`, 'primary');
+      } else {
+        showToast(`Failed to create slot: an output named "${name}" already exists on "${activeNode}".`, 'danger');
+      }
     }, 'Create Output Attribute');
   };
 
@@ -568,6 +576,7 @@ export function AppShell() {
         isOpen={activeModal === 'CREATE_INPUT'}
         onClose={() => setActiveModal(null)}
         type="input"
+        existingNames={graph.nodes.get(activeNode)?.attributes.filter(a => a.socket).map(a => a.name) || []}
         onCreate={handleCreateInput}
       />
 
@@ -575,6 +584,7 @@ export function AppShell() {
         isOpen={activeModal === 'CREATE_OUTPUT'}
         onClose={() => setActiveModal(null)}
         type="output"
+        existingNames={graph.nodes.get(activeNode)?.attributes.filter(a => a.plug).map(a => a.name) || []}
         onCreate={handleCreateOutput}
       />
 

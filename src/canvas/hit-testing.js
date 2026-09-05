@@ -61,7 +61,15 @@ export function hitTestSlot(point, node) {
 export function getSlotCenter(node, attrName, type) {
   const { width, headerHeight, attrHeight, height } = getNodeDimensions(node);
   const { x, y } = node.position;
-  const idx = node.attributes.findIndex(a => a.name === attrName);
+  let idx = -1;
+  if (type === 'socket') {
+    idx = node.attributes.findIndex(a => a.name === attrName && a.socket);
+  } else if (type === 'plug') {
+    idx = node.attributes.findIndex(a => a.name === attrName && a.plug);
+  }
+  if (idx === -1) {
+    idx = node.attributes.findIndex(a => a.name === attrName);
+  }
   
   if (idx === -1) return { x: x + width / 2, y: y + height / 2 };
 

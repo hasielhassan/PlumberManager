@@ -3,7 +3,7 @@ import { Modal, TextInput, Button } from '../../design-system/components';
 import { dataTypeRegistry } from '../../core/data-types';
 import { FormatSelect } from '../FormatSelect';
 
-export function NewSlotDialog({ isOpen, onClose, onCreate, type = 'input' }) {
+export function NewSlotDialog({ isOpen, onClose, onCreate, type = 'input', existingNames = [] }) {
   const [name, setName] = useState('');
   const [dataType, setDataType] = useState('usd');
   const [types, setTypes] = useState([]);
@@ -23,10 +23,13 @@ export function NewSlotDialog({ isOpen, onClose, onCreate, type = 'input' }) {
     }
   }, [isOpen]);
 
+  const trimmedName = name.trim();
+  const isDuplicate = existingNames.some(existing => existing.toLowerCase() === trimmedName.toLowerCase());
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name.trim() && dataType) {
-      onCreate(name.trim(), dataType);
+    if (trimmedName && !isDuplicate && dataType) {
+      onCreate(trimmedName, dataType);
       onClose();
     }
   };
@@ -34,7 +37,7 @@ export function NewSlotDialog({ isOpen, onClose, onCreate, type = 'input' }) {
   const actions = (
     <>
       <Button variant="ghost" onClick={onClose}>Cancel</Button>
-      <Button variant="primary" onClick={handleSubmit} disabled={!name.trim()}>
+      <Button variant="primary" onClick={handleSubmit} disabled={!trimmedName || isDuplicate}>
         Create {type === 'input' ? 'Input' : 'Output'}
       </Button>
     </>
@@ -50,13 +53,20 @@ export function NewSlotDialog({ isOpen, onClose, onCreate, type = 'input' }) {
       className="ds-modal--overflow-visible"
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <TextInput
-          label="Slot Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="e.g. cache, geometry, textures"
-          autoFocus
-        />
+        <div className="flex flex-col gap-1">
+          <TextInput
+            label="Slot Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. cache, geometry, textures"
+            autoFocus
+          />
+          {isDuplicate && trimmedName && (
+            <span className="text-error text-xs" style={{ marginTop: '2px' }}>
+              An {type} slot named "{trimmedName}" already exists on this node.
+            </span>
+          )}
+        </div>
         
         <div className="ds-input-group">
           <label className="ds-input-label">Data Type Format</label>

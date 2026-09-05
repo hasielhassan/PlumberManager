@@ -589,7 +589,8 @@ export async function exportPdf(graphModel, fileName = 'pipeline-documentation.p
           if (!isoG.nodes.has(srcNodeName)) {
             const srcNode = graphModel.nodes.get(srcNodeName);
             isoG.createNode(srcNodeName, { x: 50, y: 100 }, srcNode?.preset);
-            const connectedAttr = srcNode?.attributes.find(a => a.name === srcAttrName);
+            const connectedAttr = srcNode?.attributes.find(a => a.name === srcAttrName && a.plug) ||
+                                  srcNode?.attributes.find(a => a.name === srcAttrName);
             if (connectedAttr) {
               isoG.createAttribute(srcNodeName, connectedAttr);
             }
@@ -604,7 +605,8 @@ export async function exportPdf(graphModel, fileName = 'pipeline-documentation.p
           if (!isoG.nodes.has(tgtNodeName)) {
             const tgtNode = graphModel.nodes.get(tgtNodeName);
             isoG.createNode(tgtNodeName, { x: 400, y: 100 }, tgtNode?.preset);
-            const connectedAttr = tgtNode?.attributes.find(a => a.name === tgtAttrName);
+            const connectedAttr = tgtNode?.attributes.find(a => a.name === tgtAttrName && a.socket) ||
+                                  tgtNode?.attributes.find(a => a.name === tgtAttrName);
             if (connectedAttr) {
               isoG.createAttribute(tgtNodeName, connectedAttr);
             }
