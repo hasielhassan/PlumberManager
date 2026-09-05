@@ -13,6 +13,7 @@ export function GraphProvider({ children }) {
 
   const [selection, setSelection] = useState([]);
   const [updateTrigger, setUpdateTrigger] = useState(0);
+  const [viewportCenter, setViewportCenter] = useState({ x: 250, y: 200 });
 
   // Force re-render on any graph modification or icon preload
   useEffect(() => {
@@ -52,7 +53,7 @@ export function GraphProvider({ children }) {
   }, [graph]);
 
   return (
-    <GraphContext.Provider value={{ graph, selection, setSelection, updateTrigger }}>
+    <GraphContext.Provider value={{ graph, selection, setSelection, updateTrigger, viewportCenter, setViewportCenter }}>
       {children}
     </GraphContext.Provider>
   );

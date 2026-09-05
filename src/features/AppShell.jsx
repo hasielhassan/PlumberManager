@@ -28,7 +28,7 @@ import { OnboardingTour } from './tour/OnboardingTour';
 import './AppShell.css';
 
 export function AppShell() {
-  const { graph, selection, setSelection, updateTrigger } = useGraph();
+  const { graph, selection, setSelection, updateTrigger, viewportCenter } = useGraph();
 
   // Panel sizing & state
   const [panelWidth, setPanelWidth] = useState(() => localStorageManager.getPreferences().panelWidth);
@@ -275,7 +275,9 @@ export function AppShell() {
 
   const handleCreateNode = (nodeName) => {
     executeAction(() => {
-      const node = graph.createNode(nodeName, { x: 150, y: 150 });
+      const spawnX = viewportCenter ? Math.round(viewportCenter.x - 95) : 150;
+      const spawnY = viewportCenter ? Math.round(viewportCenter.y - 45) : 150;
+      const node = graph.createNode(nodeName, { x: spawnX, y: spawnY });
       if (node) {
         setSelection([nodeName]);
         showToast(`Node "${nodeName}" created.`, 'primary');
@@ -570,6 +572,7 @@ export function AppShell() {
         isOpen={activeModal === 'CREATE_NODE'}
         onClose={() => setActiveModal(null)}
         onCreate={handleCreateNode}
+        existingNames={Array.from(graph.nodes.keys())}
       />
 
       <NewSlotDialog

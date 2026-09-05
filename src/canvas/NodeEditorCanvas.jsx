@@ -17,12 +17,12 @@ import { dataTypeRegistry } from '../core/data-types';
 import { drawMinimap } from './minimap';
 import { convertArrayToRgba } from '../utils/color';
 import editorConfig from '../../config/editor-config.json';
-import { InputDialog, ConfirmDialog } from '../features/dialogs';
+import { InputDialog, ConfirmDialog, QuickSpawnDialog } from '../features/dialogs';
 
 export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true }) {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
-  const { graph, selection, setSelection, updateTrigger } = useGraph();
+  const { graph, selection, setSelection, updateTrigger, setViewportCenter } = useGraph();
   const actionStartSnapshotRef = useRef(null);
   const clipboardRef = useRef(null);
   const mousePosRef = useRef({ x: 0, y: 0 });
@@ -37,6 +37,7 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
   const [contextMenu, setContextMenu] = useState(null);
   const [inputData, setInputData] = useState(null);
   const [confirmData, setConfirmData] = useState(null);
+  const [quickSpawnData, setQuickSpawnData] = useState(null);
 
   const panRef = useRef(pan);
   const zoomRef = useRef(zoom);
@@ -138,6 +139,13 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
       y: dimensions.height / 2 - centerY * newZoom
     });
   }, [graph, dimensions]);
+
+  // Keep viewport center in world coordinates updated for quick process node spawning
+  useEffect(() => {
+    if (setViewportCenter && dimensions.width > 0 && dimensions.height > 0) {
+      setViewportCenter(screenToWorld(dimensions.width / 2, dimensions.height / 2));
+    }
+  }, [screenToWorld, dimensions, setViewportCenter]);
 
   // Center view on load (or fit all nodes)
   useEffect(() => {
@@ -439,69 +447,10 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
         if (!node || node.preset === 'node_preset_backdrop') return; // ignore backdrop spawner
 
         const isRight = e.key === 'ArrowRight';
-        
-        setInputData({
-          title: 'Quick Spawn — Step 1',
-          label: `Enter ${isRight ? 'output' : 'input'} slot name:`,
-          defaultValue: isRight ? 'output' : 'input',
-          placeholder: 'Slot name...',
-          onSubmit: (slotName) => {
-            if (!slotName || !slotName.trim()) return;
-
-            setInputData({
-              title: 'Quick Spawn — Step 2',
-              label: 'Enter new process name:',
-              defaultValue: `${node.name}_Next`,
-              placeholder: 'Process name...',
-              onSubmit: (newNodeName) => {
-                if (!newNodeName || !newNodeName.trim()) return;
-
-                const before = serializeGraph(graph);
-
-                // Create slot on current node
-                graph.createAttribute(selectedNodeName, {
-                  name: slotName,
-                  plug: isRight,
-                  socket: !isRight,
-                  dataType: 'usd' 
-                });
-
-                // Spawn new node offset
-                const offset = isRight ? 320 : -320;
-                const newPos = { x: node.position.x + offset, y: node.position.y };
-                graph.createNode(newNodeName, newPos, 'node_preset_1');
-
-                // Create matching slot on new node
-                graph.createAttribute(newNodeName, {
-                  name: slotName,
-                  plug: !isRight,
-                  socket: isRight,
-                  dataType: 'usd'
-                });
-
-                // Connect them
-                if (isRight) {
-                  graph.createConnection(selectedNodeName, slotName, newNodeName, slotName);
-                } else {
-                  graph.createConnection(newNodeName, slotName, selectedNodeName, slotName);
-                }
-
-                // Auto relayout
-                if (autoRelayout) {
-                  layoutGraph(graph);
-                }
-
-                setSelection([newNodeName]);
-
-                const after = serializeGraph(graph);
-                const cmd = new SnapshotCommand(graph, 'Quick Spawn Node');
-                cmd.beforeState = before;
-                cmd.afterState = after;
-                commandHistory.execute(cmd);
-                graph.emit('node:moved', {});
-              }
-            });
-          }
+        setQuickSpawnData({
+          isOpen: true,
+          direction: isRight ? 'right' : 'left',
+          sourceNode: node
         });
       }
     };
@@ -518,6 +467,79 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
       lastSelectedNodeRef.current = selection[0];
     }
   }, [selection]);
+
+  // Handle Quick Spawn submission (Ctrl+ArrowRight / Ctrl+ArrowLeft)
+  const handleQuickSpawnSubmit = useCallback(({ nodeName, slotName, dataType }) => {
+    if (!quickSpawnData || !quickSpawnData.sourceNode) return;
+    const { direction, sourceNode } = quickSpawnData;
+    const selectedNodeName = sourceNode.name;
+    const isRight = direction === 'right';
+
+    const before = serializeGraph(graph);
+
+    // Create slot on source node if not existing on that side
+    const sourceHasSlot = sourceNode.attributes.some(a => 
+      a.name.toLowerCase() === slotName.toLowerCase() && (isRight ? a.plug : a.socket)
+    );
+    if (!sourceHasSlot) {
+      graph.createAttribute(selectedNodeName, {
+        name: slotName,
+        plug: isRight,
+        socket: !isRight,
+        dataType
+      });
+    }
+
+    // Calculate target position without altering the existing network layout
+    const offset = isRight ? 320 : -320;
+    let targetX = sourceNode.position.x + offset;
+    let targetY = sourceNode.position.y;
+
+    // Check if another node already occupies this spot; if so, stagger down to avoid overlap
+    const isOccupied = (x, y) => {
+      for (const node of graph.nodes.values()) {
+        if (node.preset === 'node_preset_backdrop') continue;
+        if (Math.abs(node.position.x - x) < 180 && Math.abs(node.position.y - y) < 80) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    while (isOccupied(targetX, targetY)) {
+      targetY += 120;
+    }
+
+    const newNode = graph.createNode(nodeName, { x: targetX, y: targetY }, 'node_preset_1');
+
+    if (newNode) {
+      // Create matching slot on new node
+      graph.createAttribute(nodeName, {
+        name: slotName,
+        plug: !isRight,
+        socket: isRight,
+        dataType
+      });
+
+      // Connect them
+      if (isRight) {
+        graph.createConnection(selectedNodeName, slotName, nodeName, slotName);
+      } else {
+        graph.createConnection(nodeName, slotName, selectedNodeName, slotName);
+      }
+
+      setSelection([nodeName]);
+
+      const after = serializeGraph(graph);
+      const cmd = new SnapshotCommand(graph, 'Quick Spawn Node');
+      cmd.beforeState = before;
+      cmd.afterState = after;
+      commandHistory.execute(cmd);
+      graph.emit('node:moved', {});
+    }
+
+    setQuickSpawnData(null);
+  }, [quickSpawnData, graph, setSelection]);
 
   // Main Canvas Render Loop
   useEffect(() => {
@@ -1478,6 +1500,16 @@ export function NodeEditorCanvas({ autoRelayout = true, minimapEnabled = true })
           if (confirmData?.onConfirm) confirmData.onConfirm();
           setConfirmData(null);
         }}
+      />
+
+      {/* Quick Spawn dialog popup overlay */}
+      <QuickSpawnDialog
+        isOpen={quickSpawnData !== null}
+        direction={quickSpawnData?.direction || 'right'}
+        sourceNode={quickSpawnData?.sourceNode}
+        existingNodeNames={Array.from(graph.nodes.keys())}
+        onClose={() => setQuickSpawnData(null)}
+        onSubmit={handleQuickSpawnSubmit}
       />
     </div>
   );
