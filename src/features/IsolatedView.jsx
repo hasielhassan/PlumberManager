@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Modal } from '../design-system/components';
-import { GraphModel } from '../core/graph-model';
 import { drawNode, getNodeDimensions } from '../canvas/node-renderer';
-import { drawConnection } from '../canvas/connection-renderer';
+import { drawConnectionCurve, drawConnectionBadge } from '../canvas/connection-renderer';
 import { drawGrid } from '../canvas/grid-renderer';
 import { getSlotCenter } from '../canvas/hit-testing';
-import { layoutGraph } from '../core/graph-layout';
+import { computeConnectionBundles, getBadgeSeedT } from '../canvas/connection-badge-layout';
 import { buildIsolatedGraph } from '../core/isolation-builder';
 import './IsolatedView.css';
 
@@ -87,7 +86,13 @@ export function IsolatedView({ isOpen, onClose, nodeName, mainGraph }) {
     // Draw grid
     drawGrid(ctx, dimensions.width, dimensions.height, pan, zoom);
 
-    // Draw connections
+    // Backdrops first, so they sit behind connections and nodes.
+    isoGraph.nodes.forEach(node => {
+      if (node.preset === 'node_preset_backdrop') drawNode(ctx, node, node.name === nodeName);
+    });
+
+    // Connection curves - all of them - before any badge is drawn.
+    const geometries = [];
     isoGraph.connections.forEach(conn => {
       const srcNode = isoGraph.nodes.get(conn.sourceNode);
       const tgtNode = isoGraph.nodes.get(conn.targetNode);
@@ -95,15 +100,30 @@ export function IsolatedView({ isOpen, onClose, nodeName, mainGraph }) {
 
       const pSource = getSlotCenter(srcNode, conn.sourceAttr, 'plug');
       const pTarget = getSlotCenter(tgtNode, conn.targetAttr, 'socket');
-      
+
       const attr = srcNode.attributes.find(a => a.name === conn.sourceAttr && a.plug) ||
                    srcNode.attributes.find(a => a.name === conn.sourceAttr);
-      drawConnection(ctx, pSource, pTarget, conn, attr?.dataType, true, isoGraph);
+      const { ctrl1, ctrl2 } = drawConnectionCurve(ctx, pSource, pTarget, true);
+      geometries.push({ conn, pSource, pTarget, ctrl1, ctrl2, dataTypeCode: attr?.dataType });
     });
 
-    // Draw nodes
+    // Connection badges - placed against both nodes and each other.
+    const bundleInfo = computeConnectionBundles(isoGraph.connections);
+    const placedBadges = [];
+    geometries.forEach(({ conn, pSource, pTarget, ctrl1, ctrl2, dataTypeCode }) => {
+      const { index, count } = bundleInfo.get(conn) || { index: 0, count: 1 };
+      const pos = drawConnectionBadge(ctx, pSource, ctrl1, ctrl2, pTarget, dataTypeCode, {
+        graph: isoGraph,
+        seedT: getBadgeSeedT(index, count),
+        placedBadges,
+        active: true
+      });
+      if (pos) placedBadges.push(pos);
+    });
+
+    // Non-backdrop nodes on top of everything else.
     isoGraph.nodes.forEach(node => {
-      drawNode(ctx, node, node.name === nodeName); // Highlight the main node
+      if (node.preset !== 'node_preset_backdrop') drawNode(ctx, node, node.name === nodeName);
     });
 
     ctx.restore();

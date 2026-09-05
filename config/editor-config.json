@@ -25,6 +25,21 @@
     "width": 2,
     "color": [108, 193, 136, 255]
   },
+  "layout": {
+    "fullGraph": { "ranksep": 220, "nodesep": 90 },
+    "isolation": { "ranksep": 280, "nodesep": 90 },
+    "overlapPadX": 70,
+    "overlapPadY": 50,
+    "backdropPadding": { "left": 50, "right": 50, "top": 60, "bottom": 30 },
+    "noteShelfGap": 60,
+    "noteShelfSpacing": 40,
+    "linkedNoteGap": 24
+  },
+  "badge": {
+    "size": 42,
+    "minSeparation": 48,
+    "nodeCollisionPad": 18
+  },
   "presets": {
     "node_default": {
       "bg": [45, 55, 72, 255],
